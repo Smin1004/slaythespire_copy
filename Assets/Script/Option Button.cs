@@ -19,6 +19,7 @@ public class Button : MonoBehaviour
         if (_canvas.activeSelf)
         {
             Time.timeScale = 0f; // 게임 일시정지
+            Option();
         }
         else
         {
@@ -49,5 +50,16 @@ public class Button : MonoBehaviour
         _canvas.SetActive(false); // 시작 시 Canvas 활성화
         _setting.SetActive(true); // 시작 시 Setting 비활성화
         _exitbutton.SetActive(false); // 시작 시 button 활성화
+    }
+
+    public void Option()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // Canvas 토글 (활성/비활성 전환)
+            _canvas.SetActive(false);
+            _setting.SetActive(true); // Setting은 Canvas와 반대로
+            _exitbutton.SetActive(false);
+        }
     }
 }

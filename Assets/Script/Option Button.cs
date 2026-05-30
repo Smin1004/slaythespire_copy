@@ -2,35 +2,40 @@ using UnityEngine;
 
 public class Button : MonoBehaviour
 {
-    [SerializeField] GameObject _canvas;            // Äµ¹ö½º
-    [SerializeField] GameObject _setting;           // ¼ÂÆÃ ¿ÀºêÁ§Æ®
-    [SerializeField] GameObject _exitbutton;        // ¼ÂÆÃ xÇ¥
+    [SerializeField] GameObject _canvas;            // Äµï¿½ï¿½ï¿½ï¿½
+    [SerializeField] GameObject _setting;           // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+    [SerializeField] GameObject _exitbutton;        // ï¿½ï¿½ï¿½ï¿½ xÇ¥
 
 
     void Start()
     {
-        _canvas.SetActive(false); // ½ÃÀÛ ½Ã Canvas ºñÈ°¼ºÈ­
-        _setting.SetActive(true); // ½ÃÀÛ ½Ã Setting È°¼ºÈ­
-        _exitbutton.SetActive(false); // ½ÃÀÛ ½Ã button ºñÈ°¼ºÈ­
+        _canvas.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Canvas ï¿½ï¿½È°ï¿½ï¿½È­
+        _setting.SetActive(true); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Setting È°ï¿½ï¿½È­
+        _exitbutton.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ button ï¿½ï¿½È°ï¿½ï¿½È­
      
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // ESC Åµ - Canvas Ç¥/É¨ Ç¦ (È°ï¿½ï¿½/ï¿½ï¿½È°ï¿½ï¿½ ï¿½ï¿½È¯)
+            if (_canvas.activeSelf)
+            {
+                ExitSetting(); // Canvas É¨
+            }
+            else
+            {
+                Setting(); // Canvas Ç¥
+            }
+        }
+
         if (_canvas.activeSelf)
         {
-            Time.timeScale = 0f; // °ÔÀÓ ÀÏ½ÃÁ¤Áö
-            Option();
+            Time.timeScale = 0f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
         else
         {
-            Time.timeScale = 1f; // °ÔÀÓ Àç°³
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            // Canvas Åä±Û (È°¼º/ºñÈ°¼º ÀüÈ¯)
-            _canvas.SetActive(true);
-            _setting.SetActive(false); // SettingÀº Canvas¿Í ¹Ý´ë·Î
-            _exitbutton.SetActive(true);
+            Time.timeScale = 1f; // ï¿½ï¿½ï¿½ï¿½ ï¿½ç°³
         }
     }
     public static void ResetData()
@@ -40,25 +45,25 @@ public class Button : MonoBehaviour
 
     public void Setting()
     {
-        _canvas.SetActive(true); // ½ÃÀÛ ½Ã Canvas È°¼ºÈ­
-        _setting.SetActive(false); // ½ÃÀÛ ½Ã Setting ºñÈ°¼ºÈ­
-        _exitbutton.SetActive(true); // ½ÃÀÛ ½Ã button È°¼ºÈ­
+        _canvas.SetActive(true); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Canvas È°ï¿½ï¿½È­
+        _setting.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Setting ï¿½ï¿½È°ï¿½ï¿½È­
+        _exitbutton.SetActive(true); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ button È°ï¿½ï¿½È­
     }
 
     public void ExitSetting()
     {
-        _canvas.SetActive(false); // ½ÃÀÛ ½Ã Canvas È°¼ºÈ­
-        _setting.SetActive(true); // ½ÃÀÛ ½Ã Setting ºñÈ°¼ºÈ­
-        _exitbutton.SetActive(false); // ½ÃÀÛ ½Ã button È°¼ºÈ­
+        _canvas.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Canvas È°ï¿½ï¿½È­
+        _setting.SetActive(true); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Setting ï¿½ï¿½È°ï¿½ï¿½È­
+        _exitbutton.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ button È°ï¿½ï¿½È­
     }
 
     public void Option()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // Canvas Åä±Û (È°¼º/ºñÈ°¼º ÀüÈ¯)
+            // Canvas ï¿½ï¿½ï¿½ (È°ï¿½ï¿½/ï¿½ï¿½È°ï¿½ï¿½ ï¿½ï¿½È¯)
             _canvas.SetActive(false);
-            _setting.SetActive(true); // SettingÀº Canvas¿Í ¹Ý´ë·Î
+            _setting.SetActive(true); // Settingï¿½ï¿½ Canvasï¿½ï¿½ ï¿½Ý´ï¿½ï¿½
             _exitbutton.SetActive(false);
         }
     }

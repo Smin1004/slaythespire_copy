@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class Button : MonoBehaviour
 {
+    public static event Action OnSettingOpen;
+    public static event Action OnSettingClose;
+
     [SerializeField] GameObject _canvas;            // ĵ����
     [SerializeField] GameObject _setting;           // ���� ������Ʈ
     [SerializeField] GameObject _exitbutton;        // ���� xǥ
@@ -48,6 +52,7 @@ public class Button : MonoBehaviour
         _canvas.SetActive(true); // ���� �� Canvas Ȱ��ȭ
         _setting.SetActive(false); // ���� �� Setting ��Ȱ��ȭ
         _exitbutton.SetActive(true); // ���� �� button Ȱ��ȭ
+        OnSettingOpen?.Invoke();
     }
 
     public void ExitSetting()
@@ -55,6 +60,7 @@ public class Button : MonoBehaviour
         _canvas.SetActive(false); // ���� �� Canvas Ȱ��ȭ
         _setting.SetActive(true); // ���� �� Setting ��Ȱ��ȭ
         _exitbutton.SetActive(false); // ���� �� button Ȱ��ȭ
+        OnSettingClose?.Invoke();
     }
 
     public void Option()

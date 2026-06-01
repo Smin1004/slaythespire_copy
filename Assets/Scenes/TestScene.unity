@@ -384,7 +384,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curBattleState: 0
-  enemyList: []
+  enemyList:
+  - {fileID: 1446070164}
   isPlayerTurn: 0
 --- !u!4 &1050154063
 Transform:
@@ -1153,9 +1154,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 2022654494}
   - {fileID: 1643754521}
+  - {fileID: 1581691188}
   - {fileID: 219845534}
   - {fileID: 1050154063}
   - {fileID: 1608831944}
-  - {fileID: 1581691188}
   - {fileID: 1446070166}
   - {fileID: 1291659931}

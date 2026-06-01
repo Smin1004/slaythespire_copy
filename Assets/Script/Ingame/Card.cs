@@ -63,6 +63,9 @@ public class Card : MonoBehaviour
     {
         Debug.Log("카드 사용");
         //임시로 돌아오게 적용
+
+        //임시 카드 사용 로직
+        battleManager.enemyList[0].Damage(10);
         ReturnToHand(); 
     }
 

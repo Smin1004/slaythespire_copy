@@ -15,7 +15,7 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance => _instance;
 
     [SerializeField] private BattleState curBattleState;
-    [SerializeField] private List<EnemyEntity> enemyList;
+    [SerializeField] public List<EnemyEntity> enemyList; //임시 public
     public bool isPlayerTurn;
     Player player;
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum BattleState
@@ -14,7 +15,9 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance => _instance;
 
     [SerializeField] private BattleState curBattleState;
+    [SerializeField] private List<EnemyEntity> enemyList;
     public bool isPlayerTurn;
+    Player player;
 
     public void _Instance()
     {
@@ -28,7 +31,8 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-       InitializeBattle();
+        player = Player.Instance;
+        InitializeBattle();
     }
 
     private void ChangeBattleState(BattleState newState)
@@ -47,7 +51,7 @@ public class BattleManager : MonoBehaviour
                 WaitForPlayerInput();
                 break;
             case BattleState.EnemyTurn:
-                ExecuteEnemyTurn();
+                EnemyTurn();
                 break;
         }
     }
@@ -86,10 +90,13 @@ public class BattleManager : MonoBehaviour
         ChangeBattleState(BattleState.EnemyTurn);
     }
 
-    private void ExecuteEnemyTurn()
+    private void EnemyTurn()
     {
         Debug.Log("적 행동 실행");
-        
+        foreach (var enemy in enemyList)
+        {
+            enemy.ExecuteEnemyTurn(player);
+        }
         ChangeBattleState(BattleState.PlayerTurnStart);
     }
 }

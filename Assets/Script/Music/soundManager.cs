@@ -42,6 +42,8 @@ public class soundManager : MonoBehaviour
         _sfx.Play();
     }
 
-
-   
+    public void PlaySFX(AudioClip clip)
+    {
+        _sfx.PlayOneShot(clip);
+    }
 }

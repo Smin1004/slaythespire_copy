@@ -17,7 +17,7 @@ MonoBehaviour:
   actionList:
   - actionName: 11111111111111
     attackDamage: 10
-    blockAmount: 10
+    blockAmount: 12
   - actionName: 222222222222
     attackDamage: 30
     blockAmount: 0

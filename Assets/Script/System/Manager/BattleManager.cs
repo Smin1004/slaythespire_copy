@@ -16,10 +16,6 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private BattleState curBattleState;
     public List<EnemyEntity> enemyList; //임시 public
-    
-    public List<Card> curDeck;
-    public List<Card> useDeck;
-    public List<Card> Deck;
 
     public bool isPlayerTurn;
     Player player;
@@ -64,6 +60,7 @@ public class BattleManager : MonoBehaviour
     private void InitializeBattle()
     {
         Debug.Log("전투 시작");
+        DeckManager.Instance.InitializeBattleDeck();
         ChangeBattleState(BattleState.PlayerTurnStart);
     }
 
@@ -77,6 +74,7 @@ public class BattleManager : MonoBehaviour
     private void DrawPlayerCards()
     {
         Debug.Log("카드 드로우");
+        DeckManager.Instance.DrawCards(5);
         ChangeBattleState(BattleState.PlayerAction);
     }
 

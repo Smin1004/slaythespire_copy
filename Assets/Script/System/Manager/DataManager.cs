@@ -46,4 +46,8 @@ public class DataManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    void Start()
+    {
+        Player.Instance.masterDeck = loadData.SkillList;
+    }
 }

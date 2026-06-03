@@ -15,10 +15,11 @@ public class ReadCSV : MonoBehaviour
         if (_instance != null) Destroy(gameObject);
         else _instance = this;
         DontDestroyOnLoad(gameObject);
+        LoadData(skill.text, ParseSkillData);
     }
     void Start()
     {
-        LoadData(skill.text, ParseSkillData);
+        
     }
 
     public void Load(Action callBack = default)

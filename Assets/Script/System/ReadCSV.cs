@@ -47,10 +47,7 @@ public class ReadCSV : MonoBehaviour
             string[] cols = rows[i].Split(',');
             if (cols.Length < 7) continue;
 
-            Skill skill = new()
-            {
-                
-            };
+            Skill skill = new();
             skill.index = int.Parse(cols[0]);
             skill.name = cols[1];
             skill.type = cols[2].EnumParse<SkillType>();
@@ -59,6 +56,7 @@ public class ReadCSV : MonoBehaviour
             skill.skill_desc = cols[6];
             skill.skillValue = Array.ConvertAll(cols[7].Split('!'), int.Parse);
             skill.upgradeValue = Array.ConvertAll(cols[8].Split('!'), int.Parse);
+            skill.isTargeting = bool.Parse(cols[9]);
             
             string className = "Skill_" + cols[6];
             try

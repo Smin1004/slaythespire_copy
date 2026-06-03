@@ -6,6 +6,7 @@ public class Skill
     public int index;
     public string name;
     public SkillType type;
+    public bool isTargeting;
 
     public int cost;
     public int upgradeCost;

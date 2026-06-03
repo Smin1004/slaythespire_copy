@@ -507,7 +507,10 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6602802845022230577, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
+    - {fileID: 8607446331977403770, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
+    - {fileID: 4719208650424344359, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -554,6 +557,8 @@ MonoBehaviour:
   curHp: 100
   maxHp: 100
   curBlock: 0
+  energy: 0
+  maxEnergy: 0
 --- !u!212 &1291659930
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -635,9 +640,10 @@ GameObject:
   - component: {fileID: 1446070166}
   - component: {fileID: 1446070165}
   - component: {fileID: 1446070164}
+  - component: {fileID: 1446070167}
   m_Layer: 0
   m_Name: TestEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -728,6 +734,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1446070167
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446070163}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1457208038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,9 +1257,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 2022654494}
   - {fileID: 219845534}
-  - {fileID: 1446070166}
   - {fileID: 1248752936}
   - {fileID: 1291659931}
+  - {fileID: 1446070166}
   - {fileID: 1457208039}
   - {fileID: 1490655944}
   - {fileID: 36732509}

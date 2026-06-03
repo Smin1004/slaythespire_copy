@@ -805,6 +805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 535344578}
+  - component: {fileID: 535344579}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -829,6 +830,19 @@ Transform:
   - {fileID: 532161830}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &535344579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535344577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8e780fa036b6945ac3a021894bbc39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageSpawner: {fileID: 938187996}
 --- !u!1 &544835807
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,7 +1616,7 @@ GameObject:
   - component: {fileID: 938187997}
   - component: {fileID: 938187996}
   m_Layer: 0
-  m_Name: DamageView
+  m_Name: DamageSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3293,6 +3307,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869d33d5732a2fa449a79e38caaaded4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skill:
+    index: 0
+    name: 
+    type: 0
+    isTargeting: 0
+    cost: 0
+    upgradeCost: 0
+    skillValue: 
+    upgradeValue: 
+    skill_desc: 
 --- !u!1 &1740476925
 GameObject:
   m_ObjectHideFlags: 0
@@ -3339,6 +3363,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curBattleState: 0
   enemyList: []
+  curDeck: []
+  useDeck: []
+  Deck: []
   isPlayerTurn: 0
 --- !u!1 &1810624110
 GameObject:

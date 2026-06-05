@@ -1,41 +1,82 @@
 using System.Collections;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
-public class CameraShake : MonoBehaviour
+public class CameraShack : MonoBehaviour
 {
-    Vector3 _originPos;
 
-    private void Awake()
+    [Header("흔들림 설정")]
+    [SerializeField] Camera mainCamera;
+    [SerializeField] float shakeDuration = 0.3f;
+    [SerializeField] float shakeMagnitude = 0.15f;
+
+    [Header("피격 이미지 설정")]
+    [SerializeField] GameObject hitImage;         // 캔버스 이미지 연결
+    [SerializeField] float blinkInterval = 0.1f;  // 깜빡이는 속도
+    [SerializeField] int blinkCount = 3;
+
+    private Vector3 originalCamPos;
+    private Coroutine shakeCoroutine;
+    private Coroutine blinkCoroutine;
+
+    void Start()
     {
-        _originPos = transform.localPosition;
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+
+        originalCamPos = mainCamera.transform.localPosition;
+
+        if (hitImage != null)
+            hitImage.SetActive(false);
+
+    }
+    void Update()
+    {
+        // 스페이스바 누르면 흔들림 실행
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PlayHitEffect();
+        }
     }
 
-    private void Update()
+    public void PlayHitEffect()
     {
-        
-    }
-    public void Shake(float duration, float magnitude)
-    {
-        StartCoroutine(ShakeRoutine(duration, magnitude));
+        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+        if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
+
+        shakeCoroutine = StartCoroutine(Shake());
+        blinkCoroutine = StartCoroutine(Blink());
     }
 
-    IEnumerator ShakeRoutine(float duration, float magnitude)
+    IEnumerator Shake()
     {
-        float elapsed = 0;
+        float elapsed = 0f;
 
-        while (elapsed < duration)
+        while (elapsed < shakeDuration)
         {
             elapsed += Time.deltaTime;
 
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
+            float strength = Mathf.Lerp(shakeMagnitude, 0f, elapsed / shakeDuration);
 
-            transform.localPosition =
-                _originPos + new Vector3(x, y, 0);
+            mainCamera.transform.localPosition = originalCamPos + new Vector3(
+                Random.Range(-1f, 1f) * strength,
+                Random.Range(-1f, 1f) * strength,
+                0f
+            );
 
             yield return null;
         }
 
-        transform.localPosition = _originPos;
+        mainCamera.transform.localPosition = originalCamPos;
+    }
+    IEnumerator Blink()
+    {
+        for (int i = 0; i < blinkCount; i++)
+        {
+            hitImage.SetActive(true);
+            yield return new WaitForSeconds(blinkInterval);
+            hitImage.SetActive(false);
+            yield return new WaitForSeconds(blinkInterval);
+        }
     }
 }

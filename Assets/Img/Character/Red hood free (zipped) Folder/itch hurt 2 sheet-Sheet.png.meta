@@ -1,37 +1,28 @@
 fileFormatVersion: 2
-guid: 5dcfe305e71e93344a3c643287fb34d3
+guid: 2cae28760acfdd34e908e0f99808ba15
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6066306879103524113
-    second: _Death_0
+      213: -7320810298388350287
+    second: itch hurt 2 sheet-Sheet_0
   - first:
-      213: -2130260854859281059
-    second: _Death_1
+      213: 2760490868315971840
+    second: itch hurt 2 sheet-Sheet_1
   - first:
-      213: -8387844239704481345
-    second: _Death_2
+      213: 4546042892816791458
+    second: itch hurt 2 sheet-Sheet_2
   - first:
-      213: -5619066241937197591
-    second: _Death_3
+      213: 6133235146095188253
+    second: itch hurt 2 sheet-Sheet_3
   - first:
-      213: -2896604702546001214
-    second: _Death_4
+      213: -8853825974755322874
+    second: itch hurt 2 sheet-Sheet_4
   - first:
-      213: -4796269119335858697
-    second: _Death_5
+      213: -3007589213488406314
+    second: itch hurt 2 sheet-Sheet_5
   - first:
-      213: 5986346763916639630
-    second: _Death_6
-  - first:
-      213: 2883202648186376338
-    second: _Death_7
-  - first:
-      213: -695858465623746701
-    second: _Death_8
-  - first:
-      213: 7283540774101742664
-    second: _Death_9
+      213: 5701692524486732836
+    second: itch hurt 2 sheet-Sheet_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -123,30 +114,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: _Death_0
+      name: itch hurt 2 sheet-Sheet_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 120
-        height: 80
+        x: 19
+        y: 20
+        width: 18
+        height: 33
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,20 +133,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe2a68cb80620dba0800000000000000
-      internalID: -6066306879103524113
+      spriteID: 1ba7a8822d1476a90800000000000000
+      internalID: -7320810298388350287
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Death_1
+      name: itch hurt 2 sheet-Sheet_1
       rect:
         serializedVersion: 2
-        x: 120
-        y: 0
-        width: 120
-        height: 80
+        x: 98
+        y: 20
+        width: 28
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,20 +155,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d5d41330a0bcf62e0800000000000000
-      internalID: -2130260854859281059
+      spriteID: 001eeaba1db3f4620800000000000000
+      internalID: 2760490868315971840
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Death_2
+      name: itch hurt 2 sheet-Sheet_2
       rect:
         serializedVersion: 2
-        x: 240
-        y: 0
-        width: 120
-        height: 80
+        x: 178
+        y: 20
+        width: 28
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -199,20 +177,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fb1ab1dca14689b80800000000000000
-      internalID: -8387844239704481345
+      spriteID: 2a7b800dce9c61f30800000000000000
+      internalID: 4546042892816791458
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Death_3
+      name: itch hurt 2 sheet-Sheet_3
       rect:
         serializedVersion: 2
-        x: 360
-        y: 0
-        width: 120
-        height: 80
+        x: 258
+        y: 20
+        width: 28
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,20 +199,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9e5b1f726011502b0800000000000000
-      internalID: -5619066241937197591
+      spriteID: d19d1febed0ad1550800000000000000
+      internalID: 6133235146095188253
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Death_4
+      name: itch hurt 2 sheet-Sheet_4
       rect:
         serializedVersion: 2
-        x: 480
-        y: 0
-        width: 120
-        height: 80
+        x: 338
+        y: 20
+        width: 29
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,20 +221,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c20502be513dc7d0800000000000000
-      internalID: -2896604702546001214
+      spriteID: 604159f7f24e02580800000000000000
+      internalID: -8853825974755322874
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Death_5
+      name: itch hurt 2 sheet-Sheet_5
       rect:
         serializedVersion: 2
-        x: 600
-        y: 0
-        width: 120
-        height: 80
+        x: 418
+        y: 20
+        width: 25
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,20 +243,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7fd7fcec5aa307db0800000000000000
-      internalID: -4796269119335858697
+      spriteID: 6d02ab39b85e246d0800000000000000
+      internalID: -3007589213488406314
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Death_6
+      name: itch hurt 2 sheet-Sheet_6
       rect:
         serializedVersion: 2
-        x: 720
-        y: 0
-        width: 120
-        height: 80
+        x: 499
+        y: 20
+        width: 18
+        height: 33
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -287,74 +265,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e8d7f8d2aa6c31350800000000000000
-      internalID: 5986346763916639630
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: _Death_7
-      rect:
-        serializedVersion: 2
-        x: 840
-        y: 0
-        width: 120
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2905d9c5881330820800000000000000
-      internalID: 2883202648186376338
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: _Death_8
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 0
-        width: 120
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3775c8e8960d756f0800000000000000
-      internalID: -695858465623746701
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: _Death_9
-      rect:
-        serializedVersion: 2
-        x: 1080
-        y: 0
-        width: 120
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 84478638eb5541560800000000000000
-      internalID: 7283540774101742664
+      spriteID: 42c2884642b702f40800000000000000
+      internalID: 5701692524486732836
       vertices: []
       indices: 
       edges: []
@@ -363,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bbea2d5eb40ca144b8834fea3f58ea1c
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -373,16 +285,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      _Death_0: -6066306879103524113
-      _Death_1: -2130260854859281059
-      _Death_2: -8387844239704481345
-      _Death_3: -5619066241937197591
-      _Death_4: -2896604702546001214
-      _Death_5: -4796269119335858697
-      _Death_6: 5986346763916639630
-      _Death_7: 2883202648186376338
-      _Death_8: -695858465623746701
-      _Death_9: 7283540774101742664
+      itch hurt 2 sheet-Sheet_0: -7320810298388350287
+      itch hurt 2 sheet-Sheet_1: 2760490868315971840
+      itch hurt 2 sheet-Sheet_2: 4546042892816791458
+      itch hurt 2 sheet-Sheet_3: 6133235146095188253
+      itch hurt 2 sheet-Sheet_4: -8853825974755322874
+      itch hurt 2 sheet-Sheet_5: -3007589213488406314
+      itch hurt 2 sheet-Sheet_6: 5701692524486732836
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: e0bf31aa488ea2f49ac305aa789ed4bf
+guid: 92887141d7e75874d9ca686ee91ffbc9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3117775995601270193
-    second: _Attack_0
+      213: -1515603127067585740
+    second: Skeleton React_0
   - first:
-      213: 8139804621348180182
-    second: _Attack_1
+      213: -974260186754260340
+    second: Skeleton React_1
   - first:
-      213: -3573696086554577925
-    second: _Attack_2
+      213: 6619721271862762800
+    second: Skeleton React_2
   - first:
-      213: -6677449987691099553
-    second: _Attack_3
+      213: 436870274612170266
+    second: Skeleton React_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -105,30 +105,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: _Attack_0
+      name: Skeleton React_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 120
-        height: 80
+        width: 23
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b5bd03dfb0944b20800000000000000
-      internalID: 3117775995601270193
+      spriteID: 4335aa66cfe77fae0800000000000000
+      internalID: -1515603127067585740
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Attack_1
+      name: Skeleton React_1
       rect:
         serializedVersion: 2
-        x: 120
+        x: 21
         y: 0
-        width: 120
-        height: 80
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6d09a843d2566f070800000000000000
-      internalID: 8139804621348180182
+      spriteID: c82e4b1a58bba72f0800000000000000
+      internalID: -974260186754260340
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Attack_2
+      name: Skeleton React_2
       rect:
         serializedVersion: 2
-        x: 240
+        x: 43
         y: 0
-        width: 120
-        height: 80
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bf3f5b1f75ea76ec0800000000000000
-      internalID: -3573696086554577925
+      spriteID: 03d1a798c69fddb50800000000000000
+      internalID: 6619721271862762800
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Attack_3
+      name: Skeleton React_3
       rect:
         serializedVersion: 2
-        x: 360
+        x: 65
         y: 0
-        width: 120
-        height: 80
+        width: 23
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,8 +190,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5a4c366d9ee453a0800000000000000
-      internalID: -6677449987691099553
+      spriteID: a1e8f2b3333101600800000000000000
+      internalID: 436870274612170266
       vertices: []
       indices: 
       edges: []
@@ -213,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: a4a74c3fdd936bd4fb7961395e0a2e10
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      _Attack_0: 3117775995601270193
-      _Attack_1: 8139804621348180182
-      _Attack_2: -3573696086554577925
-      _Attack_3: -6677449987691099553
+      Skeleton React_0: -1515603127067585740
+      Skeleton React_1: -974260186754260340
+      Skeleton React_2: 6619721271862762800
+      Skeleton React_3: 436870274612170266
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

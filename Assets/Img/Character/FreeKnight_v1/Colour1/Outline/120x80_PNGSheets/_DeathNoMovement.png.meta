@@ -78,7 +78,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -143,10 +143,10 @@ TextureImporter:
       name: _DeathNoMovement_0
       rect:
         serializedVersion: 2
-        x: 35
+        x: 0
         y: 0
-        width: 32
-        height: 40
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,10 +165,10 @@ TextureImporter:
       name: _DeathNoMovement_1
       rect:
         serializedVersion: 2
-        x: 155
-        y: 1
-        width: 31
-        height: 40
+        x: 120
+        y: 0
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,10 +187,10 @@ TextureImporter:
       name: _DeathNoMovement_2
       rect:
         serializedVersion: 2
-        x: 276
-        y: 5
-        width: 34
-        height: 27
+        x: 240
+        y: 0
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -209,10 +209,10 @@ TextureImporter:
       name: _DeathNoMovement_3
       rect:
         serializedVersion: 2
-        x: 393
-        y: 6
-        width: 37
-        height: 25
+        x: 360
+        y: 0
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,10 +231,10 @@ TextureImporter:
       name: _DeathNoMovement_4
       rect:
         serializedVersion: 2
-        x: 509
+        x: 480
         y: 0
-        width: 40
-        height: 26
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -253,10 +253,10 @@ TextureImporter:
       name: _DeathNoMovement_5
       rect:
         serializedVersion: 2
-        x: 629
+        x: 600
         y: 0
-        width: 39
-        height: 23
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -275,10 +275,10 @@ TextureImporter:
       name: _DeathNoMovement_6
       rect:
         serializedVersion: 2
-        x: 749
+        x: 720
         y: 0
-        width: 39
-        height: 23
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -297,10 +297,10 @@ TextureImporter:
       name: _DeathNoMovement_7
       rect:
         serializedVersion: 2
-        x: 869
+        x: 840
         y: 0
-        width: 41
-        height: 18
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -319,10 +319,10 @@ TextureImporter:
       name: _DeathNoMovement_8
       rect:
         serializedVersion: 2
-        x: 989
+        x: 960
         y: 0
-        width: 43
-        height: 14
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -341,10 +341,10 @@ TextureImporter:
       name: _DeathNoMovement_9
       rect:
         serializedVersion: 2
-        x: 1109
+        x: 1080
         y: 0
-        width: 44
-        height: 14
+        width: 120
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -363,7 +363,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 3da96edc48719c84a82b40ac6f4c51a3
     internalID: 0
     vertices: []
     indices: 

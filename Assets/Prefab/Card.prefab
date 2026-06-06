@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5476697303690878182}
-  - component: {fileID: 6602802845022230577}
   - component: {fileID: 1630401073752495549}
   - component: {fileID: 4570017527843577334}
   m_Layer: 0
@@ -38,14 +37,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.33, y: 1.2}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &6602802845022230577
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 936977420678814056}
-  m_CullTransparentMesh: 1
 --- !u!23 &1630401073752495549
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -195,7 +186,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 529329475241085423}
-  - component: {fileID: 8607446331977403770}
   - component: {fileID: 8334455808997043213}
   - component: {fileID: 7690454730398892196}
   m_Layer: 0
@@ -224,14 +214,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.555, y: 1.3}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &8607446331977403770
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116935243102412156}
-  m_CullTransparentMesh: 1
 --- !u!23 &8334455808997043213
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -381,7 +363,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3569701276604855454}
-  - component: {fileID: 4719208650424344359}
   - component: {fileID: 7823372081924772469}
   - component: {fileID: 7959831447255972389}
   m_Layer: 0
@@ -410,14 +391,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.34, y: -1.25}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4719208650424344359
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2162260392984502815}
-  m_CullTransparentMesh: 1
 --- !u!23 &7823372081924772469
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -663,6 +636,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869d33d5732a2fa449a79e38caaaded4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skill:
+    index: 0
+    name: 
+    type: 0
+    isTargeting: 0
+    cost: 0
+    upgradeCost: 0
+    skillValue: 
+    upgradeValue: 
+    skill_desc: 
 --- !u!61 &7534315677466577564
 BoxCollider2D:
   m_ObjectHideFlags: 0

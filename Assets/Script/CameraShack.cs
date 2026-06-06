@@ -1,18 +1,22 @@
-using System.Collections;
-using UnityEditor.Rendering.LookDev;
+﻿using System.Collections;
 using UnityEngine;
 
 public class CameraShack : MonoBehaviour
 {
-
-    [Header("��鸲 ����")]
+    [Header("Shake Settings")]
+    // 흔들릴 메인 카메라입니다. 비워두면 Camera.main을 사용합니다.
     [SerializeField] Camera mainCamera;
+    // 흔들림이 지속되는 시간입니다.
     [SerializeField] float shakeDuration = 0.3f;
+    // 흔들림 강도입니다.
     [SerializeField] float shakeMagnitude = 0.15f;
 
-    [Header("�ǰ� �̹��� ����")]
-    [SerializeField] GameObject hitImage;         // ĵ���� �̹��� ����
-    [SerializeField] float blinkInterval = 0.1f;  // �����̴� �ӵ�
+    [Header("Hit Image Settings")]
+    // 플레이어가 맞았을 때 잠깐 켜질 피격 이미지입니다.
+    [SerializeField] GameObject hitImage;
+    // 피격 이미지가 깜빡이는 간격입니다.
+    [SerializeField] float blinkInterval = 0.1f;
+    // 피격 이미지 깜빡임 횟수입니다.
     [SerializeField] int blinkCount = 3;
 
     private Vector3 originalCamPos;
@@ -24,28 +28,35 @@ public class CameraShack : MonoBehaviour
         if (mainCamera == null)
             mainCamera = Camera.main;
 
-        originalCamPos = mainCamera.transform.localPosition;
+        if (mainCamera != null)
+            originalCamPos = mainCamera.transform.localPosition;
 
         if (hitImage != null)
             hitImage.SetActive(false);
-
-    }
-    void Update()
-    {
-        // �����̽��� ������ ��鸲 ����
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PlayHitEffect();
-        }
     }
 
     public void PlayHitEffect()
     {
-        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
-        if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
+        // 플레이어 피격용: 카메라 흔들림 + 피격 이미지 깜빡임을 같이 실행합니다.
+        PlayCameraShake();
+
+        if (blinkCoroutine != null)
+            StopCoroutine(blinkCoroutine);
+
+        if (hitImage != null)
+            blinkCoroutine = StartCoroutine(Blink());
+    }
+
+    public void PlayCameraShake()
+    {
+        // 적 피격용: 화면 이미지는 켜지지 않고 카메라만 흔들립니다.
+        if (mainCamera == null)
+            return;
+
+        if (shakeCoroutine != null)
+            StopCoroutine(shakeCoroutine);
 
         shakeCoroutine = StartCoroutine(Shake());
-        blinkCoroutine = StartCoroutine(Blink());
     }
 
     IEnumerator Shake()
@@ -69,6 +80,7 @@ public class CameraShack : MonoBehaviour
 
         mainCamera.transform.localPosition = originalCamPos;
     }
+
     IEnumerator Blink()
     {
         for (int i = 0; i < blinkCount; i++)

@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class Card : PoolableObject
 {
@@ -16,57 +14,51 @@ public class Card : PoolableObject
     {
         battleManager = BattleManager.Instance;
         player = Player.Instance;
-        //돌아올 위치 임시 초기화
         originalPosition = transform.position;
     }
 
-    // 클릭 시
     private void OnMouseDown()
     {
         isCardHeld = true;
-
         dragOffset = transform.position - GetMouseWorldPosition();
     }
 
-    // 드래그
     private void OnMouseDrag()
     {
-        if (!isCardHeld) return;
+        if (!isCardHeld)
+            return;
 
         transform.position = GetMouseWorldPosition() + dragOffset;
     }
 
-    // 뗐을때
     private void OnMouseUp()
     {
         isCardHeld = false;
 
+        if (skill == null)
+        {
+            ReturnToHand();
+            return;
+        }
+
         if (skill.isTargeting)
         {
-            // 단일 타겟 카드: 마우스를 놓은 곳에 적이 있는지 검사
+            // 타겟팅 카드면 마우스 위치 아래의 Enemy 태그 오브젝트를 찾습니다.
             Entity foundTarget = FindEnemyAtMousePosition();
 
             if (foundTarget != null)
-            {
                 TriggerCard(foundTarget);
-            }
             else
-            {
-                Debug.Log("타겟팅 실패");
                 ReturnToHand();
-            }
         }
         else
         {
+            // 타겟이 없는 카드는 화면 중앙 영역에 놓았을 때 사용됩니다.
             float normalizedY = Input.mousePosition.y / Screen.height;
             if (normalizedY >= 0.33f && normalizedY <= 0.66f)
-            {
                 TriggerCard(null);
-            }
             else
-            {
                 ReturnToHand();
-            }
         }
     }
 
@@ -74,37 +66,69 @@ public class Card : PoolableObject
     {
         Vector2 mouseWorldPosition = GetMouseWorldPosition();
         Collider2D[] hitCollider = Physics2D.OverlapPointAll(mouseWorldPosition);
-        Debug.Log(mouseWorldPosition);
+
         foreach (var hit in hitCollider)
         {
             if (hit.CompareTag("Enemy"))
-            {
-                Entity enemyEntity = hit.GetComponent<Entity>();
-                return enemyEntity;
-            }
+                return hit.GetComponent<Entity>();
         }
+
         return null;
     }
 
     private Vector3 GetMouseWorldPosition()
     {
         Vector3 mouseScreenPosition = Input.mousePosition;
-
         mouseScreenPosition.z = Camera.main.nearClipPlane;
-
         return Camera.main.ScreenToWorldPoint(mouseScreenPosition);
     }
 
     private void TriggerCard(Entity target)
     {
-        //임시로 돌아오게 만든것 / 사용시 발동되는 로직이니 나중에 사용카드 목록으로 바꿔야함
+        // 카드 효과를 적용한 뒤 원래 손패 위치로 되돌립니다.
+        UseCard(target);
         ReturnToHand();
     }
 
-    public void UseCard()
+    public bool UseCard(Entity target)
     {
-        if (player.energy < skill.cost) return;
+        if (skill == null || player == null)
+            return false;
 
+        if (battleManager != null && !battleManager.isPlayerTurn)
+            return false;
+
+        if (player.energy < skill.cost)
+            return false;
+
+        player.energy -= skill.cost;
+
+        // 별도 SkillScript가 있으면 그 스크립트를 우선 실행합니다.
+        if (skill.effect != null)
+            skill.effect.Setting(player, target);
+        else
+            ApplyDefaultSkill(target);
+
+        return true;
+    }
+
+    private void ApplyDefaultSkill(Entity target)
+    {
+        // CSV의 value 첫 번째 값을 기본 공격/방어 수치로 사용합니다.
+        int value = skill.skillValue != null && skill.skillValue.Length > 0 ? skill.skillValue[0] : 0;
+
+        switch (skill.type)
+        {
+            case SkillType.Attack:
+                // 공격 카드는 타겟 Entity의 Damage를 호출합니다.
+                if (target != null)
+                    target.Damage(value);
+                break;
+            case SkillType.Skill:
+                // 스킬 카드는 임시 기본 동작으로 플레이어에게 방어도를 줍니다.
+                player.AddBlock(value);
+                break;
+        }
     }
 
     private void ReturnToHand()
@@ -114,12 +138,12 @@ public class Card : PoolableObject
 
     private void OnDrawGizmos()
     {
-        if (!Application.isPlaying || !isCardHeld) return;
+        if (!Application.isPlaying || !isCardHeld || skill == null)
+            return;
 
         if (skill.isTargeting)
         {
             Gizmos.DrawWireSphere(GetMouseWorldPosition(), 0.3f);
-
             Gizmos.DrawSphere(GetMouseWorldPosition(), 0.05f);
         }
     }

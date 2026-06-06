@@ -21,6 +21,14 @@ public class BattleManager : MonoBehaviour
     public List<Card> useDeck;
     public List<Card> Deck;
 
+    [Header("Effect References")]
+    [SerializeField] private CameraShack cameraShack;
+    [SerializeField] private soundManager soundManager;
+    [SerializeField] private DamagePopupSpawner damagePopupSpawner;
+    [SerializeField] private AudioClip playerAttackSfx;
+    [SerializeField] private AudioClip playerHitSfx;
+    [SerializeField] private float damagePopupYOffset = 2f;
+
     public bool isPlayerTurn;
     Player player;
 
@@ -37,6 +45,24 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         player = Player.Instance;
+        if (player == null)
+        {
+            Debug.LogError("BattleManager: Player.Instance가 null입니다. Player 오브젝트가 씬에 없거나 Awake가 호출되지 않았습니다.");
+        }
+
+        if (cameraShack == null)
+        {
+            Debug.LogWarning("BattleManager: CameraShack 참조가 할당되지 않았습니다.");
+        }
+        if (soundManager == null)
+        {
+            Debug.LogWarning("BattleManager: SoundManager 참조가 할당되지 않았습니다.");
+        }
+        if (damagePopupSpawner == null)
+        {
+            Debug.LogWarning("BattleManager: DamagePopupSpawner 참조가 할당되지 않았습니다.");
+        }
+
         InitializeBattle();
     }
 
@@ -99,10 +125,77 @@ public class BattleManager : MonoBehaviour
     private void EnemyTurn()
     {
         Debug.Log("적 행동 실행");
+
+        if (enemyList == null || enemyList.Count == 0)
+        {
+            Debug.LogWarning("BattleManager: enemyList가 비어있습니다. 적 턴을 건너뜁니다.");
+            ChangeBattleState(BattleState.PlayerTurnStart);
+            return;
+        }
+
+        if (player == null)
+        {
+            Debug.LogError("BattleManager: player가 null입니다. 적 턴을 실행할 수 없습니다.");
+            return;
+        }
+
         foreach (var enemy in enemyList)
         {
-            enemy.ExecuteEnemyTurn(player);
+            if (enemy == null)
+            {
+                Debug.LogWarning("BattleManager: enemyList에 null 항목이 포함되어 있습니다.");
+                continue;
+            }
+
+            int damageDone = enemy.ExecuteEnemyTurn(player);
+            if (damageDone > 0)
+            {
+                SpawnDamageOnTarget(player.transform.position, damageDone, true);
+            }
         }
+
         ChangeBattleState(BattleState.PlayerTurnStart);
+    }
+
+    public void PlayerAttackEnemy(EnemyEntity enemy, int damageAmount)
+    {
+        if (enemy == null)
+        {
+            Debug.LogWarning("BattleManager: 공격 대상 Enemy가 없습니다.");
+            return;
+        }
+
+        int damageDone = enemy.Damage(damageAmount);
+        if (damageDone > 0)
+        {
+            SpawnDamageOnTarget(enemy.transform.position, damageDone, false);
+        }
+
+        cameraShack?.PlayAttackShake();
+        if (soundManager != null && playerAttackSfx != null)
+        {
+            soundManager.PlaySFX(playerAttackSfx);
+        }
+
+        Debug.Log($"플레이어가 {enemy.name}에게 {damageDone} 데미지 입힘.");
+    }
+
+    private void SpawnDamageOnTarget(Vector3 worldPosition, int damage, bool isPlayerHit)
+    {
+        if (damage <= 0) return;
+
+        if (damagePopupSpawner != null)
+        {
+            damagePopupSpawner.SpawnDamageText(worldPosition + Vector3.up * damagePopupYOffset, damage);
+        }
+
+        if (isPlayerHit)
+        {
+            cameraShack?.PlayHitEffect();
+            if (soundManager != null && playerHitSfx != null)
+            {
+                soundManager.PlaySFX(playerHitSfx);
+            }
+        }
     }
 }

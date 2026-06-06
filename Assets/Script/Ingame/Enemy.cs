@@ -29,13 +29,15 @@ public class EnemyEntity : Entity
     }
 
     // 적의 턴이 돌아왔을 때 행동 실행
-    public void ExecuteEnemyTurn(Entity playerTarget)
+    public int ExecuteEnemyTurn(Entity playerTarget)
     {
         Debug.Log($"[{curEnemyData.enemyName}] 행동 실행: {curAction.actionName}");
 
-        if (curAction.attackDamage > 0)
+        int damageDone = 0;
+
+        if (curAction.attackDamage > 0 && playerTarget != null)
         {
-            playerTarget.Damage(curAction.attackDamage);
+            damageDone = playerTarget.Damage(curAction.attackDamage);
         }
 
         if (curAction.blockAmount > 0)
@@ -45,5 +47,7 @@ public class EnemyEntity : Entity
 
         // 행동이 끝났으므로 다음 턴의 의도를 새로 결정
         DecideNextIntent();
+
+        return damageDone;
     }
 }

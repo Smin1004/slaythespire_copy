@@ -12,6 +12,9 @@ public abstract class Entity : MonoBehaviour
     public event Action<int, int> OnHealthChanged;
     public event Action<int> OnBlockChanged;
 
+    public int CurrentHp => curHp;
+    public int MaxHp => maxHp;
+
     // 초기화
     public virtual void InitializeEntity(int startingHealth)
     {
@@ -21,20 +24,29 @@ public abstract class Entity : MonoBehaviour
     }
 
     // 데미지 처리
-    public virtual void Damage(int damageAmount)
+    public virtual int Damage(int damageAmount)
     {
+        if (damageAmount <= 0) return 0;
+
+        int hpBefore = curHp;
+
         if (curBlock > 0)
         {
             int remainingDamage = damageAmount - curBlock;
             curBlock = Mathf.Max(0, curBlock - damageAmount);
             OnBlockChanged?.Invoke(curBlock);
 
-            if (remainingDamage <= 0) return;
+            if (remainingDamage <= 0)
+            {
+                return 0;
+            }
             damageAmount = remainingDamage;
         }
 
         curHp = Mathf.Max(0, curHp - damageAmount);
         OnHealthChanged?.Invoke(curHp, maxHp);
+
+        return hpBefore - curHp;
     }
 
     // 방어도 추가

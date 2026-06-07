@@ -10,6 +10,11 @@ public abstract class PoolableObject : MonoBehaviour
         myPrefab = prefab;
     }
 
+    public void ReturnToPoolAfterTime(float time)
+    {
+        Invoke("ReturnToPool", time);
+    }
+
     public void ReturnToPool()
     {
         ObjectPoolManager.Instance.Despawn(this.gameObject, myPrefab);

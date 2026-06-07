@@ -296,12 +296,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 121155880}
-        m_TargetAssemblyTypeName: Volume
-        m_MethodName: 
+        m_TargetAssemblyTypeName: Volume, Assembly-CSharp
+        m_MethodName: BGMSoundVoume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -382,17 +382,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143822286}
   m_CullTransparentMesh: 1
---- !u!114 &153372319 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1696643776223505839, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
-  m_PrefabInstance: {fileID: 382700128}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 869d33d5732a2fa449a79e38caaaded4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &177546100
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +609,7 @@ MonoBehaviour:
   drawPile: []
   handPile: []
   discardPile: []
-  cardObj: {fileID: 153372319}
+  cardObj: {fileID: 922219682}
   testPos: {fileID: 832077907}
   handCenterPoint: {fileID: 307804411}
   defaultCardSpacing: 2
@@ -741,7 +730,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!1001 &382700128
+--- !u!1001 &430797372
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -755,7 +744,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6391110906683586270, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.03
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6391110906683586270, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2106,6 +2095,17 @@ Transform:
   - {fileID: 190563155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &922219682 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1696643776223505839, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
+  m_PrefabInstance: {fileID: 430797372}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869d33d5732a2fa449a79e38caaaded4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &927771195
 GameObject:
   m_ObjectHideFlags: 0
@@ -5297,12 +5297,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1866094417}
-        m_TargetAssemblyTypeName: Volume
-        m_MethodName: 
+        m_TargetAssemblyTypeName: Volume, Assembly-CSharp
+        m_MethodName: SFXSoundVoume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5912,7 +5912,7 @@ SceneRoots:
   - {fileID: 2004899694}
   - {fileID: 2000315210}
   - {fileID: 1204314757}
-  - {fileID: 382700128}
+  - {fileID: 430797372}
   - {fileID: 535344578}
   - {fileID: 895912344}
   - {fileID: 918749784}

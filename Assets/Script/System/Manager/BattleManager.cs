@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
@@ -115,7 +116,8 @@ public class BattleManager : MonoBehaviour
                 WaitForPlayerInput();
                 break;
             case BattleState.EnemyTurn:
-                EnemyTurn();
+                //EnemyTurn();
+                StartCoroutine(EnemyTurnCorutin());
                 break;
         }
     }
@@ -153,6 +155,7 @@ public class BattleManager : MonoBehaviour
     {
         if (curBattleState != BattleState.PlayerAction) return;
         Debug.Log("플레이어 턴 종료");
+        DeckManager.Instance.DiscardCard();
         isPlayerTurn = false;
         ChangeBattleState(BattleState.EnemyTurn);
     }
@@ -164,6 +167,17 @@ public class BattleManager : MonoBehaviour
         {
             enemy.ExecuteEnemyTurn(player);
         }
+        ChangeBattleState(BattleState.PlayerTurnStart);
+    }
+
+    IEnumerator EnemyTurnCorutin()
+    {
+        Debug.Log("적 행동 실행");
+        foreach (var enemy in enemyList)
+        {
+            enemy.ExecuteEnemyTurn(player);
+        }
+        yield return new WaitForSeconds(2);
         ChangeBattleState(BattleState.PlayerTurnStart);
     }
 }

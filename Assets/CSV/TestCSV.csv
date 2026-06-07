@@ -1,5 +1,5 @@
-id,name,type,cost,cost+,script,desc,value,value+,targeting
-1,testAttack,Attack,1,1,,{0} ¸¸Å­ °ø°İ,6,9,TRUE
-2,testSkill,Skill,2,2,,{0} ¸¸Å­ ¼öºñ,5,8,FALSE
-3,testPower,Power,3,2,,{0} ¸¸Å­ ÈûÀ» ¾òÀ½,2,3,FALSE
-4,testPlusAttack,Attack,1,2,,{0} ¸¸Å­ {1}¹ø °ø°İ,3!3,3!4,FALSE
+ï»¿id,name,type,cost,cost+,script,desc,value,value+,targeting
+1,testAttack,Attack,1,1,,{0} ë§Œí¼ ê³µê²©,6,9,TRUE
+2,testSkill,Skill,2,2,,{0} ë§Œí¼ ìˆ˜ë¹„,5,8,FALSE
+3,testPower,Power,3,2,,{0} ë§Œí¼ í˜ì„ ì–»ìŒ,2,3,FALSE
+4,testPlusAttack,Attack,1,2,,{0} ë§Œí¼ {1}ë²ˆ ê³µê²©,3!3,3!4,FALSE

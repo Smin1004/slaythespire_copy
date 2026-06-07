@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class Card : PoolableObject
 {
@@ -7,17 +8,26 @@ public class Card : PoolableObject
     private BattleManager battleManager;
     private Vector3 dragOffset;
     private Player player;
+    private bool isCardHeld = false;
     
-    [SerializeField] private Vector3 targetPosition;
-    [SerializeField] private Quaternion targetRotation;
-    [SerializeField] private bool isCardHeld = false;
-
+    public TextMeshPro descText;
+    public TextMeshPro costText;
+    public TextMeshPro nameText;
+    public SpriteRenderer img;
     public Skill skill;
 
-    private void Start()
+    public Vector3 targetPosition;
+    public Quaternion targetRotation;
+    
+    public void Init(Skill _skill)
     {
         battleManager = BattleManager.Instance;
         player = Player.Instance;
+
+        skill = _skill;
+        descText.text = skill.skill_desc;
+        costText.text = skill.cost.ToString();
+        nameText.text = skill.name;
     }
     
     public void SetTargetTransform(Vector3 newPosition, Quaternion newRotation)

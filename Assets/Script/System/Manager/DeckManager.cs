@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 
 public class DeckManager : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class DeckManager : MonoBehaviour
         OnDraw?.Invoke(drawPile.Count);
     }
 
-    // 2. 카드 뽑기 로직 (BattleManager가 호출함)
+    //드로우
     public void DrawCards(int amount)
     {
         for (int i = 0; i < amount; i++)
@@ -52,25 +53,36 @@ public class DeckManager : MonoBehaviour
 
             // 가장 위(또는 랜덤) 카드 뽑기
             Card drawnCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, testPos.position, testPos.rotation).GetComponent<Card>();
-            drawnCard.skill = drawPile[0];
+            drawnCard.Init(drawPile[0]);
             drawPile.RemoveAt(0);
             handPile.Add(drawnCard);
             ArrangeHandCards(handPile);
-            Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
         }
         OnDraw?.Invoke(drawPile.Count);
     }
 
-    // 3. 버림패를 다시 섞어 넣는 로직
+    //패섞기
     private void ReshuffleDiscardIntoDraw()
     {
-        Debug.Log("[Deck] 덱이 비어 버림패를 섞습니다.");
+        Debug.Log("패섞기");
         drawPile.AddRange(discardPile);
         discardPile.Clear();
         ShuffleDeck(drawPile);
 
         OnDraw?.Invoke(drawPile.Count);
         OnRefill?.Invoke(discardPile.Count);
+    }
+
+    public void DiscardCard()
+    {
+        for (int i = 0; i < handPile.Count; i++)
+        {
+            Card temp = handPile[i];
+            temp.SetTargetTransform(temp.targetPosition + new Vector3(15, 0), new Quaternion(0,0,0,0));
+            temp.ReturnToPoolAfterTime(1f);
+            discardPile.Add(temp.skill);
+        }
+        handPile.Clear();
     }
 
     // 리스트 셔플 (Fisher-Yates 알고리즘 등 사용)
@@ -117,7 +129,6 @@ public class DeckManager : MonoBehaviour
 
             // 5. 각 카드에게 새로운 목표 하달
             cardsInHand[i].SetTargetTransform(calculatedTargetPos, calculatedTargetRot);
-            Debug.Log($"{calculatedTargetPos} / {calculatedTargetRot}");
         }
     }
 }

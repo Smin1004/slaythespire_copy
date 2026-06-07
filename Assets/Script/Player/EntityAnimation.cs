@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerAnimation : MonoBehaviour
+public class EntityAnimation : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
 
@@ -14,15 +14,30 @@ public class PlayerAnimation : MonoBehaviour
     private void OnEnable()
     {
         _entity.OnDamaged += PlayHitAnimation;
+        _entity.OnDead += PlayDeathAnimation;
+        _entity.OnRevived += PlayRevive;
     }
 
     private void OnDisable()
     {
         _entity.OnDamaged -= PlayHitAnimation;
+        _entity.OnDead -= PlayDeathAnimation;
+        _entity.OnRevived -= PlayRevive;
     }
 
     private void PlayHitAnimation(int damage)
     {
         _animator.SetTrigger("Hit");
     }
+
+    private void PlayDeathAnimation()
+    {
+       _animator.SetBool("IsDead", true);
+    }
+
+    private void PlayRevive()
+    {
+        _animator.SetBool("IsDead", false);
+    }
+
 }

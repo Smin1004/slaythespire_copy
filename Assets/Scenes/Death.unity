@@ -362,6 +362,7 @@ MonoBehaviour:
   _canvas: {fileID: 0}
   _setting: {fileID: 0}
   _exitbutton: {fileID: 0}
+  _hideWhenOpen: []
 --- !u!4 &271484629
 Transform:
   m_ObjectHideFlags: 0
@@ -544,7 +545,7 @@ GameObject:
   - component: {fileID: 1274876152}
   - component: {fileID: 1274876151}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Dead_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -785,7 +786,7 @@ GameObject:
   - component: {fileID: 1668180890}
   - component: {fileID: 1668180889}
   m_Layer: 5
-  m_Name: BackGround_Img
+  m_Name: Dead_img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

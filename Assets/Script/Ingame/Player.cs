@@ -13,6 +13,11 @@ public class Player : Entity
 
     void Awake()
     {
+        
+    }
+
+    public void InitAwake()
+    {
         if (_instance == null)
         {
             _instance = this;

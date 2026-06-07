@@ -39,14 +39,14 @@ public class DataManager : MonoBehaviour
 
     public LoadData loadData;
 
-    private void Awake()
+    public void InitAwake()
     {
         if (_instance != null) Destroy(gameObject);
         else _instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
+    public void InitStart()
     {
         Player.Instance.masterDeck = loadData.SkillList;
     }

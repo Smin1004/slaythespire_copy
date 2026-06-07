@@ -2,11 +2,15 @@
 
 public class Card : PoolableObject
 {
+    [SerializeField] private float moveSpeed = 10f; // 스르륵 이동하는 속도
+
     private BattleManager battleManager;
-    private Vector3 originalPosition;
     private Vector3 dragOffset;
     private Player player;
-    private bool isCardHeld = false;
+    
+    [SerializeField] private Vector3 targetPosition;
+    [SerializeField] private Quaternion targetRotation;
+    [SerializeField] private bool isCardHeld = false;
 
     public Skill skill;
 
@@ -14,7 +18,22 @@ public class Card : PoolableObject
     {
         battleManager = BattleManager.Instance;
         player = Player.Instance;
-        originalPosition = transform.position;
+    }
+    
+    public void SetTargetTransform(Vector3 newPosition, Quaternion newRotation)
+    {
+        targetPosition = newPosition;
+        targetRotation = newRotation;
+    }
+
+    private void Update()
+    {
+        // 마우스로 잡고 있지 않을 때만 목표를 향해 부드럽게 이동 (Target Chasing)
+        if (!isCardHeld)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
+        }
     }
 
     private void OnMouseDown()
@@ -86,6 +105,7 @@ public class Card : PoolableObject
     private void TriggerCard(Entity target)
     {
         // 카드 효과를 적용한 뒤 원래 손패 위치로 되돌립니다.
+        Debug.Log("사용");
         UseCard(target);
         ReturnToHand();
     }
@@ -133,7 +153,7 @@ public class Card : PoolableObject
 
     private void ReturnToHand()
     {
-        transform.position = originalPosition;
+       Debug.Log("복귀");
     }
 
     private void OnDrawGizmos()

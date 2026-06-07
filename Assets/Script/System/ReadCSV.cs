@@ -10,16 +10,16 @@ public class ReadCSV : MonoBehaviour
     [SerializeField] private TextAsset skill;
     List<Skill> skillLists = new List<Skill>();
 
-    private void Awake()
+    public void InitAwake()
     {
         if (_instance != null) Destroy(gameObject);
         else _instance = this;
         DontDestroyOnLoad(gameObject);
-        LoadData(skill.text, ParseSkillData);
     }
-    void Start()
+
+    public void InitStart()
     {
-        
+        Load();
     }
 
     public void Load(Action callBack = default)

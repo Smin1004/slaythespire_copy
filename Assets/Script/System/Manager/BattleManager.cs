@@ -20,21 +20,17 @@ public class BattleManager : MonoBehaviour
     public bool isPlayerTurn;
     Player player;
 
-    public void _Instance()
+    public void InitAwake()
     {
         _instance = this;
     }
 
-    void Awake()
-    {
-        _Instance();
-    }
-
-    private void Start()
+    public void InitStart()
     {
         player = Player.Instance;
         InitializeBattle();
     }
+
 
     private void ChangeBattleState(BattleState newState)
     {

@@ -651,6 +651,8 @@ MonoBehaviour:
     skillValue: 
     upgradeValue: 
     skill_desc: 
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!61 &7534315677466577564
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -695,7 +697,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2.8}
   m_EdgeRadius: 0
 --- !u!1 &8698142939199080328
 GameObject:

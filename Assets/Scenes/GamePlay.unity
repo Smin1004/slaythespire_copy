@@ -155,7 +155,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
-  m_PrefabInstance: {fileID: 0}
 --- !u!1 &34431662
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +382,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143822286}
   m_CullTransparentMesh: 1
+--- !u!114 &153372319 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1696643776223505839, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
+  m_PrefabInstance: {fileID: 382700128}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869d33d5732a2fa449a79e38caaaded4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &177546100
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,7 +620,7 @@ MonoBehaviour:
   drawPile: []
   handPile: []
   discardPile: []
-  cardObj: {fileID: 1696643776223505839, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
+  cardObj: {fileID: 153372319}
   testPos: {fileID: 832077907}
   handCenterPoint: {fileID: 307804411}
   defaultCardSpacing: 2
@@ -3510,7 +3520,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d3f448419c5b349b60328c00688025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cards: {fileID: 0}
   _endbutton: {fileID: 1421347480}
 --- !u!114 &1204314763
 MonoBehaviour:
@@ -4955,9 +4964,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  targetPosition: {x: 0, y: 0, z: 0}
-  targetRotation: {x: 0, y: 0, z: 0, w: 0}
-  isCardHeld: 0
+  descText: {fileID: 0}
+  costText: {fileID: 0}
+  nameText: {fileID: 0}
+  img: {fileID: 0}
   skill:
     index: 0
     name: 
@@ -4968,6 +4978,8 @@ MonoBehaviour:
     skillValue: 
     upgradeValue: 
     skill_desc: 
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1810624110
 GameObject:
   m_ObjectHideFlags: 0
@@ -5845,7 +5857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84780fca5c2820e41a6709030b51f1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skill: {fileID: 4900000, guid: fb535b5fa0f51084bba8dfeaef84e5a6, type: 3}
+  skill: {fileID: 4900000, guid: cec3080a6c9a1ac48a374b9203708d29, type: 3}
 --- !u!4 &2004899694
 Transform:
   m_ObjectHideFlags: 0

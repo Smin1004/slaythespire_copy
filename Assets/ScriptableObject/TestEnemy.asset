@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Test
   baseMaxHealth: 10
   actionList:
-  - actionName: 11111111111111
+  - actionName: gkhgjhgj
     attackDamage: 10
     blockAmount: 12
   - actionName: 222222222222

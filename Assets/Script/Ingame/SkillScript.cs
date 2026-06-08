@@ -9,6 +9,8 @@ public class testAttack : SkillScript
 {
     public override void Trigger(Entity unit, Entity[] target, int[] value)
     {
+        unit.Attack();  //애니메이션
+
         target[0].Damage(value[0]);
     }
 }
@@ -17,6 +19,8 @@ public class testPlusAttack : SkillScript
 {
     public override void Trigger(Entity unit, Entity[] target, int[] value)
     {
+        unit.Attack();  //애니메이션 구현
+
         for (int i = 0; i < value[1]; i++)
         {
             int random = Random.Range(0, target.Length);

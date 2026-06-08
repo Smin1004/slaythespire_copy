@@ -8,7 +8,11 @@ public class EntityAnimation : MonoBehaviour
 
     private void Awake()
     {
-        _entity = GetComponent<Entity>();
+        if (_entity == null)
+            _entity = GetComponent<Entity>();
+
+        if (_animator == null)
+            _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -16,6 +20,7 @@ public class EntityAnimation : MonoBehaviour
         _entity.OnDamaged += PlayHitAnimation;
         _entity.OnDead += PlayDeathAnimation;
         _entity.OnRevived += PlayRevive;
+        _entity.OnAttack += PlayAttack;
     }
 
     private void OnDisable()
@@ -23,6 +28,7 @@ public class EntityAnimation : MonoBehaviour
         _entity.OnDamaged -= PlayHitAnimation;
         _entity.OnDead -= PlayDeathAnimation;
         _entity.OnRevived -= PlayRevive;
+        _entity.OnAttack -= PlayAttack;
     }
 
     private void PlayHitAnimation(int damage)
@@ -38,6 +44,11 @@ public class EntityAnimation : MonoBehaviour
     private void PlayRevive()
     {
         _animator.SetBool("IsDead", false);
+    }
+
+    private void PlayAttack()
+    {
+        _animator.SetTrigger("Attack");
     }
 
 }

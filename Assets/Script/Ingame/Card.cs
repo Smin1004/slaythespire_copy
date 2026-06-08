@@ -74,8 +74,9 @@ public class Card : PoolableObject
         {
             // 타겟팅 카드면 마우스 위치 아래의 Enemy 태그 오브젝트를 찾습니다.
             Entity foundTarget = FindEnemyAtMousePosition();
+            Debug.Log(foundTarget == null);
 
-            if (foundTarget != null)
+                if (foundTarget != null)
                 TriggerCard(foundTarget);
             else
                 ReturnToHand();
@@ -98,8 +99,12 @@ public class Card : PoolableObject
 
         foreach (var hit in hitCollider)
         {
+            Debug.Log(hit.tag);
             if (hit.CompareTag("Enemy"))
-                return hit.GetComponent<Entity>();
+            {
+                return hit.GetComponentInParent<Entity>();
+            }
+                
         }
 
         return null;

@@ -7,6 +7,7 @@ public class TimingController : MonoBehaviour
     [SerializeField] DataManager dataManager;
     [SerializeField] DeckManager deckManager;
     [SerializeField] BattleManager battleManager;
+    [SerializeField] RewardManager rewardManager;
 
     void Awake()
     {
@@ -15,6 +16,7 @@ public class TimingController : MonoBehaviour
         deckManager.InitAwake();
         battleManager.InitAwake();
         player.InitAwake();
+        rewardManager.InitAwake();
     }
 
     void Start()

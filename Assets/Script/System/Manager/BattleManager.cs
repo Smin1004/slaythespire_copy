@@ -7,8 +7,10 @@ public enum BattleState
     PlayerTurnStart,
     PlayerDraw,
     PlayerAction,
-    EnemyTurn
+    EnemyTurn,
+    BattleWon
 }
+
 
 public class BattleManager : MonoBehaviour
 {
@@ -113,6 +115,9 @@ public class BattleManager : MonoBehaviour
                 //EnemyTurn();
                 StartCoroutine(EnemyTurnCorutin());
                 break;
+            case BattleState.BattleWon:
+                ProcessBattleVictory();
+                break;
         }
     }
 
@@ -172,6 +177,14 @@ public class BattleManager : MonoBehaviour
             enemy.ExecuteEnemyTurn(_player);
         }
         yield return new WaitForSeconds(2);
-        ChangeBattleState(BattleState.PlayerTurnStart);
+        if(enemyList.Count == 0) ChangeBattleState(BattleState.BattleWon);
+        else ChangeBattleState(BattleState.PlayerTurnStart);
+    }
+
+    private void ProcessBattleVictory()
+    {
+        StopAllCoroutines();
+
+        RewardManager.Instance.GenerateCombatRewards();
     }
 }

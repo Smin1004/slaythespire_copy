@@ -154,7 +154,7 @@ public class BattleManager : MonoBehaviour
     {
         if (curBattleState != BattleState.PlayerAction) return;
         Debug.Log("플레이어 턴 종료");
-        DeckManager.Instance.DiscardCard();
+        DeckManager.Instance.DiscardAllCard();
         isPlayerTurn = false;
         ChangeBattleState(BattleState.EnemyTurn);
     }

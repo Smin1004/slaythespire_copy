@@ -117,7 +117,7 @@ public class Card : PoolableObject
         // 카드 효과를 적용한 뒤 원래 손패 위치로 되돌립니다.
         Debug.Log("사용");
         UseCard(target);
-        ReturnToHand();
+        DeckManager.Instance.DiscardCard(this);
     }
 
     public bool UseCard(Entity target)

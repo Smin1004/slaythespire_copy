@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e403f8cba07dc1478e6b0778ea76db4, type: 3}
+  m_Name: Goblin
+  m_EditorClassIdentifier: 
+  enemyName: Goblin
+  maxHealth: 10
+  reward:
+    minGold: 10
+    maxGold: 20
+    cardRewardPool: []
+  actions:
+  - actionName: Nomal Attack
+    intentType: 0
+    attackDamage: 10
+    blockAmount: 0
+    buffDebuffType: 0
+    effectValue: 0
+    attackCount: 1
+    weight: 1
+    attackAnimationTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  - actionName: Block
+    intentType: 1
+    attackDamage: 0
+    blockAmount: 10
+    buffDebuffType: 0
+    effectValue: 0
+    attackCount: 1
+    weight: 1
+    attackAnimationTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  - actionName: Block
+    intentType: 0
+    attackDamage: 0
+    blockAmount: 20
+    buffDebuffType: 0
+    effectValue: 0
+    attackCount: 1
+    weight: 1
+    attackAnimationTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  spriteLibraryAsset: {fileID: 7108339969198208228, guid: da6ea54a5a171db4aa929d49191c57f5, type: 3}
+  animatorController: {fileID: 9100000, guid: 285eec0105fb187488049ad14a348055, type: 2}
+  attackSound: {fileID: 8300000, guid: 44a76ebcd1ee931428118638b0eed37f, type: 3}
+  blockGainSound: {fileID: 8300000, guid: 004c7428af6623f4ab7bc2c303cbd8ab, type: 3}
+  blockHitSound: {fileID: 8300000, guid: 8966c0423baa7c3439f0dc84853050cc, type: 3}
+  buffSound: {fileID: 0}
+  debuffSound: {fileID: 0}

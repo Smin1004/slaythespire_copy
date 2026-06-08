@@ -11,79 +11,55 @@ public enum BattleState
     BattleWon
 }
 
-
 public class BattleManager : MonoBehaviour
 {
     private static BattleManager _instance = null;
     public static BattleManager Instance => _instance;
 
+    [Header("State")]
     [SerializeField] private BattleState curBattleState;
-    [SerializeField] private Player _player;    //플레이어
-    [SerializeField] private GameObject _gameOverPanel; //게임오버 패널
-    [SerializeField] private GameObject[] _hideWhenOpen;  //옵션창이 열릴 때 숨길 다른 UI 요소들
-    public List<EnemyEntity> enemyList; //임시 public
+    [SerializeField] private Player _player;
+    [SerializeField] private GameObject _gameOverPanel;
+    [SerializeField] private GameObject[] _hideWhenOpen;
+
+    [Header("Enemy Spawn")]
+    // 모든 적이 공유하는 단일 Enemy 프리팹입니다. 적 종류 차이는 EnemyData로만 바꿉니다.
+    [SerializeField] private EnemyEntity enemyPrefab;
+    // 전투 시작 시 이 후보 중 하나를 랜덤 선택해서 Enemy 프리팹에 주입합니다.
+    [SerializeField] private EnemyData[] enemyDatas;
+    // 생성된 적들을 묶어둘 부모 Transform입니다. 비워두면 씬 루트에 생성됩니다.
+    [SerializeField] private Transform enemySpawnParent;
+    // 스폰 포인트 개수만큼 적을 생성합니다. 비어 있으면 BattleManager 위치에 1마리만 생성합니다.
+    [SerializeField] private Transform[] enemySpawnPoints;
+
+    [Header("Battle Feedback")]
+    // 적 피격 시 데미지 숫자를 띄우는 전투 공통 스포너입니다.
+    [SerializeField] private DamageViewSpawner damageSpawner;
+    // Enemy 프리팹이 직접 들지 않고 BattleManager를 통해 호출하는 카메라 흔들림입니다.
+    [SerializeField] private CameraShake cameraShake;
+    // 적별 사운드 클립은 EnemyData에 있고, 실제 재생은 이 매니저가 담당합니다.
+    [SerializeField] private AudioManager audioManager;
+    // 적별 이펙트 프리팹은 EnemyData/EnemyAction에 있고, 실제 생성은 이 매니저가 담당합니다.
+    // 이펙트는 아직 구조를 확정하지 않았으므로 BattleManager 연결도 잠시 사용하지 않습니다.
+    // [SerializeField] private EffectManager effectManager;
+
+    // 전투 중 살아있는 적 목록입니다. 외부에서는 읽기 전용 EnemyList로만 접근합니다.
+    [SerializeField] private List<EnemyEntity> enemyList = new();
+    public IReadOnlyList<EnemyEntity> EnemyList => enemyList;
 
     public bool isPlayerTurn;
-    
-    #region //게임오버패널
-    //--------------------------  게임오버 패널 관련 코드 --------------------------------------
-    /// <summary>
-    /// 게임오버 패널을 활성화하는 함수입니다. 플레이어가 죽었을 때 호출됩니다. 
-    /// </summary>
+
     private void OnEnable()
     {
-        _player.OnDead += ShowGameOver;
+        if (_player != null)
+            _player.OnDead += ShowGameOver;
     }
-    /// <summary>
-    /// 게임오버 패널을 비활성화하는 함수입니다. 플레이어가 죽었을 때 호출됩니다.
-    /// </summary>
+
     private void OnDisable()
     {
-        _player.OnDead -= ShowGameOver;
+        if (_player != null)
+            _player.OnDead -= ShowGameOver;
     }
-    /// <summary>
-    /// 게임오버 패널을 활성화하는 코루틴입니다. 게임오버 패널이 활성화된 후 2초 뒤에 게임오버 패널이 사라집니다.
-    /// </summary>
-    private void ShowGameOver()
-    {
-        StartCoroutine(GameOverRoutine());
-    }
-
-    IEnumerator GameOverRoutine()
-    {
-        yield return new WaitForSeconds(1f);
-
-        _gameOverPanel.SetActive(true);
-        SetHiddenObjects(false);
-    }
-
-    // 게임오버 패널에서 다시 시작 버튼을 눌렀을 때 호출되는 함수입니다. 게임오버 패널을 닫고, 숨겼던 UI를 다시 표시하고, 플레이어를 부활시킵니다.
-    public void RestartGame()
-    {
-        // 게임오버 창 닫기
-        _gameOverPanel.SetActive(false);
-
-        // 숨겼던 UI 다시 표시
-        SetHiddenObjects(true);
-
-        // 플레이어 부활
-        Player.Instance.Revive();
-    }
-
-    // 옵션창이 열릴 때 다른 UI를 숨기는 함수입니다.
-    void SetHiddenObjects(bool active)
-    {
-        if (_hideWhenOpen == null)
-            return;
-
-        foreach (var obj in _hideWhenOpen)
-        {
-            if (obj != null)
-                obj.SetActive(active);
-        }
-    }
-    #endregion
-
 
     public void InitAwake()
     {
@@ -95,6 +71,43 @@ public class BattleManager : MonoBehaviour
         InitializeBattle();
     }
 
+    private void ShowGameOver()
+    {
+        StartCoroutine(GameOverRoutine());
+    }
+
+    private IEnumerator GameOverRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (_gameOverPanel != null)
+            _gameOverPanel.SetActive(true);
+
+        SetHiddenObjects(false);
+    }
+
+    public void RestartGame()
+    {
+        if (_gameOverPanel != null)
+            _gameOverPanel.SetActive(false);
+
+        SetHiddenObjects(true);
+
+        if (Player.Instance != null)
+            Player.Instance.Revive();
+    }
+
+    private void SetHiddenObjects(bool active)
+    {
+        if (_hideWhenOpen == null)
+            return;
+
+        foreach (GameObject obj in _hideWhenOpen)
+        {
+            if (obj != null)
+                obj.SetActive(active);
+        }
+    }
 
     private void ChangeBattleState(BattleState newState)
     {
@@ -112,8 +125,7 @@ public class BattleManager : MonoBehaviour
                 WaitForPlayerInput();
                 break;
             case BattleState.EnemyTurn:
-                //EnemyTurn();
-                StartCoroutine(EnemyTurnCorutin());
+                StartCoroutine(EnemyTurnCoroutine());
                 break;
             case BattleState.BattleWon:
                 ProcessBattleVictory();
@@ -123,68 +135,167 @@ public class BattleManager : MonoBehaviour
 
     private void InitializeBattle()
     {
-        Debug.Log("전투 시작");
-        DeckManager.Instance.InitializeBattleDeck();
+        Debug.Log("Battle start");
+        SpawnEnemies();
+
+        if (DeckManager.Instance != null)
+            DeckManager.Instance.InitializeBattleDeck();
+
         ChangeBattleState(BattleState.PlayerTurnStart);
     }
 
+    private void SpawnEnemies()
+    {
+        // 이전 전투나 씬 직렬화로 남은 적 참조가 있으면 새 스폰 구조에 맞춰 정리합니다.
+        foreach (EnemyEntity enemy in enemyList)
+        {
+            if (enemy != null)
+                Destroy(enemy.gameObject);
+        }
+
+        enemyList.Clear();
+
+        if (enemyPrefab == null)
+        {
+            Debug.LogWarning("Enemy spawn failed: enemyPrefab is null.", this);
+            return;
+        }
+
+        if (enemyDatas == null || enemyDatas.Length == 0)
+        {
+            Debug.LogWarning("Enemy spawn failed: enemyDatas is empty.", this);
+            return;
+        }
+
+        int spawnCount = enemySpawnPoints != null && enemySpawnPoints.Length > 0 ? enemySpawnPoints.Length : 1;
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            // 프리팹은 고정하고, 데이터만 랜덤으로 골라 적 종류를 결정합니다.
+            EnemyData selectedData = enemyDatas[Random.Range(0, enemyDatas.Length)];
+            if (selectedData == null)
+                continue;
+
+            Transform spawnPoint = enemySpawnPoints != null && i < enemySpawnPoints.Length ? enemySpawnPoints[i] : null;
+            Vector3 position = spawnPoint != null ? spawnPoint.position : transform.position;
+            Quaternion rotation = spawnPoint != null ? spawnPoint.rotation : Quaternion.identity;
+            Transform parent = enemySpawnParent != null ? enemySpawnParent : null;
+
+            EnemyEntity enemy = Instantiate(enemyPrefab, position, rotation, parent);
+            // EnemyEntity는 전달받은 데이터로 외형/체력/행동 의도를 초기화합니다.
+            enemy.SetupEnemy(selectedData);
+            enemyList.Add(enemy);
+        }
+    }
+
+    public void RemoveEnemy(EnemyEntity enemy)
+    {
+        if (enemy == null)
+            return;
+
+        enemyList.Remove(enemy);
+
+        // 적이 모두 사라지면 기존 상태 머신의 BattleWon 흐름으로 넘깁니다.
+        if (enemyList.Count == 0 && curBattleState != BattleState.BattleWon)
+            ChangeBattleState(BattleState.BattleWon);
+    }
+
+    public void SpawnDamageText(int damage, Transform target)
+    {
+        // 현재 DamageViewSpawner API는 위치 없이도 재생 가능해서 우선 안전한 기본 호출을 사용합니다.
+        if (damageSpawner != null)
+            damageSpawner.SpawnDamageView(damage);
+    }
+
+    public void ShakeCamera()
+    {
+        if (cameraShake != null)
+            cameraShake.PlayCameraShake();
+    }
+
+    public void PlaySfx(AudioClip clip)
+    {
+        if (clip == null)
+            return;
+
+        if (audioManager == null)
+            audioManager = FindFirstObjectByType<AudioManager>();
+
+        if (audioManager != null)
+            audioManager.PlaySfx(clip);
+    }
+
+    // 이펙트는 아직 구조를 확정하지 않았으므로 잠시 사용하지 않습니다.
+    // public void PlayEffect(GameObject effectPrefab, Transform target)
+    // {
+    //     if (effectPrefab != null && effectManager != null)
+    //         effectManager.PlayEffect(effectPrefab, target);
+    // }
+
     private void StartPlayerTurn()
     {
-        Debug.Log("플레이어 턴 시작");
-        _player.playerTurnInit();
+        Debug.Log("Player turn start");
+
+        if (_player != null)
+            _player.playerTurnInit();
+
         ChangeBattleState(BattleState.PlayerDraw);
     }
 
     private void DrawPlayerCards()
     {
-        Debug.Log("카드 드로우");
-        DeckManager.Instance.DrawCards(5);
+        Debug.Log("Draw cards");
+
+        if (DeckManager.Instance != null)
+            DeckManager.Instance.DrawCards(5);
+
         ChangeBattleState(BattleState.PlayerAction);
     }
 
     private void WaitForPlayerInput()
     {
-        Debug.Log("플레이어 행동 대기");
+        Debug.Log("Wait for player input");
         isPlayerTurn = true;
-        // 여기서 코드는 멈추고 유저의 조작(PlayCard, EndPlayerTurn)을 기다립니다.
     }
 
-    // 턴 종료 버튼을 눌렀을 때 호출되는 함수
     public void EndPlayerTurn()
     {
-        if (curBattleState != BattleState.PlayerAction) return;
-        Debug.Log("플레이어 턴 종료");
-        DeckManager.Instance.DiscardAllCard();
+        if (curBattleState != BattleState.PlayerAction)
+            return;
+
+        Debug.Log("Player turn end");
+
+        if (DeckManager.Instance != null)
+            DeckManager.Instance.DiscardAllCard();
+
         isPlayerTurn = false;
         ChangeBattleState(BattleState.EnemyTurn);
     }
 
-    private void EnemyTurn()
+    private IEnumerator EnemyTurnCoroutine()
     {
-        Debug.Log("적 행동 실행");
-        foreach (var enemy in enemyList)
-        {
-            enemy.ExecuteEnemyTurn(_player);
-        }
-        ChangeBattleState(BattleState.PlayerTurnStart);
-    }
+        Debug.Log("Enemy turn");
 
-    IEnumerator EnemyTurnCorutin()
-    {
-        Debug.Log("적 행동 실행");
-        foreach (var enemy in enemyList)
+        EnemyEntity[] enemies = enemyList.ToArray();
+        foreach (EnemyEntity enemy in enemies)
         {
-            enemy.ExecuteEnemyTurn(_player);
+            if (enemy != null)
+                enemy.ExecuteEnemyTurn(_player);
         }
-        yield return new WaitForSeconds(2);
-        if(enemyList.Count == 0) ChangeBattleState(BattleState.BattleWon);
-        else ChangeBattleState(BattleState.PlayerTurnStart);
+
+        yield return new WaitForSeconds(2f);
+
+        if (enemyList.Count == 0)
+            ChangeBattleState(BattleState.BattleWon);
+        else
+            ChangeBattleState(BattleState.PlayerTurnStart);
     }
 
     private void ProcessBattleVictory()
     {
         StopAllCoroutines();
 
-        RewardManager.Instance.GenerateCombatRewards();
+        if (RewardManager.Instance != null)
+            RewardManager.Instance.GenerateCombatRewards();
     }
 }

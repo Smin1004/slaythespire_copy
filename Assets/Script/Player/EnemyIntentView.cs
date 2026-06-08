@@ -40,32 +40,39 @@ public class EnemyIntentView : MonoBehaviour
         if (action == null)
             return;
 
+        if (action.intentIcon != null)
+            _icon.sprite = action.intentIcon;
+
         switch (action.intentType)
         {
             case IntentType.Attack:
 
-                _icon.sprite = _attackIcon;
+                if (action.intentIcon == null)
+                    _icon.sprite = _attackIcon;
                 _valueText.text = action.attackDamage.ToString();
 
                 break;
 
             case IntentType.Defend:
 
-                _icon.sprite = _defendIcon;
+                if (action.intentIcon == null)
+                    _icon.sprite = _defendIcon;
                 _valueText.text = action.blockAmount.ToString();
 
                 break;
 
             case IntentType.Buff:
 
-                _icon.sprite = _buffIcon;
+                if (action.intentIcon == null)
+                    _icon.sprite = _buffIcon;
                 _valueText.text = "";
 
                 break;
 
             case IntentType.Debuff:
 
-                _icon.sprite = _debuffIcon;
+                if (action.intentIcon == null)
+                    _icon.sprite = _debuffIcon;
                 _valueText.text = "";
 
                 break;

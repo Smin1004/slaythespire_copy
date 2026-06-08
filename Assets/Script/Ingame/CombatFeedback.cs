@@ -10,7 +10,7 @@ public class CombatFeedback : MonoBehaviour
     // 데미지 숫자를 대상 머리 위에 띄워주는 스포너입니다.
     [SerializeField] private DamageSpawner damageSpawner;
     // 카메라 흔들림과 피격 이미지 깜빡임을 실행하는 컴포넌트입니다.
-    [SerializeField] private CameraShack cameraShack;
+    [SerializeField] private CameraShake cameraShack;
 
     [Header("사운드")]
     // 프로젝트에서 쓰는 공용 사운드 매니저입니다.

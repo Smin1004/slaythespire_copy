@@ -9,6 +9,13 @@ public abstract class Entity : MonoBehaviour
     [SerializeField] protected int curBlock;  // 먼저 데미지를 막아주는 방어도입니다.
     [SerializeField] private bool _isDead;    // Entity가 죽었는지 여부입니다. 죽은 Entity는 행동할 수 없습니다.
 
+    [Header("SFX")]
+    [SerializeField] protected AudioClip attackSound;
+    [SerializeField] protected AudioClip blockGainSound;
+    [SerializeField] protected AudioClip blockHitSound;
+    [SerializeField] protected AudioClip buffSound;
+    [SerializeField] protected AudioClip debuffSound;
+
     public event Action<int, int> OnHealthChanged;  // HP바처럼 체력 UI를 갱신할 때 사용합니다. (현재 HP, 최대 HP)
     public event Action<int> OnBlockChanged;        // 방어도 UI가 생기면 연결해서 쓸 수 있습니다.
     public event Action<int> OnDamaged;             // 실제 HP가 깎였을 때만 실행됩니다. 데미지 텍스트, SFX, 카메라 효과가 여기에 붙습니다.
@@ -35,6 +42,7 @@ public abstract class Entity : MonoBehaviour
     public virtual void Attack()
     {
         OnAttack?.Invoke();
+        PlaySfx(GetAttackSound());
     }
 
     public virtual void Damage(int damageAmount)
@@ -49,8 +57,12 @@ public abstract class Entity : MonoBehaviour
         if (curBlock > 0)
         {
             int remainingDamage = damageAmount - curBlock;
+            int blockedDamage = Mathf.Min(damageAmount, curBlock);
             curBlock = Mathf.Max(0, curBlock - damageAmount);
             OnBlockChanged?.Invoke(curBlock);
+
+            if (blockedDamage > 0)
+                PlaySfx(GetBlockHitSound());
 
             if (remainingDamage <= 0)
                 return;
@@ -71,8 +83,13 @@ public abstract class Entity : MonoBehaviour
         if (curHp <= 0 && !_isDead)
         {
             _isDead = true;
-            OnDead?.Invoke();
+            Die();
         }
+    }
+
+    protected virtual void Die()
+    {
+        OnDead?.Invoke();
     }
 
     // 체력이 0이 된 후에만 부활이 가능합니다. 부활 시 체력은 최대 체력으로 회복됩니다.
@@ -90,7 +107,52 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void AddBlock(int blockAmount)
     {
+        if (blockAmount <= 0)
+            return;
+
         curBlock += blockAmount;
         OnBlockChanged?.Invoke(curBlock);
+        PlaySfx(GetBlockGainSound());
+    }
+
+    public virtual void UseBuff()
+    {
+        PlaySfx(GetBuffSound());
+    }
+
+    public virtual void UseDebuff()
+    {
+        PlaySfx(GetDebuffSound());
+    }
+
+    protected virtual AudioClip GetAttackSound()
+    {
+        return attackSound;
+    }
+
+    protected virtual AudioClip GetBlockGainSound()
+    {
+        return blockGainSound;
+    }
+
+    protected virtual AudioClip GetBlockHitSound()
+    {
+        return blockHitSound;
+    }
+
+    protected virtual AudioClip GetBuffSound()
+    {
+        return buffSound;
+    }
+
+    protected virtual AudioClip GetDebuffSound()
+    {
+        return debuffSound;
+    }
+
+    protected void PlaySfx(AudioClip clip)
+    {
+        if (clip != null)
+            BattleManager.Instance?.PlaySfx(clip);
     }
 }

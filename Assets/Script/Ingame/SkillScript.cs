@@ -46,6 +46,7 @@ public class testPower : SkillScript
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
+        unit.UseBuff();
         //target[0].Damage(value[0]);
         Debug.Log("아직 버프가 업성요");
         yield break;

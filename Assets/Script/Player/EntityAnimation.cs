@@ -17,6 +17,12 @@ public class EntityAnimation : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_entity == null)
+            _entity = GetComponent<Entity>();
+
+        if (_entity == null)
+            return;
+
         _entity.OnDamaged += PlayHitAnimation;
         _entity.OnDead += PlayDeathAnimation;
         _entity.OnRevived += PlayRevive;
@@ -25,6 +31,9 @@ public class EntityAnimation : MonoBehaviour
 
     private void OnDisable()
     {
+        if (_entity == null)
+            return;
+
         _entity.OnDamaged -= PlayHitAnimation;
         _entity.OnDead -= PlayDeathAnimation;
         _entity.OnRevived -= PlayRevive;
@@ -33,22 +42,38 @@ public class EntityAnimation : MonoBehaviour
 
     private void PlayHitAnimation(int damage)
     {
-        _animator.SetTrigger("Hit");
+        if (_animator != null)
+            _animator.SetTrigger("Hit");
     }
 
     private void PlayDeathAnimation()
     {
-       _animator.SetBool("IsDead", true);
+        if (_animator != null)
+            _animator.SetBool("IsDead", true);
     }
 
     private void PlayRevive()
     {
-        _animator.SetBool("IsDead", false);
+        if (_animator != null)
+            _animator.SetBool("IsDead", false);
     }
 
     private void PlayAttack()
     {
-        _animator.SetTrigger("Attack");
+        if (_animator == null)
+            return;
+
+        string triggerName = "Attack";
+
+        // EnemyAction에 행동별 공격 트리거가 있으면 기본 Attack 대신 그 트리거를 사용합니다.
+        if (_entity is EnemyEntity enemy &&
+            enemy.CurrentAction != null &&
+            !string.IsNullOrEmpty(enemy.CurrentAction.attackAnimationTrigger))
+        {
+            triggerName = enemy.CurrentAction.attackAnimationTrigger;
+        }
+
+        _animator.SetTrigger(triggerName);
     }
 
 }

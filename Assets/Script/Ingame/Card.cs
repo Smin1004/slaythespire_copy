@@ -141,7 +141,16 @@ public class Card : PoolableObject
         if (target != null)
             targets = new Entity[] { target };
         else
-            targets = BattleManager.Instance.enemyList.ToArray();
+        {
+            var enemies = BattleManager.Instance != null ? BattleManager.Instance.EnemyList : null;
+            targets = enemies != null ? new Entity[enemies.Count] : System.Array.Empty<Entity>();
+
+            if (enemies != null)
+            {
+                for (int i = 0; i < enemies.Count; i++)
+                    targets[i] = enemies[i];
+            }
+        }
 
         player.UseEnergy(skill.cost);
         targetPosition = Vector3.zero;

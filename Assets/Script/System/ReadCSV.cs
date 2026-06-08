@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ReadCSV : MonoBehaviour
 {
@@ -54,16 +55,27 @@ public class ReadCSV : MonoBehaviour
             skill.type = cols[2].EnumParse<SkillType>();
             skill.cost = int.Parse(cols[3]);
             skill.upgradeCost = int.Parse(cols[4]);
-            skill.skill_desc = cols[6];
+            skill.desc = cols[6];
             skill.skillValue = Array.ConvertAll(cols[7].Split('!'), int.Parse);
             skill.upgradeValue = Array.ConvertAll(cols[8].Split('!'), int.Parse);
             skill.isTargeting = bool.Parse(cols[9]);
             skill.effect = Activator.CreateInstance(Type.GetType(cols[1])) as SkillScript;
             skill.img = Resources.Load<Sprite>($"Img/CardImg/{cols[1]}");
-            
-            
+            skill.isUpgraded = false;
+
+            skill.desc = FormatDesc(skill);
             skillLists.Add(skill);
         }
         d.loadData.SkillList = skillLists;
+    }
+
+    public string FormatDesc(Skill skill)
+    {
+        string rawFormat = skill.desc;
+        int[] currentValues = skill.isUpgraded ? skill.upgradeValue : skill.skillValue;
+
+        object[] objectValues = currentValues.Cast<object>().ToArray();
+
+        return string.Format(rawFormat, objectValues);
     }
 }

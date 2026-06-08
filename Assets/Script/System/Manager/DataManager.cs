@@ -17,7 +17,8 @@ public class Skill
     
     public Sprite img;
     public SkillScript effect;
-    public string skill_desc;
+    public string desc;
+    public bool isUpgraded;
 
     internal string Trigger(Player player, Entity[] targets, int[] skillValue)
     {

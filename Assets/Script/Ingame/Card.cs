@@ -26,7 +26,7 @@ public class Card : PoolableObject
         player = Player.Instance;
 
         skill = _skill;
-        descText.text = skill.skill_desc;
+        descText.text = skill.desc;
         costText.text = skill.cost.ToString();
         nameText.text = skill.name;
         img.sprite = skill.img;

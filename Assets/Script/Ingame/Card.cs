@@ -84,7 +84,7 @@ public class Card : PoolableObject
         {
             // 타겟이 없는 카드는 화면 중앙 영역에 놓았을 때 사용됩니다.
             float normalizedY = Input.mousePosition.y / Screen.height;
-            if (normalizedY >= 0.33f && normalizedY <= 0.66f)
+            if (normalizedY >= 0.33f)
                 TriggerCard(null);
             else
                 ReturnToHand();
@@ -131,34 +131,16 @@ public class Card : PoolableObject
         if (player.energy < skill.cost)
             return false;
 
-        player.energy -= skill.cost;
-
-        // 별도 SkillScript가 있으면 그 스크립트를 우선 실행합니다.
-        if (skill.effect != null)
-            skill.effect.Setting(player, target);
+        Entity[] targets;
+        if (target != null)
+            targets = new Entity[] { target };
         else
-            ApplyDefaultSkill(target);
+            targets = BattleManager.Instance.enemyList.ToArray();
+
+        player.energy -= skill.cost;
+        skill.effect.Trigger(player, targets, skill.skillValue);
 
         return true;
-    }
-
-    private void ApplyDefaultSkill(Entity target)
-    {
-        // CSV의 value 첫 번째 값을 기본 공격/방어 수치로 사용합니다.
-        int value = skill.skillValue != null && skill.skillValue.Length > 0 ? skill.skillValue[0] : 0;
-
-        switch (skill.type)
-        {
-            case SkillType.Attack:
-                // 공격 카드는 타겟 Entity의 Damage를 호출합니다.
-                if (target != null)
-                    target.Damage(value);
-                break;
-            case SkillType.Skill:
-                // 스킬 카드는 임시 기본 동작으로 플레이어에게 방어도를 줍니다.
-                player.AddBlock(value);
-                break;
-        }
     }
 
     private void ReturnToHand()

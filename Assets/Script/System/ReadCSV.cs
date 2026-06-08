@@ -59,14 +59,16 @@ public class ReadCSV : MonoBehaviour
             skill.upgradeValue = Array.ConvertAll(cols[8].Split('!'), int.Parse);
             skill.isTargeting = bool.Parse(cols[9]);
             
-            string className = "Skill_" + cols[6];
+            string className = cols[1];
             try
             {
                 skill.effect = Activator.CreateInstance(Type.GetType(className)) as SkillScript;
+                Debug.Log($"SkillScript '{className}'이(가) 성공적으로 로드되었습니다.");
             }
             catch
             {
                 //skill.effect = Activator.CreateInstance(Type.GetType("Skill_")) as SkillScript; 
+                Debug.LogWarning($"SkillScript '{className}'을(를) 찾을 수 없습니다. 기본 SkillScript로 설정합니다.");
             }
             
             skillLists.Add(skill);

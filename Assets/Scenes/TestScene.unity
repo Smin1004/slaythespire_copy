@@ -559,6 +559,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curBattleState: 0
+  _player: {fileID: 1291659929}
+  _gameOverPanel: {fileID: 0}
+  _hideWhenOpen: []
   enemyList:
   - {fileID: 1446070164}
   isPlayerTurn: 0
@@ -682,9 +685,10 @@ MonoBehaviour:
   curHp: 100
   maxHp: 100
   curBlock: 0
+  _isDead: 0
   masterDeck: []
-  energy: 0
-  maxEnergy: 0
+  energy: 999
+  maxEnergy: 999
 --- !u!212 &1291659930
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -820,6 +824,7 @@ MonoBehaviour:
   curHp: 100
   maxHp: 100
   curBlock: 0
+  _isDead: 0
   curEnemyData: {fileID: 11400000, guid: c941ce510aa39464495793401ead30fa, type: 2}
 --- !u!212 &1446070165
 SpriteRenderer:

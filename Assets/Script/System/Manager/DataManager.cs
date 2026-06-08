@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -14,8 +15,14 @@ public class Skill
     public int[] skillValue;
     public int[] upgradeValue;
     
+    public Sprite img;
     public SkillScript effect;
     public string skill_desc;
+
+    internal string Trigger(Player player, Entity[] targets, int[] skillValue)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public enum SkillType

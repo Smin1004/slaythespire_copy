@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class Card : PoolableObject
 {
@@ -28,6 +29,7 @@ public class Card : PoolableObject
         descText.text = skill.skill_desc;
         costText.text = skill.cost.ToString();
         nameText.text = skill.name;
+        img.sprite = skill.img;
     }
     
     public void SetTargetTransform(Vector3 newPosition, Quaternion newRotation)
@@ -43,7 +45,7 @@ public class Card : PoolableObject
         {
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
-        }
+        }else transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, Time.deltaTime * moveSpeed);
     }
 
     private void OnMouseDown()
@@ -121,20 +123,19 @@ public class Card : PoolableObject
     {
         // 카드 효과를 적용한 뒤 원래 손패 위치로 되돌립니다.
         Debug.Log("사용");
-        UseCard(target);
-        ReturnToHand();
+        StartCoroutine(UseCard(target));
     }
 
-    public bool UseCard(Entity target)
+    public IEnumerator UseCard(Entity target)
     {
         if (skill == null || player == null)
-            return false;
+            yield return false;
 
         if (battleManager != null && !battleManager.isPlayerTurn)
-            return false;
+            yield return false;
 
         if (player.energy < skill.cost)
-            return false;
+            yield return false;
 
         Entity[] targets;
         if (target != null)
@@ -143,9 +144,10 @@ public class Card : PoolableObject
             targets = BattleManager.Instance.enemyList.ToArray();
 
         player.energy -= skill.cost;
-        skill.effect.Trigger(player, targets, skill.skillValue);
-
-        return true;
+        targetPosition = Vector3.zero;
+        targetRotation = Quaternion.identity;
+        yield return StartCoroutine(skill.effect.Trigger(player, targets, skill.skillValue));
+        DeckManager.Instance.DiscardCard(this);
     }
 
     private void ReturnToHand()

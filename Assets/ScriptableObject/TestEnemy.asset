@@ -15,12 +15,15 @@ MonoBehaviour:
   enemyName: Test
   baseMaxHealth: 10
   actionList:
-  - actionName: gkhgjhgj
+  - actionName: Nomal Attack
+    intentType: 0
     attackDamage: 10
-    blockAmount: 12
-  - actionName: 222222222222
-    attackDamage: 30
     blockAmount: 0
-  - actionName: 3333333333333
+  - actionName: Block
+    intentType: 1
+    attackDamage: 0
+    blockAmount: 10
+  - actionName: Block
+    intentType: 0
     attackDamage: 0
     blockAmount: 20

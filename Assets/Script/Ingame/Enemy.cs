@@ -1,9 +1,14 @@
+using System;
 using UnityEngine;
 
 public class EnemyEntity : Entity
 {
     [SerializeField] private EnemyData curEnemyData;
     private EnemyAction curAction;
+
+
+    public EnemyAction CurrentAction => curAction;
+    public event Action<EnemyAction> OnIntentChanged;
 
     //임시 초기화
     void Start()
@@ -24,8 +29,11 @@ public class EnemyEntity : Entity
     {
         //우선은 랜덤값
         //int randomIndex = Random.Range(0, curEnemyData.actionList.Count);
-        int randomIndex = 0;
+        int randomIndex = UnityEngine.Random.Range(0, curEnemyData.actionList.Count);
+
         curAction = curEnemyData.actionList[randomIndex];
+
+        OnIntentChanged?.Invoke(curAction);
     }
 
     // 적의 턴이 돌아왔을 때 행동 실행
@@ -33,19 +41,35 @@ public class EnemyEntity : Entity
     {
         Debug.Log($"[{curEnemyData.enemyName}] 행동 실행: {curAction.actionName}");
 
-        if (curAction.attackDamage > 0)
+        switch (curAction.intentType)
         {
-            Attack();
+            case IntentType.Attack:
 
-            playerTarget.Damage(curAction.attackDamage);
+                Attack();
+                playerTarget.Damage(curAction.attackDamage);
+
+                break;
+
+            case IntentType.Defend:
+
+                AddBlock(curAction.blockAmount);
+
+                break;
+
+            case IntentType.Buff:
+
+                Debug.Log("버프");
+
+                break;
+
+            case IntentType.Debuff:
+
+                Debug.Log("디버프");
+
+                break;
         }
-
-        if (curAction.blockAmount > 0)
-        {
-            AddBlock(curAction.blockAmount);
-        }
-
-        // 행동이 끝났으므로 다음 턴의 의도를 새로 결정
+        
+        //행동끝 다음행동 시작
         DecideNextIntent();
     }
 }

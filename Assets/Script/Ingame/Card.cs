@@ -143,7 +143,7 @@ public class Card : PoolableObject
         else
             targets = BattleManager.Instance.enemyList.ToArray();
 
-        player.energy -= skill.cost;
+        player.UseEnergy(skill.cost);
         targetPosition = Vector3.zero;
         targetRotation = Quaternion.identity;
         yield return StartCoroutine(skill.effect.Trigger(player, targets, skill.skillValue));

@@ -11,10 +11,20 @@ public class EnemyData : ScriptableObject
     public List<EnemyAction> actionList;
 }
 
+// 타입 변경
+public enum IntentType
+{
+    Attack,
+    Defend,
+    Buff,
+    Debuff
+}
+
 [System.Serializable]
 public class EnemyAction
 {
     public string actionName;
+    public IntentType intentType;   //타입
     public int attackDamage;
     public int blockAmount;
     //디버프 효과 추후 추가

@@ -21,7 +21,7 @@ public class testPlusAttack : SkillScript
     {
         for (int i = 0; i < value[1]; i++)
         {
-            Debug.Log("Plus Attack");
+            Debug.Log("Plus Attack");   
             int random = Random.Range(0, target.Length);
             yield return new WaitForSeconds(0.2f);
             target[random].Damage(value[0]);

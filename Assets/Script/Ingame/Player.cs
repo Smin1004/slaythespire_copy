@@ -11,6 +11,9 @@ public class Player : Entity
     public int energy;
     public int maxEnergy;
 
+    public int gold;
+    //public bool isMoveTime;
+
     void Awake()
     {
         

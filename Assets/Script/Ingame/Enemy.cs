@@ -35,6 +35,8 @@ public class EnemyEntity : Entity
 
         if (curAction.attackDamage > 0)
         {
+            Attack();
+
             playerTarget.Damage(curAction.attackDamage);
         }
 

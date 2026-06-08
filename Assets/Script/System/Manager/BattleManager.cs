@@ -24,7 +24,6 @@ public class BattleManager : MonoBehaviour
     public List<EnemyEntity> enemyList; //임시 public
 
     public bool isPlayerTurn;
-    Player player;
     
     #region //게임오버패널
     //--------------------------  게임오버 패널 관련 코드 --------------------------------------
@@ -48,19 +47,16 @@ public class BattleManager : MonoBehaviour
     private void ShowGameOver()
     {
         StartCoroutine(GameOverRoutine());
-        _gameOverPanel.SetActive(true);
-
-        SetHiddenObjects(false);
     }
-    
-    /// 게임오버 패널을 활성화하는 코루틴입니다. 게임오버 패널이 활성화된 후 1초 뒤에 게임오버 패널이 사라집니다.
+
     IEnumerator GameOverRoutine()
     {
         yield return new WaitForSeconds(1f);
 
         _gameOverPanel.SetActive(true);
+        SetHiddenObjects(false);
     }
-    
+
     // 게임오버 패널에서 다시 시작 버튼을 눌렀을 때 호출되는 함수입니다. 게임오버 패널을 닫고, 숨겼던 UI를 다시 표시하고, 플레이어를 부활시킵니다.
     public void RestartGame()
     {
@@ -96,7 +92,6 @@ public class BattleManager : MonoBehaviour
 
     public void InitStart()
     {
-        player = Player.Instance;
         InitializeBattle();
     }
 
@@ -136,7 +131,7 @@ public class BattleManager : MonoBehaviour
     private void StartPlayerTurn()
     {
         Debug.Log("플레이어 턴 시작");
-        player.playerTurnInit();
+        _player.playerTurnInit();
         ChangeBattleState(BattleState.PlayerDraw);
     }
 
@@ -169,7 +164,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("적 행동 실행");
         foreach (var enemy in enemyList)
         {
-            enemy.ExecuteEnemyTurn(player);
+            enemy.ExecuteEnemyTurn(_player);
         }
         ChangeBattleState(BattleState.PlayerTurnStart);
     }
@@ -179,7 +174,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("적 행동 실행");
         foreach (var enemy in enemyList)
         {
-            enemy.ExecuteEnemyTurn(player);
+            enemy.ExecuteEnemyTurn(_player);
         }
         yield return new WaitForSeconds(2);
         if(enemyList.Count == 0) ChangeBattleState(BattleState.BattleWon);

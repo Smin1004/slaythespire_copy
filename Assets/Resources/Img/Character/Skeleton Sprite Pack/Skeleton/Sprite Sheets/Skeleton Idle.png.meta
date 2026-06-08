@@ -1,28 +1,40 @@
 fileFormatVersion: 2
-guid: 2cae28760acfdd34e908e0f99808ba15
+guid: 77d5f1f751450e74eafeb707703c45ae
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7320810298388350287
-    second: itch hurt 2 sheet-Sheet_0
+      213: 7928858964255100155
+    second: Skeleton Idle_0
   - first:
-      213: 2760490868315971840
-    second: itch hurt 2 sheet-Sheet_1
+      213: -289379152601194012
+    second: Skeleton Idle_1
   - first:
-      213: 4546042892816791458
-    second: itch hurt 2 sheet-Sheet_2
+      213: -8331204611373963175
+    second: Skeleton Idle_2
   - first:
-      213: 6133235146095188253
-    second: itch hurt 2 sheet-Sheet_3
+      213: 5974531914738200450
+    second: Skeleton Idle_3
   - first:
-      213: -8853825974755322874
-    second: itch hurt 2 sheet-Sheet_4
+      213: 1900126310482141809
+    second: Skeleton Idle_4
   - first:
-      213: -3007589213488406314
-    second: itch hurt 2 sheet-Sheet_5
+      213: -9007221444457188966
+    second: Skeleton Idle_5
   - first:
-      213: 5701692524486732836
-    second: itch hurt 2 sheet-Sheet_6
+      213: 6361432402118329833
+    second: Skeleton Idle_6
+  - first:
+      213: 1571032212639168507
+    second: Skeleton Idle_7
+  - first:
+      213: 7611122742130972421
+    second: Skeleton Idle_8
+  - first:
+      213: 5180031473007828922
+    second: Skeleton Idle_9
+  - first:
+      213: -5784503621931760760
+    second: Skeleton Idle_10
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -114,17 +126,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: itch hurt 2 sheet-Sheet_0
+      name: Skeleton Idle_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 20
-        width: 18
-        height: 33
+        x: 0
+        y: 0
+        width: 23
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ba7a8822d1476a90800000000000000
-      internalID: -7320810298388350287
+      spriteID: bfcc8961837f80e60800000000000000
+      internalID: 7928858964255100155
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: itch hurt 2 sheet-Sheet_1
+      name: Skeleton Idle_1
       rect:
         serializedVersion: 2
-        x: 98
-        y: 20
-        width: 28
-        height: 22
+        x: 23
+        y: 0
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,20 +180,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 001eeaba1db3f4620800000000000000
-      internalID: 2760490868315971840
+      spriteID: 4e16dc3a13bebfbf0800000000000000
+      internalID: -289379152601194012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: itch hurt 2 sheet-Sheet_2
+      name: Skeleton Idle_2
       rect:
         serializedVersion: 2
-        x: 178
-        y: 20
-        width: 28
-        height: 22
+        x: 47
+        y: 0
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,20 +202,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2a7b800dce9c61f30800000000000000
-      internalID: 4546042892816791458
+      spriteID: 95865fbeb8d916c80800000000000000
+      internalID: -8331204611373963175
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: itch hurt 2 sheet-Sheet_3
+      name: Skeleton Idle_3
       rect:
         serializedVersion: 2
-        x: 258
-        y: 20
-        width: 28
-        height: 22
+        x: 71
+        y: 0
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -199,20 +224,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d19d1febed0ad1550800000000000000
-      internalID: 6133235146095188253
+      spriteID: 28f643d3f1dc9e250800000000000000
+      internalID: 5974531914738200450
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: itch hurt 2 sheet-Sheet_4
+      name: Skeleton Idle_4
       rect:
         serializedVersion: 2
-        x: 338
-        y: 20
-        width: 29
-        height: 24
+        x: 96
+        y: 0
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,20 +246,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 604159f7f24e02580800000000000000
-      internalID: -8853825974755322874
+      spriteID: 17269a4efca9e5a10800000000000000
+      internalID: 1900126310482141809
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: itch hurt 2 sheet-Sheet_5
+      name: Skeleton Idle_5
       rect:
         serializedVersion: 2
-        x: 418
-        y: 20
-        width: 25
-        height: 25
+        x: 121
+        y: 0
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,20 +268,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6d02ab39b85e246d0800000000000000
-      internalID: -3007589213488406314
+      spriteID: a9139dd81dbeff280800000000000000
+      internalID: -9007221444457188966
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: itch hurt 2 sheet-Sheet_6
+      name: Skeleton Idle_6
       rect:
         serializedVersion: 2
-        x: 499
-        y: 20
-        width: 18
-        height: 33
+        x: 145
+        y: 0
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,8 +290,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 42c2884642b702f40800000000000000
-      internalID: 5701692524486732836
+      spriteID: 9e54ceeb019584850800000000000000
+      internalID: 6361432402118329833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeleton Idle_7
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 0
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf7bd05497d6dc510800000000000000
+      internalID: 1571032212639168507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeleton Idle_8
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 0
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5071d9afec320a960800000000000000
+      internalID: 7611122742130972421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeleton Idle_9
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 0
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abf99f10e2b23e740800000000000000
+      internalID: 5180031473007828922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeleton Idle_10
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 0
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8830ccc7a9059bfa0800000000000000
+      internalID: -5784503621931760760
       vertices: []
       indices: 
       edges: []
@@ -285,13 +398,17 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      itch hurt 2 sheet-Sheet_0: -7320810298388350287
-      itch hurt 2 sheet-Sheet_1: 2760490868315971840
-      itch hurt 2 sheet-Sheet_2: 4546042892816791458
-      itch hurt 2 sheet-Sheet_3: 6133235146095188253
-      itch hurt 2 sheet-Sheet_4: -8853825974755322874
-      itch hurt 2 sheet-Sheet_5: -3007589213488406314
-      itch hurt 2 sheet-Sheet_6: 5701692524486732836
+      Skeleton Idle_0: 7928858964255100155
+      Skeleton Idle_1: -289379152601194012
+      Skeleton Idle_10: -5784503621931760760
+      Skeleton Idle_2: -8331204611373963175
+      Skeleton Idle_3: 5974531914738200450
+      Skeleton Idle_4: 1900126310482141809
+      Skeleton Idle_5: -9007221444457188966
+      Skeleton Idle_6: 6361432402118329833
+      Skeleton Idle_7: 1571032212639168507
+      Skeleton Idle_8: 7611122742130972421
+      Skeleton Idle_9: 5180031473007828922
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

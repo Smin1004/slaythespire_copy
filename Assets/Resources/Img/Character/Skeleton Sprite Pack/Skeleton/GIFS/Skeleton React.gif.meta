@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c55ae22dfaf59404392676de83a3a79a
+guid: 0b9371989660df94ea64cd729b895653
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2857231490776680268
-    second: Skeleton Dead_0
+      213: -1515603127067585740
+    second: Skeleton React_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,16 +96,29 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Skeleton Dead_0
+      name: Skeleton React_0
       rect:
         serializedVersion: 2
-        x: 10
+        x: 0
         y: 0
-        width: 23
+        width: 22
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4b8323fe8131958d0800000000000000
-      internalID: -2857231490776680268
+      spriteID: 4335aa66cfe77fae0800000000000000
+      internalID: -1515603127067585740
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Skeleton Dead_0: -2857231490776680268
+      Skeleton React_0: -1515603127067585740
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

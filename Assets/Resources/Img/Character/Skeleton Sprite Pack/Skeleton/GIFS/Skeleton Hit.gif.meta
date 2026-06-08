@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b6501912419906f48a6542afd24ab4af
+guid: 81212c650d43289489511c511949f7ea
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1038457079536939726
-    second: "ChatGPT_Image_2026\uB144_6\uC6D4_5\uC77C_\uC624\uD6C4_04_39_28-removebg-preview_0"
+      213: -273567318796562241
+    second: Skeleton Hit_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "ChatGPT_Image_2026\uB144_6\uC6D4_5\uC77C_\uC624\uD6C4_04_39_28-removebg-preview_0"
+      name: Skeleton Hit_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 5
         y: 0
-        width: 612
-        height: 408
+        width: 24
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 23d06b3c9c8a691f0800000000000000
-      internalID: -1038457079536939726
+      spriteID: fb099f419f7143cf0800000000000000
+      internalID: -273567318796562241
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "ChatGPT_Image_2026\uB144_6\uC6D4_5\uC77C_\uC624\uD6C4_04_39_28-removebg-preview_0": -1038457079536939726
+      Skeleton Hit_0: -273567318796562241
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

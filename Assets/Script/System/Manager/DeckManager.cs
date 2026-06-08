@@ -131,7 +131,7 @@
                 float targetY = handCenterPoint.position.y + arcY;
 
                 // Z 겹침 방지 (오른쪽 카드가 미세하게 더 앞에 오도록)
-                float targetZ = handCenterPoint.position.z - (i * 0.1f);
+                float targetZ = handCenterPoint.position.z - (i * 0.2f);
 
                 Vector3 calculatedTargetPos = new Vector3(targetX, targetY, targetZ);
 

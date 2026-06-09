@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class Entity : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public abstract class Entity : MonoBehaviour
     public event Action OnDead;                     // Entity가 죽었을 때 실행됩니다.
     public event Action OnRevived;
 
+    public List<Buff> buffs = new List<Buff>();
 
     public int CurrentHp => curHp;
     public int MaxHp => maxHp;
@@ -29,6 +31,11 @@ public abstract class Entity : MonoBehaviour
         curBlock = 0;
         OnHealthChanged?.Invoke(curHp, maxHp);
         OnBlockChanged?.Invoke(curBlock);
+    }
+
+    public virtual void TurnInit()
+    {
+        
     }
 
     //Attack 이벤트 

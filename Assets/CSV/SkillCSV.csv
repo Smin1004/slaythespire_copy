@@ -1,0 +1,5 @@
+﻿id,name,type,cost,cost+,script,desc,value,value+,targeting
+1,공격,Attack,1,1,testAttack,{0} 만큼 공격,6,9,TRUE
+2,수비,Skill,2,2,testSkill,{0} 만큼 수비,5,8,FALSE
+3,발화,Power,3,2,testPower,{0} 만큼 힘을 얻음,2,3,FALSE
+4,부메랑 칼날,Attack,1,2,testPlusAttack,{0} 만큼 {1}번 공격,3!3,3!4,FALSE

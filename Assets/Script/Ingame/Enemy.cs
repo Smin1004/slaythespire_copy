@@ -21,12 +21,13 @@ public class EnemyEntity : Entity
         curEnemyData = assignedData;
         InitializeEntity(curEnemyData.baseMaxHealth);
         
-        DecideNextIntent();
+        TurnInit();
     }
 
-    //행동 결정
-    public void DecideNextIntent()
+    public override void TurnInit()
     {
+        base.TurnInit();
+        
         //우선은 랜덤값
         //int randomIndex = Random.Range(0, curEnemyData.actionList.Count);
         int randomIndex = UnityEngine.Random.Range(0, curEnemyData.actionList.Count);
@@ -70,6 +71,6 @@ public class EnemyEntity : Entity
         }
         
         //행동끝 다음행동 시작
-        DecideNextIntent();
+        TurnInit();
     }
 }

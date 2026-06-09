@@ -23,27 +23,16 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject[] _hideWhenOpen;
 
     [Header("Enemy Spawn")]
-    // 모든 적이 공유하는 단일 Enemy 프리팹입니다. 적 종류 차이는 EnemyData로만 바꿉니다.
     [SerializeField] private EnemyEntity enemyPrefab;
-    // 전투 시작 시 이 후보 중 하나를 랜덤 선택해서 Enemy 프리팹에 주입합니다.
     [SerializeField] private EnemyData[] enemyDatas;
-    // 생성된 적들을 묶어둘 부모 Transform입니다. 비워두면 씬 루트에 생성됩니다.
     [SerializeField] private Transform enemySpawnParent;
-    // 스폰 포인트 개수만큼 적을 생성합니다. 비어 있으면 BattleManager 위치에 1마리만 생성합니다.
     [SerializeField] private Transform[] enemySpawnPoints;
 
     [Header("Battle Feedback")]
-    // 적 피격 시 데미지 숫자를 띄우는 전투 공통 스포너입니다.
     [SerializeField] private DamageViewSpawner damageSpawner;
-    // Enemy 프리팹이 직접 들지 않고 BattleManager를 통해 호출하는 카메라 흔들림입니다.
     [SerializeField] private CameraShake cameraShake;
-    // 적별 사운드 클립은 EnemyData에 있고, 실제 재생은 이 매니저가 담당합니다.
     [SerializeField] private AudioManager audioManager;
-    // 적별 이펙트 프리팹은 EnemyData/EnemyAction에 있고, 실제 생성은 이 매니저가 담당합니다.
-    // 이펙트는 아직 구조를 확정하지 않았으므로 BattleManager 연결도 잠시 사용하지 않습니다.
-    // [SerializeField] private EffectManager effectManager;
 
-    // 전투 중 살아있는 적 목록입니다. 외부에서는 읽기 전용 EnemyList로만 접근합니다.
     [SerializeField] private List<EnemyEntity> enemyList = new();
     public IReadOnlyList<EnemyEntity> EnemyList => enemyList;
 
@@ -146,7 +135,6 @@ public class BattleManager : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        // 이전 전투나 씬 직렬화로 남은 적 참조가 있으면 새 스폰 구조에 맞춰 정리합니다.
         foreach (EnemyEntity enemy in enemyList)
         {
             if (enemy != null)
@@ -171,7 +159,6 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            // 프리팹은 고정하고, 데이터만 랜덤으로 골라 적 종류를 결정합니다.
             EnemyData selectedData = enemyDatas[Random.Range(0, enemyDatas.Length)];
             if (selectedData == null)
                 continue;
@@ -182,7 +169,6 @@ public class BattleManager : MonoBehaviour
             Transform parent = enemySpawnParent != null ? enemySpawnParent : null;
 
             EnemyEntity enemy = Instantiate(enemyPrefab, position, rotation, parent);
-            // EnemyEntity는 전달받은 데이터로 외형/체력/행동 의도를 초기화합니다.
             enemy.SetupEnemy(selectedData);
             enemyList.Add(enemy);
         }
@@ -195,14 +181,12 @@ public class BattleManager : MonoBehaviour
 
         enemyList.Remove(enemy);
 
-        // 적이 모두 사라지면 기존 상태 머신의 BattleWon 흐름으로 넘깁니다.
         if (enemyList.Count == 0 && curBattleState != BattleState.BattleWon)
             ChangeBattleState(BattleState.BattleWon);
     }
 
     public void SpawnDamageText(int damage, Transform target)
     {
-        // 현재 DamageViewSpawner API는 위치 없이도 재생 가능해서 우선 안전한 기본 호출을 사용합니다.
         if (damageSpawner != null)
             damageSpawner.SpawnDamageView(damage);
     }
@@ -225,25 +209,13 @@ public class BattleManager : MonoBehaviour
             audioManager.PlaySfx(clip);
     }
 
-    // 이펙트는 아직 구조를 확정하지 않았으므로 잠시 사용하지 않습니다.
-    // public void PlayEffect(GameObject effectPrefab, Transform target)
-    // {
-    //     if (effectPrefab != null && effectManager != null)
-    //         effectManager.PlayEffect(effectPrefab, target);
-    // }
-
     private void StartPlayerTurn()
     {
-<<<<<<< HEAD
         Debug.Log("Player turn start");
 
         if (_player != null)
-            _player.playerTurnInit();
+            _player.TurnInit();
 
-=======
-        Debug.Log("플레이어 턴 시작");
-        _player.TurnInit();
->>>>>>> origin/main
         ChangeBattleState(BattleState.PlayerDraw);
     }
 

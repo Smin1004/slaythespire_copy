@@ -21,4 +21,15 @@ public class LoadData : ScriptableObject
     {
         return BuffList.Find(buff => buff != null && buff.key == key);
     }
+
+    public Buff GetBuffByKeyOrName(string keyOrName)
+    {
+        if (string.IsNullOrWhiteSpace(keyOrName))
+            return null;
+
+        string trimmed = keyOrName.Trim();
+        return BuffList.Find(buff =>
+            buff != null &&
+            (buff.key == trimmed || buff.name == trimmed));
+    }
 }

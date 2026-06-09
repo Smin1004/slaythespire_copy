@@ -5,9 +5,11 @@ public class StatusEffectBar : MonoBehaviour
 {
     [SerializeField] private Entity targetEntity;
     [SerializeField] private StatusEffectIcon iconPrefab;
+    [SerializeField] private StatusEffectTooltip tooltip;
     [SerializeField] private RectTransform iconParent;
-    [SerializeField] private Vector2 startOffset = new Vector2(0f, -28f);
-    [SerializeField] private float iconSpacing = 32f;
+    [SerializeField] private Vector2 startOffset = Vector2.zero;
+    [SerializeField] private Vector2 iconSize = new Vector2(48f, 48f);
+    [SerializeField] private float iconSpacing = 56f;
 
     private readonly List<StatusEffectIcon> spawnedIcons = new();
 
@@ -18,6 +20,13 @@ public class StatusEffectBar : MonoBehaviour
 
         if (iconParent == null)
             iconParent = transform as RectTransform;
+
+        if (iconParent != null)
+        {
+            iconParent.anchorMin = new Vector2(0f, 0.5f);
+            iconParent.anchorMax = new Vector2(0f, 0.5f);
+            iconParent.pivot = new Vector2(0f, 0.5f);
+        }
     }
 
     private void OnEnable()
@@ -55,17 +64,23 @@ public class StatusEffectBar : MonoBehaviour
     {
         ClearIcons();
 
-        if (buffs == null || iconPrefab == null || iconParent == null)
+        if (buffs == null || iconParent == null)
             return;
 
         for (int i = 0; i < buffs.Count; i++)
         {
-            StatusEffectIcon icon = Instantiate(iconPrefab, iconParent);
-            icon.Setup(buffs[i]);
+            StatusEffectIcon icon = iconPrefab != null
+                ? Instantiate(iconPrefab, iconParent)
+                : CreateRuntimeIcon(iconParent);
+
+            icon.Setup(buffs[i], tooltip);
             spawnedIcons.Add(icon);
 
             if (icon.transform is RectTransform rectTransform)
+            {
+                rectTransform.sizeDelta = iconSize;
                 rectTransform.anchoredPosition = startOffset + new Vector2(i * iconSpacing, 0f);
+            }
         }
     }
 
@@ -78,5 +93,16 @@ public class StatusEffectBar : MonoBehaviour
         }
 
         spawnedIcons.Clear();
+    }
+
+    private StatusEffectIcon CreateRuntimeIcon(RectTransform parent)
+    {
+        GameObject iconObject = new GameObject("StatusEffectIcon", typeof(RectTransform), typeof(StatusEffectIcon));
+        iconObject.transform.SetParent(parent, false);
+
+        RectTransform rectTransform = iconObject.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = iconSize;
+
+        return iconObject.GetComponent<StatusEffectIcon>();
     }
 }

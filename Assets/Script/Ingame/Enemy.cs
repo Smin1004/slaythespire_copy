@@ -160,7 +160,10 @@ public class EnemyEntity : Entity
         if (loadData == null)
             return;
 
-        Buff template = loadData.GetBuffByKey(currentAction.buffDebuffType.ToString().ToLowerInvariant());
+        Buff template = loadData.GetBuffByKeyOrName(currentAction.statusKeyOrName);
+        if (template == null)
+            template = loadData.GetBuffByKey(currentAction.buffDebuffType.ToString().ToLowerInvariant());
+
         if (template == null)
             return;
 

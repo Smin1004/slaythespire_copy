@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 28, y: 28}
+  m_SizeDelta: {x: 48, y: 48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &100002
 CanvasRenderer:
@@ -90,3 +90,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconImage: {fileID: 100003}
   valueText: {fileID: 0}
+  valueFont: {fileID: 11400000, guid: abda0c3244569ed419e0f814c00e6a0c, type: 2}

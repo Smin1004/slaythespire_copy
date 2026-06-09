@@ -55,6 +55,21 @@ public abstract class Entity : MonoBehaviour
         if (buff == null)
             return;
 
+        Buff existingBuff = buffs.Find(item =>
+            item != null &&
+            ((!string.IsNullOrEmpty(item.key) && item.key == buff.key) ||
+             (item.index != 0 && item.index == buff.index)));
+
+        if (existingBuff != null)
+        {
+            existingBuff.value += Mathf.Max(1, buff.value);
+            OnBuffsChanged?.Invoke(Buffs);
+            return;
+        }
+
+        if (buff.value <= 0)
+            buff.value = 1;
+
         buffs.Add(buff);
         OnBuffsChanged?.Invoke(Buffs);
     }

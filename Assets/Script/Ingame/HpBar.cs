@@ -71,4 +71,5 @@ public class HpBar : MonoBehaviour
         if (hpText != null)
             hpText.text = $"{currentHp} / {maxHp}";
     }
+
 }

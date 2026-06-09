@@ -9,7 +9,9 @@ public class ReadCSV : MonoBehaviour
     public static ReadCSV Instance => _instance;
 
     [SerializeField] private TextAsset skill;
+    [SerializeField] private TextAsset buff;
     List<Skill> skillLists = new List<Skill>();
+    List<Buff> buffLists = new List<Buff>();
 
     public void InitAwake()
     {
@@ -26,6 +28,7 @@ public class ReadCSV : MonoBehaviour
     public void Load(Action callBack = default)
     {
         LoadData(skill.text, ParseSkillData);
+        LoadData(buff.text, ParseBuffData);
         //DataManager.instance.readEnd = true;    
         callBack?.Invoke();
     }
@@ -37,7 +40,7 @@ public class ReadCSV : MonoBehaviour
 
     public void ParseSkillData(string data)
     {
-        Debug.Log("Read");
+        Debug.Log("Read Skill");
 
         var d = DataManager.Instance;
         string[] rows = data.Split('\n');
@@ -59,14 +62,15 @@ public class ReadCSV : MonoBehaviour
             skill.skillValue = Array.ConvertAll(cols[7].Split('!'), int.Parse);
             skill.upgradeValue = Array.ConvertAll(cols[8].Split('!'), int.Parse);
             skill.isTargeting = bool.Parse(cols[9]);
-            skill.effect = Activator.CreateInstance(Type.GetType(cols[1])) as SkillScript;
-            skill.img = Resources.Load<Sprite>($"Img/CardImg/{cols[1]}");
+            skill.effect = Activator.CreateInstance(Type.GetType(cols[5])) as SkillScript;
+            skill.img = Resources.Load<Sprite>($"Img/CardImg/{cols[5]}");
             skill.isUpgraded = false;
 
             skill.desc = FormatDesc(skill);
             skillLists.Add(skill);
         }
         d.loadData.SkillList = skillLists;
+        Debug.Log($"[ParseSkillData] data = {data}");
     }
 
     public string FormatDesc(Skill skill)
@@ -77,5 +81,32 @@ public class ReadCSV : MonoBehaviour
         object[] objectValues = currentValues.Cast<object>().ToArray();
 
         return string.Format(rawFormat, objectValues);
+    }
+
+    public void ParseBuffData(string data)
+    {
+        Debug.Log("Read Buff");
+
+        var d = DataManager.Instance;
+        string[] rows = data.Split('\n');
+
+        buffLists.Clear();
+        for (int i = 1; i < rows.Length; i++)
+        {
+            Debug.Log(rows[i]);
+            string[] cols = rows[i].Split(',');
+            if (cols.Length < 7) continue;
+
+            Buff buff = new();
+            buff.index = int.Parse(cols[0]);
+            buff.name = cols[1];
+            //buff.isDebuff = bool.Parse(cols[2]);
+            //buff.value = int.Parse(cols[3]);
+            buff.desc = cols[4];
+            //buff.img = Resources.Load<Sprite>($"Img/BuffImg/{cols[5]}");
+            //buff.effect = Activator.CreateInstance(Type.GetType(cols[6])) as BuffScript;
+            buffLists.Add(buff);
+        }
+        d.loadData.BuffList = buffLists;
     }
 }

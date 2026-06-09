@@ -1,5 +1,0 @@
-﻿id,name,type,cost,cost+,script,desc,value,value+,targeting
-1,testAttack,Attack,1,1,,{0} 만큼 공격,6,9,TRUE
-2,testSkill,Skill,2,2,,{0} 만큼 수비,5,8,FALSE
-3,testPower,Power,3,2,,{0} 만큼 힘을 얻음,2,3,FALSE
-4,testPlusAttack,Attack,1,2,,{0} 만큼 {1}번 공격,3!3,3!4,FALSE

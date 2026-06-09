@@ -29,8 +29,9 @@ public class Player : Entity
         }
     }
 
-    public void playerTurnInit()
+    public override void TurnInit()
     {
+        base.TurnInit();
         energy = maxEnergy;
         OnEnergyChanged?.Invoke(energy, maxEnergy);
     }

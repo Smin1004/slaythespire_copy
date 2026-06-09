@@ -234,11 +234,16 @@ public class BattleManager : MonoBehaviour
 
     private void StartPlayerTurn()
     {
+<<<<<<< HEAD
         Debug.Log("Player turn start");
 
         if (_player != null)
             _player.playerTurnInit();
 
+=======
+        Debug.Log("플레이어 턴 시작");
+        _player.TurnInit();
+>>>>>>> origin/main
         ChangeBattleState(BattleState.PlayerDraw);
     }
 

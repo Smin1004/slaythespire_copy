@@ -32,6 +32,7 @@ public class EnemyEntity : Entity
 
     private void Start()
     {
+<<<<<<< HEAD
         if (!isSetup && currentEnemyData != null)
             SetupEnemy(currentEnemyData);
     }
@@ -84,6 +85,21 @@ public class EnemyEntity : Entity
             OnIntentChanged?.Invoke(currentAction);
             return;
         }
+=======
+        curEnemyData = assignedData;
+        InitializeEntity(curEnemyData.baseMaxHealth);
+        
+        TurnInit();
+    }
+
+    public override void TurnInit()
+    {
+        base.TurnInit();
+        
+        //우선은 랜덤값
+        //int randomIndex = Random.Range(0, curEnemyData.actionList.Count);
+        int randomIndex = UnityEngine.Random.Range(0, curEnemyData.actionList.Count);
+>>>>>>> origin/main
 
         currentAction = PickWeightedAction(currentEnemyData.actions);
         OnIntentChanged?.Invoke(currentAction);
@@ -140,8 +156,14 @@ public class EnemyEntity : Entity
                 Debug.Log($"Debuff: {currentAction.buffDebuffType} {currentAction.effectValue}");
                 break;
         }
+<<<<<<< HEAD
 
         DecideNextIntent();
+=======
+        
+        //행동끝 다음행동 시작
+        TurnInit();
+>>>>>>> origin/main
     }
 
     private void ExecuteAttack(Entity playerTarget)

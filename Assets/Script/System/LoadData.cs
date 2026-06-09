@@ -5,4 +5,5 @@ using System.Collections.Generic;
 public class LoadData : ScriptableObject
 {
     public List<Skill> SkillList = new();
+    public List<Buff> BuffList = new();
 }

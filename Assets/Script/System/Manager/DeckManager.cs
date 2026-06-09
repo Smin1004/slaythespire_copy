@@ -14,11 +14,21 @@
 
         [SerializeField] private Card cardObj;
 
-        public event Action<int> OnDraw;
-        public event Action<int> OnRefill;
+        public event Action<int> OnDrawPileChanged;
+        public event Action<int> OnDiscardPileChanged;
 
         [SerializeField] private Transform testPos;
 
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            _instance = this;
+        }
         public void InitAwake()
         {
             _instance = this;
@@ -37,7 +47,20 @@
                 drawPile.Add(data);
             }
             ShuffleDeck(drawPile);
-            OnDraw?.Invoke(drawPile.Count);
+            NotifyPileCounts();
+
+        }
+
+        private void NotifyPileCounts()
+        {
+            Debug.Log($"[DeckManager] 덱 UI 갱신 요청 / Draw:{drawPile.Count}, Discard:{discardPile.Count}");
+            OnDrawPileChanged?.Invoke(drawPile.Count);
+            OnDiscardPileChanged?.Invoke(discardPile.Count);
+        }
+
+        public void RefreshPileView()
+        {
+            NotifyPileCounts();
         }
 
         //드로우
@@ -58,7 +81,7 @@
                 handPile.Add(drawnCard);
                 ArrangeHandCards(handPile);
             }
-            OnDraw?.Invoke(drawPile.Count);
+            NotifyPileCounts();
         }
 
         //패섞기
@@ -69,8 +92,7 @@
             discardPile.Clear();
             ShuffleDeck(drawPile);
 
-            OnDraw?.Invoke(drawPile.Count);
-            OnRefill?.Invoke(discardPile.Count);
+            NotifyPileCounts();
         }
 
         public void DiscardAllCard()
@@ -83,6 +105,7 @@
                 discardPile.Add(temp.skill);
             }
             handPile.Clear();
+            NotifyPileCounts();
         }
 
         public void DiscardCard(Card card)
@@ -95,6 +118,7 @@
                 discardPile.Add(card.skill);
                 ArrangeHandCards(handPile);
             }
+            NotifyPileCounts();
         }
 
         // 리스트 셔플 (Fisher-Yates 알고리즘 등 사용)

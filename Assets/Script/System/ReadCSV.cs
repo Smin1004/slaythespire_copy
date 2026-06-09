@@ -70,6 +70,7 @@ public class ReadCSV : MonoBehaviour
             skillLists.Add(skill);
         }
         d.loadData.SkillList = skillLists;
+        Debug.Log($"[ParseSkillData] data = {data}");
     }
 
     public string FormatDesc(Skill skill)

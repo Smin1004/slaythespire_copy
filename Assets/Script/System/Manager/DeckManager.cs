@@ -13,6 +13,8 @@
         [SerializeField] private List<Skill> discardPile = new();
 
         [SerializeField] private Card cardObj;
+        [SerializeField] private AudioClip drawCardSound;
+        [SerializeField] private AudioClip useCardSound;
 
         public event Action<int> OnDrawPileChanged;
         public event Action<int> OnDiscardPileChanged;
@@ -63,6 +65,11 @@
             NotifyPileCounts();
         }
 
+        public void PlayUseCardSound()
+        {
+            BattleManager.Instance?.PlaySfx(useCardSound);
+        }
+
         //드로우
         public void DrawCards(int amount)
         {
@@ -80,6 +87,7 @@
                 drawPile.RemoveAt(0);
                 handPile.Add(drawnCard);
                 ArrangeHandCards(handPile);
+                BattleManager.Instance?.PlaySfx(drawCardSound);
             }
             NotifyPileCounts();
         }

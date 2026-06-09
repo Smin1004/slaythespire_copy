@@ -28,10 +28,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Transform enemySpawnParent;
     [SerializeField] private Transform[] enemySpawnPoints;
 
+    [Header("Boss Spawn")]
+    [SerializeField] private bool isBossBattle;
+    [SerializeField] private EnemyData bossEnemyData;
+
     [Header("Battle Feedback")]
     [SerializeField] private DamageViewSpawner damageSpawner;
     [SerializeField] private CameraShake cameraShake;
     [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip playerTurnStartSound;
 
     [SerializeField] private List<EnemyEntity> enemyList = new();
     public IReadOnlyList<EnemyEntity> EnemyList => enemyList;
@@ -149,17 +154,23 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        if (enemyDatas == null || enemyDatas.Length == 0)
+        if (isBossBattle && bossEnemyData == null)
+        {
+            Debug.LogWarning("Boss spawn failed: bossEnemyData is null.", this);
+            return;
+        }
+
+        if (!isBossBattle && (enemyDatas == null || enemyDatas.Length == 0))
         {
             Debug.LogWarning("Enemy spawn failed: enemyDatas is empty.", this);
             return;
         }
 
-        int spawnCount = enemySpawnPoints != null && enemySpawnPoints.Length > 0 ? enemySpawnPoints.Length : 1;
+        int spawnCount = isBossBattle ? 1 : (enemySpawnPoints != null && enemySpawnPoints.Length > 0 ? enemySpawnPoints.Length : 1);
 
         for (int i = 0; i < spawnCount; i++)
         {
-            EnemyData selectedData = enemyDatas[Random.Range(0, enemyDatas.Length)];
+            EnemyData selectedData = isBossBattle ? bossEnemyData : enemyDatas[Random.Range(0, enemyDatas.Length)];
             if (selectedData == null)
                 continue;
 
@@ -216,6 +227,7 @@ public class BattleManager : MonoBehaviour
         if (_player != null)
             _player.TurnInit();
 
+        PlaySfx(playerTurnStartSound);
         ChangeBattleState(BattleState.PlayerDraw);
     }
 

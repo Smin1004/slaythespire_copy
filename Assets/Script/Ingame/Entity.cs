@@ -23,8 +23,10 @@ public abstract class Entity : MonoBehaviour
     public event Action OnAttack;              // 공격을 할때 실행함
     public event Action OnDead;                     // Entity가 죽었을 때 실행됩니다.
     public event Action OnRevived;
+    public event Action<IReadOnlyList<Buff>> OnBuffsChanged;
 
     public List<Buff> buffs = new List<Buff>();
+    public IReadOnlyList<Buff> Buffs => buffs;
 
     public int CurrentHp => curHp;
     public int MaxHp => maxHp;
@@ -46,6 +48,33 @@ public abstract class Entity : MonoBehaviour
         {
             //buffs[i].effect.OnTurnStart(this);
         }
+    }
+
+    public virtual void AddBuff(Buff buff)
+    {
+        if (buff == null)
+            return;
+
+        buffs.Add(buff);
+        OnBuffsChanged?.Invoke(Buffs);
+    }
+
+    public virtual void RemoveBuff(Buff buff)
+    {
+        if (buff == null)
+            return;
+
+        if (buffs.Remove(buff))
+            OnBuffsChanged?.Invoke(Buffs);
+    }
+
+    public virtual void ClearBuffs()
+    {
+        if (buffs.Count == 0)
+            return;
+
+        buffs.Clear();
+        OnBuffsChanged?.Invoke(Buffs);
     }
 
     //Attack 이벤트 

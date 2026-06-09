@@ -100,11 +100,13 @@ public class ReadCSV : MonoBehaviour
             Buff buff = new();
             buff.index = int.Parse(cols[0]);
             buff.name = cols[1];
-            //buff.isDebuff = bool.Parse(cols[2]);
-            //buff.value = int.Parse(cols[3]);
+            buff.key = cols[3];
+            buff.isDebuff = string.Equals(cols[2], "Temporary", StringComparison.OrdinalIgnoreCase);
             buff.desc = cols[4];
-            //buff.img = Resources.Load<Sprite>($"Img/BuffImg/{cols[5]}");
-            //buff.effect = Activator.CreateInstance(Type.GetType(cols[6])) as BuffScript;
+            buff.img = Resources.Load<Sprite>($"Img/BuffImg/{cols[3]}");
+            Type buffType = typeof(BuffScript).Assembly.GetType(cols[3]);
+            if (buffType != null)
+                buff.effect = Activator.CreateInstance(buffType) as BuffScript;
             buffLists.Add(buff);
         }
         d.loadData.BuffList = buffLists;

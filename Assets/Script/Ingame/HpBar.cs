@@ -13,6 +13,13 @@ public class HpBar : MonoBehaviour
     [SerializeField] private Image fillImage;
     // "현재 HP / 최대 HP"를 표시할 텍스트입니다.
     [SerializeField] private TMP_Text hpText;
+    [SerializeField] private StatusEffectBar statusEffectBar;
+
+    private void Awake()
+    {
+        if (statusEffectBar == null)
+            statusEffectBar = GetComponentInChildren<StatusEffectBar>();
+    }
 
     private void OnEnable()
     {
@@ -25,6 +32,9 @@ public class HpBar : MonoBehaviour
     {
         if (targetEntity != null)
             UpdateHp(targetEntity.CurrentHp, targetEntity.MaxHp);
+
+        if (statusEffectBar != null)
+            statusEffectBar.SetTarget(targetEntity);
     }
 
     private void OnDisable()
@@ -46,6 +56,9 @@ public class HpBar : MonoBehaviour
             targetEntity.OnHealthChanged += UpdateHp;
             UpdateHp(targetEntity.CurrentHp, targetEntity.MaxHp);
         }
+
+        if (statusEffectBar != null)
+            statusEffectBar.SetTarget(targetEntity);
     }
 
     private void UpdateHp(int currentHp, int maxHp)

@@ -57,5 +57,5 @@ MonoBehaviour:
   attackSound: {fileID: 8300000, guid: 44a76ebcd1ee931428118638b0eed37f, type: 3}
   blockGainSound: {fileID: 8300000, guid: 004c7428af6623f4ab7bc2c303cbd8ab, type: 3}
   blockHitSound: {fileID: 8300000, guid: 8966c0423baa7c3439f0dc84853050cc, type: 3}
-  buffSound: {fileID: 0}
-  debuffSound: {fileID: 0}
+  buffSound: {fileID: 8300000, guid: 91cb0cf336c340f4fa4d12f8b821d36c, type: 3}
+  debuffSound: {fileID: 8300000, guid: 00dd1b53b4c38ae4dac4d32ed9aa3d02, type: 3}

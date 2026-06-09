@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BuffScript : MonoBehaviour
+public abstract class BuffScript
 {
     public Buff buffData;
 
@@ -17,6 +17,7 @@ public class Buff
 {
     public int index;
     public string name;
+    public string key;
 
     public bool isDebuff;
     public int value;
@@ -32,4 +33,20 @@ public class strength : BuffScript
     {
         
     }
+}
+
+public class dexterity : BuffScript
+{
+}
+
+public class vulnerable : BuffScript
+{
+}
+
+public class weak : BuffScript
+{
+}
+
+public class frail : BuffScript
+{
 }

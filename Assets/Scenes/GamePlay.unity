@@ -656,6 +656,7 @@ MonoBehaviour:
   targetEntity: {fileID: 535344580}
   fillImage: {fileID: 1824800695}
   hpText: {fileID: 484357299}
+  statusEffectBar: {fileID: 0}
 --- !u!1 &484357297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,8 +1135,8 @@ MonoBehaviour:
   attackSound: {fileID: 8300000, guid: 43c24b0932675be4aba0a8a39d722305, type: 3}
   blockGainSound: {fileID: 8300000, guid: 004c7428af6623f4ab7bc2c303cbd8ab, type: 3}
   blockHitSound: {fileID: 8300000, guid: 8966c0423baa7c3439f0dc84853050cc, type: 3}
-  buffSound: {fileID: 0}
-  debuffSound: {fileID: 0}
+  buffSound: {fileID: 8300000, guid: 91cb0cf336c340f4fa4d12f8b821d36c, type: 3}
+  debuffSound: {fileID: 8300000, guid: 00dd1b53b4c38ae4dac4d32ed9aa3d02, type: 3}
   buffs: []
   masterDeck: []
   energy: 100
@@ -1514,6 +1515,8 @@ MonoBehaviour:
   handPile: []
   discardPile: []
   cardObj: {fileID: 1696643776223505839, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
+  drawCardSound: {fileID: 8300000, guid: 40b6d9e0e71a0dc42b5b979eba0a840c, type: 3}
+  useCardSound: {fileID: 8300000, guid: 40b6d9e0e71a0dc42b5b979eba0a840c, type: 3}
   testPos: {fileID: 1375512135}
   handCenterPoint: {fileID: 995501412}
   defaultCardSpacing: 2
@@ -3283,10 +3286,9 @@ MonoBehaviour:
   _exitbutton: {fileID: 936916332}
   _hideWhenOpen:
   - {fileID: 535344577}
-  - {fileID: 0}
+  - {fileID: 719654690}
   - {fileID: 842135571}
   - {fileID: 1421347480}
-  - {fileID: 0}
 --- !u!114 &1204314760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3604,7 +3606,7 @@ GameObject:
   - component: {fileID: 1295517485}
   - component: {fileID: 1295517486}
   m_Layer: 0
-  m_Name: Ree
+  m_Name: RewardManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3817,7 +3819,7 @@ GameObject:
   m_Layer: 0
   m_Name: EnemySpwan
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4468,9 +4470,12 @@ MonoBehaviour:
   enemySpawnParent: {fileID: 1397124884}
   enemySpawnPoints:
   - {fileID: 1397124884}
+  isBossBattle: 0
+  bossEnemyData: {fileID: 11400000, guid: 827310ddabb6f7e44b395ea93b0d2e80, type: 2}
   damageSpawner: {fileID: 938187996}
   cameraShake: {fileID: 1204314764}
   audioManager: {fileID: 1204314763}
+  playerTurnStartSound: {fileID: 8300000, guid: cbefe5a054057584c888e95dbbecf7a4, type: 3}
   enemyList:
   - {fileID: 0}
   isPlayerTurn: 0
@@ -4583,8 +4588,8 @@ Transform:
   - {fileID: 1008577157}
   - {fileID: 736885038}
   - {fileID: 1627134148}
-  - {fileID: 719654691}
   - {fileID: 1295517485}
+  - {fileID: 719654691}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1650973533
@@ -4787,6 +4792,7 @@ MonoBehaviour:
     img: {fileID: 0}
     desc: 
     isUpgraded: 0
+  useCardSound: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1810624110

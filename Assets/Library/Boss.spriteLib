@@ -1,0 +1,197 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: Attack
+    m_Hash: 7088141
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon-attack-no-breath_0
+      m_Hash: 1003997903
+      m_Sprite: {fileID: 1119696102202878521, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1119696102202878521, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    - m_Name: demon-attack-no-breath_1
+      m_Hash: 215022169
+      m_Sprite: {fileID: -3021583118361910209, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -3021583118361910209, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    - m_Name: demon-attack-no-breath_2
+      m_Hash: 366586851
+      m_Sprite: {fileID: -3758352173003776340, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -3758352173003776340, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    - m_Name: demon-attack-no-breath_3
+      m_Hash: 585014133
+      m_Sprite: {fileID: 4440047075060365722, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 4440047075060365722, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    - m_Name: demon-attack-no-breath_4
+      m_Hash: 1018826454
+      m_Sprite: {fileID: 2775838402845532889, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 2775838402845532889, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    - m_Name: demon-attack-no-breath_5
+      m_Hash: 196951616
+      m_Sprite: {fileID: 158564056746921763, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 158564056746921763, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    - m_Name: demon-attack-no-breath_6
+      m_Hash: 313815034
+      m_Sprite: {fileID: -5957889397408292130, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -5957889397408292130, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    - m_Name: demon-attack-no-breath_7
+      m_Hash: 632512364
+      m_Sprite: {fileID: 254697773495596123, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 254697773495596123, guid: b6423c85c606d1d48992019dc148993b, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 8
+  - m_Name: Hit
+    m_Hash: 580870305
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon-attack_0
+      m_Hash: 406521531
+      m_Sprite: {fileID: 4830101959132194629, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 4830101959132194629, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_1
+      m_Hash: 792475181
+      m_Sprite: {fileID: -4271147063164771560, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -4271147063164771560, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_2
+      m_Hash: 909469591
+      m_Sprite: {fileID: -7799362553759336465, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -7799362553759336465, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_3
+      m_Hash: 20076289
+      m_Sprite: {fileID: 3464098051191881274, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 3464098051191881274, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_4
+      m_Hash: 525779618
+      m_Sprite: {fileID: -485573400809545533, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -485573400809545533, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_5
+      m_Hash: 676459060
+      m_Sprite: {fileID: 3534393129997317530, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 3534393129997317530, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 6
+  - m_Name: Idle
+    m_Hash: 1008081451
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon-idle_0
+      m_Hash: 445988698
+      m_Sprite: {fileID: 9083683855015346827, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 9083683855015346827, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+    - m_Name: demon-idle_1
+      m_Hash: 764547020
+      m_Sprite: {fileID: 4526976818826055507, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 4526976818826055507, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+    - m_Name: demon-idle_2
+      m_Hash: 882597494
+      m_Sprite: {fileID: 6706057316634897999, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 6706057316634897999, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+    - m_Name: demon-idle_3
+      m_Hash: 60583648
+      m_Sprite: {fileID: -7633371085453104933, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -7633371085453104933, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+    - m_Name: demon-idle_4
+      m_Hash: 502856515
+      m_Sprite: {fileID: 7622220858091088904, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 7622220858091088904, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+    - m_Name: demon-idle_5
+      m_Hash: 721406933
+      m_Sprite: {fileID: 5287318541332355128, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 5287318541332355128, guid: 9dc328b1b38bb8940b33275e3498009c, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 6
+  - m_Name: Breath
+    m_Hash: 1033325269
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon-attack_0
+      m_Hash: 406521531
+      m_Sprite: {fileID: 4830101959132194629, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 4830101959132194629, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_1
+      m_Hash: 792475181
+      m_Sprite: {fileID: -4271147063164771560, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -4271147063164771560, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_2
+      m_Hash: 909469591
+      m_Sprite: {fileID: -7799362553759336465, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -7799362553759336465, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_3
+      m_Hash: 20076289
+      m_Sprite: {fileID: 3464098051191881274, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 3464098051191881274, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_4
+      m_Hash: 525779618
+      m_Sprite: {fileID: -485573400809545533, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -485573400809545533, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_5
+      m_Hash: 676459060
+      m_Sprite: {fileID: 3534393129997317530, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 3534393129997317530, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_6
+      m_Hash: 827892622
+      m_Sprite: {fileID: 7574423355230237855, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 7574423355230237855, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_7
+      m_Hash: 106926872
+      m_Sprite: {fileID: -5612541687579396147, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -5612541687579396147, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_8
+      m_Hash: 383815305
+      m_Sprite: {fileID: -929153436317632263, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -929153436317632263, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_9
+      m_Hash: 568835615
+      m_Sprite: {fileID: 6143293567109672340, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 6143293567109672340, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    - m_Name: demon-attack_13
+      m_Hash: 681766616
+      m_Sprite: {fileID: 8765156206793520063, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 8765156206793520063, guid: fc58da7245a12eb478392b060ca0821f, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 11
+  m_PrimaryLibraryGUID: 
+  m_ModificationHash: 639166337928483076
+  m_Version: 1

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e403f8cba07dc1478e6b0778ea76db4, type: 3}
-  m_Name: mushroom
+  m_Name: Boss
   m_EditorClassIdentifier: 
-  enemyName: Mushroom
-  maxHealth: 10
+  enemyName: Boss
+  maxHealth: 200
   reward:
     minGold: 10
     maxGold: 20
@@ -21,7 +21,7 @@ MonoBehaviour:
   actions:
   - actionName: Nomal Attack
     intentType: 0
-    attackDamage: 10
+    attackDamage: 20
     blockAmount: 0
     buffDebuffType: 0
     effectValue: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
   - actionName: Block
-    intentType: 0
+    intentType: 2
     attackDamage: 0
     blockAmount: 20
     buffDebuffType: 0
@@ -52,8 +52,8 @@ MonoBehaviour:
     attackAnimationTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
-  spriteLibraryAsset: {fileID: 7108339969198208228, guid: f807d5f1c794abf4ca288c9f91c73929, type: 3}
-  animatorController: {fileID: 9100000, guid: 285eec0105fb187488049ad14a348055, type: 2}
+  spriteLibraryAsset: {fileID: 7108339969198208228, guid: 2045fd84c67672743bfab5d2a0a6f95d, type: 3}
+  animatorController: {fileID: 9100000, guid: 0ed25701b30bb33459867f83b0298480, type: 2}
   attackSound: {fileID: 8300000, guid: 44a76ebcd1ee931428118638b0eed37f, type: 3}
   blockGainSound: {fileID: 8300000, guid: 004c7428af6623f4ab7bc2c303cbd8ab, type: 3}
   blockHitSound: {fileID: 8300000, guid: 8966c0423baa7c3439f0dc84853050cc, type: 3}

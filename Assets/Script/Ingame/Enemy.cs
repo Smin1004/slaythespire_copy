@@ -129,10 +129,12 @@ public class EnemyEntity : Entity
                 break;
             case IntentType.Buff:
                 UseBuff();
+                ApplyStatus(this);
                 Debug.Log($"Buff: {currentAction.buffDebuffType} {currentAction.effectValue}");
                 break;
             case IntentType.Debuff:
                 UseDebuff();
+                ApplyStatus(playerTarget);
                 Debug.Log($"Debuff: {currentAction.buffDebuffType} {currentAction.effectValue}");
                 break;
         }
@@ -145,9 +147,45 @@ public class EnemyEntity : Entity
         AttackEvent();
 
         int hits = Mathf.Max(1, currentAction.attackCount);
-        for (int i = 0; i < hits; i++){}
+        for (int i = 0; i < hits; i++)
             playerTarget.ExecuteAttack(playerTarget, currentAction.attackDamage);
     }
+
+    private void ApplyStatus(Entity target)
+    {
+        if (target == null || currentAction == null || currentAction.buffDebuffType == BuffDebuffType.None)
+            return;
+
+        LoadData loadData = DataManager.Instance != null ? DataManager.Instance.loadData : null;
+        if (loadData == null)
+            return;
+
+        Buff template = loadData.GetBuffByKeyOrName(currentAction.statusKeyOrName);
+        if (template == null)
+            template = loadData.GetBuffByKey(currentAction.buffDebuffType.ToString().ToLowerInvariant());
+
+        if (template == null)
+            return;
+
+        Buff runtimeBuff = new Buff
+        {
+            index = template.index,
+            name = template.name,
+            key = template.key,
+            isDebuff = template.isDebuff,
+            value = currentAction.effectValue,
+            img = template.img,
+            effect = template.effect,
+            desc = template.desc
+        };
+
+        target.AddBuff(runtimeBuff);
+    }
+
+    // public void TakeDamage(int damageAmount)
+    // {
+    //     Damage(damageAmount);
+    // }
 
     private void PlayDamagedFeedback(int appliedDamage)
     {

@@ -65,7 +65,7 @@ public class ReadCSV : MonoBehaviour
             skill.img = Resources.Load<Sprite>($"Img/CardImg/{cols[5]}");
             skill.isUpgraded = false;
 
-            skill.desc = skill.effect.FormatDesc(skill);
+            skill.desc = skill.effect.FormatDesc(skill, 0);
             skillLists.Add(skill);
         }
         d.loadData.SkillList = skillLists;
@@ -84,16 +84,18 @@ public class ReadCSV : MonoBehaviour
         {
             Debug.Log(rows[i]);
             string[] cols = rows[i].Split(',');
-            if (cols.Length < 7) continue;
+            if (cols.Length < 5) continue;
 
             Buff buff = new();
             buff.index = int.Parse(cols[0]);
-            buff.name = cols[1];
-            //buff.isDebuff = bool.Parse(cols[2]);
-            //buff.value = int.Parse(cols[3]);
-            buff.desc = cols[4];
-            //buff.img = Resources.Load<Sprite>($"Img/BuffImg/{cols[5]}");
-            buff.effect = Activator.CreateInstance(Type.GetType(cols[3])) as BuffScript;
+            buff.name = cols[1].Trim();
+            buff.key = cols[3].Trim();
+            buff.isDebuff = string.Equals(cols[2].Trim(), "Temporary", StringComparison.OrdinalIgnoreCase);
+            buff.desc = cols[4].Trim();
+            buff.img = Resources.Load<Sprite>($"Img/BuffImg/{buff.key}");
+            Type buffType = typeof(BuffScript).Assembly.GetType(buff.key);
+            if (buffType != null)
+                buff.effect = Activator.CreateInstance(Type.GetType(cols[3])) as BuffScript;
             buffLists.Add(buff);
         }
         d.loadData.BuffList = buffLists;

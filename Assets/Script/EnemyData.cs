@@ -67,7 +67,8 @@ public enum BuffDebuffType
     Strength,
     Weak,
     Vulnerable,
-    Frail
+    Frail,
+    Dexterity
 }
 
 [System.Serializable]
@@ -78,6 +79,8 @@ public class EnemyAction
     public int attackDamage;
     public int blockAmount;
     public BuffDebuffType buffDebuffType;
+    // CSV의 script key 또는 한글 상태이상 이름을 직접 적습니다. 예: weak 또는 약화
+    public string statusKeyOrName;
     public int effectValue;
     // 다단히트 공격을 표현할 때 사용합니다. 1보다 작으면 실행 시 1회로 보정됩니다.
     public int attackCount = 1;

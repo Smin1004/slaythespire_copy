@@ -17,6 +17,7 @@ public class Card : PoolableObject
     public TextMeshPro nameText;
     public SpriteRenderer img;
     public Skill skill;
+    [SerializeField] private AudioClip useCardSound;
 
     public Vector3 targetPosition;
     public Quaternion targetRotation;
@@ -154,6 +155,10 @@ public class Card : PoolableObject
         }
 
         player.UseEnergy(skill.cost);
+        if (useCardSound != null)
+            BattleManager.Instance?.PlaySfx(useCardSound);
+        else
+            DeckManager.Instance?.PlayUseCardSound();
         targetPosition = Vector3.zero;
         targetRotation = Quaternion.identity;
         int[] value = skill.isUpgraded ? skill.upgradeValue : skill.skillValue;

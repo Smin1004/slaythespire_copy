@@ -23,8 +23,10 @@ public abstract class Entity : MonoBehaviour
     public event Action OnAttack;              // 공격을 할때 실행함
     public event Action OnDead;                     // Entity가 죽었을 때 실행됩니다.
     public event Action OnRevived;
+    public event Action<IReadOnlyList<Buff>> OnBuffsChanged;
 
     public List<Buff> buffs = new List<Buff>();
+    public IReadOnlyList<Buff> Buffs => buffs;
 
     public int CurrentHp => curHp;
     public int MaxHp => maxHp;
@@ -47,7 +49,6 @@ public abstract class Entity : MonoBehaviour
             buffs[i].effect.OnTurnStart(this);
         }
     }
-
     //공격시 버프 연산
     public void ExecuteAttack(Entity target, int value, bool isAttack = true)
     {
@@ -82,6 +83,50 @@ public abstract class Entity : MonoBehaviour
     public virtual void BuffCheck_After(Entity target)
     {
         for(int i = 0; i < buffs.Count; i++) buffs[i].effect.OnAfter(this, target);
+    }
+
+    public virtual void AddBuff(Buff buff)
+    {
+        if (buff == null)
+            return;
+
+        Buff existingBuff = buffs.Find(item =>
+            item != null &&
+            ((!string.IsNullOrEmpty(item.key) && item.key == buff.key) ||
+             (item.index != 0 && item.index == buff.index)));
+
+        if (existingBuff != null)
+        {
+            existingBuff.value += Mathf.Max(1, buff.value);
+            OnBuffsChanged?.Invoke(Buffs);
+            return;
+        }
+
+        if (buff.value <= 0)
+            buff.value = 1;
+
+        buffs.Add(buff);
+        OnBuffsChanged?.Invoke(Buffs);
+    }
+
+    public virtual void RemoveBuff(Buff buff)
+    {
+        if (buff == null)
+            return;
+
+        if (buffs.Remove(buff))
+            OnBuffsChanged?.Invoke(Buffs);
+    }
+    
+
+    public virtual void ClearBuffs()
+    {
+        if (buffs.Count == 0)
+            return;
+
+        buffs.Clear();
+        OnBuffsChanged?.Invoke(Buffs);
+
     }
 
     //Attack 이벤트 

@@ -13,49 +13,88 @@ MonoBehaviour:
   m_Name: Goblin
   m_EditorClassIdentifier: 
   enemyName: Goblin
-  maxHealth: 10
+  maxHealth: 200
   reward:
     minGold: 10
     maxGold: 20
     cardRewardPool: []
   actions:
-  - actionName: Nomal Attack
+  - actionName: Attack
     intentType: 0
     attackDamage: 10
     blockAmount: 0
     buffDebuffType: 0
-    effectValue: 0
+    statusKeyOrName: 
+    effectValue: 1
     attackCount: 1
     weight: 1
     attackAnimationTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
-  - actionName: Block
+  - actionName: Gard
     intentType: 1
     attackDamage: 0
     blockAmount: 10
     buffDebuffType: 0
-    effectValue: 0
+    statusKeyOrName: 
+    effectValue: 1
     attackCount: 1
     weight: 1
     attackAnimationTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
-  - actionName: Block
-    intentType: 0
+  - actionName: Buff
+    intentType: 2
     attackDamage: 0
-    blockAmount: 20
-    buffDebuffType: 0
-    effectValue: 0
+    blockAmount: 0
+    buffDebuffType: 1
+    statusKeyOrName: 
+    effectValue: 2
     attackCount: 1
     weight: 1
     attackAnimationTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
-  spriteLibraryAsset: {fileID: 7108339969198208228, guid: da6ea54a5a171db4aa929d49191c57f5, type: 3}
+  - actionName: DeBuff
+    intentType: 3
+    attackDamage: 0
+    blockAmount: 0
+    buffDebuffType: 3
+    statusKeyOrName: 
+    effectValue: 2
+    attackCount: 1
+    weight: 1
+    attackAnimationTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  - actionName: Attack2
+    intentType: 0
+    attackDamage: 10
+    blockAmount: 0
+    buffDebuffType: 0
+    statusKeyOrName: 
+    effectValue: 1
+    attackCount: 2
+    weight: 1
+    attackAnimationTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  - actionName: Attack2
+    intentType: 2
+    attackDamage: 0
+    blockAmount: 0
+    buffDebuffType: 2
+    statusKeyOrName: 
+    effectValue: 1
+    attackCount: 2
+    weight: 1
+    attackAnimationTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  spriteLibraryAsset: {fileID: 7108339969198208228, guid: 9e55463c1b9bc814f8541ffe965abf33, type: 3}
   animatorController: {fileID: 9100000, guid: 285eec0105fb187488049ad14a348055, type: 2}
   attackSound: {fileID: 8300000, guid: 44a76ebcd1ee931428118638b0eed37f, type: 3}
   blockGainSound: {fileID: 8300000, guid: 004c7428af6623f4ab7bc2c303cbd8ab, type: 3}
   blockHitSound: {fileID: 8300000, guid: 8966c0423baa7c3439f0dc84853050cc, type: 3}
-  buffSound: {fileID: 0}
-  debuffSound: {fileID: 0}
+  buffSound: {fileID: 8300000, guid: 91cb0cf336c340f4fa4d12f8b821d36c, type: 3}
+  debuffSound: {fileID: 8300000, guid: 00dd1b53b4c38ae4dac4d32ed9aa3d02, type: 3}

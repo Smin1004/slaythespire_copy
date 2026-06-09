@@ -12,7 +12,9 @@ public class DeckManager : MonoBehaviour
     [SerializeField] private List<Card> handPile = new();
     [SerializeField] private List<Skill> discardPile = new();
 
-    [SerializeField] private Card cardObj;
+        [SerializeField] private Card cardObj;
+        [SerializeField] private AudioClip drawCardSound;
+        [SerializeField] private AudioClip useCardSound;
 
     public event Action<int> OnDrawPileChanged;
     public event Action<int> OnDiscardPileChanged;
@@ -73,10 +75,15 @@ public class DeckManager : MonoBehaviour
         OnDiscardPileChanged?.Invoke(discardPile.Count);
     }
 
-    public void RefreshPileView()
-    {
-        NotifyPileCounts();
-    }
+        public void RefreshPileView()
+        {
+            NotifyPileCounts();
+        }
+
+        public void PlayUseCardSound()
+        {
+            BattleManager.Instance?.PlaySfx(useCardSound);
+        }
 
     //드로우
     public void DrawCards(int amount)
@@ -89,15 +96,16 @@ public class DeckManager : MonoBehaviour
                 ReshuffleDiscardIntoDraw();
             }
 
-            // 가장 위(또는 랜덤) 카드 뽑기
-            Card drawnCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, testPos.position, testPos.rotation).GetComponent<Card>();
-            drawnCard.Init(drawPile[0]);
-            drawPile.RemoveAt(0);
-            handPile.Add(drawnCard);
-            ArrangeHandCards(handPile);
+                // 가장 위(또는 랜덤) 카드 뽑기
+                Card drawnCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, testPos.position, testPos.rotation).GetComponent<Card>();
+                drawnCard.Init(drawPile[0]);
+                drawPile.RemoveAt(0);
+                handPile.Add(drawnCard);
+                ArrangeHandCards(handPile);
+                BattleManager.Instance?.PlaySfx(drawCardSound);
+            }
+            NotifyPileCounts();
         }
-        NotifyPileCounts();
-    }
 
     //패섞기
     private void ReshuffleDiscardIntoDraw()

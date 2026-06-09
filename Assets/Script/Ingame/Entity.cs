@@ -35,7 +35,10 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void TurnInit()
     {
-        
+        for (int i = buffs.Count - 1; i >= 0; i--)
+        {
+            //buffs[i].effect.OnTurnStart(this);
+        }
     }
 
     //Attack 이벤트 

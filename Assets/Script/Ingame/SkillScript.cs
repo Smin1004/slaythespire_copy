@@ -1,9 +1,20 @@
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public abstract class SkillScript
 {
     public abstract IEnumerator Trigger(Entity unit, Entity[] target, int[] value);
+
+    public string FormatDesc(Skill skill, int plusValue)
+    {
+        string rawFormat = skill.desc;
+        int[] currentValues = skill.isUpgraded ? skill.upgradeValue : skill.skillValue;
+
+        object[] objectValues = currentValues.Select(val => val + plusValue).Cast<object>().ToArray();
+
+        return string.Format(rawFormat, objectValues);
+    }
 }
 
 [System.Serializable]
@@ -19,7 +30,7 @@ public class Skill
 
     public int[] skillValue;
     public int[] upgradeValue;
-    
+
     public Sprite img;
     public SkillScript effect;
     public string desc;
@@ -44,9 +55,9 @@ public class testAttack : SkillScript
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.Attack();  //애니메이션
+        unit.AttackEvent();  //애니메이션
 
-        target[0].Damage(value[0]);
+        unit.ExecuteAttack(target[0], value[0]);
         yield break;
     }
 }
@@ -55,14 +66,14 @@ public class testPlusAttack : SkillScript
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.Attack();  //애니메이션 구현
+        unit.AttackEvent();  //애니메이션 구현
 
         for (int i = 0; i < value[1]; i++)
         {
-            Debug.Log("Plus Attack");   
+            Debug.Log("Plus Attack");
             int random = Random.Range(0, target.Length);
             yield return new WaitForSeconds(0.2f);
-            target[random].Damage(value[0]);
+            unit.ExecuteAttack(target[random], value[0]);
         }
     }
 }
@@ -71,7 +82,7 @@ public class testSkill : SkillScript
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AddBlock(value[0]);
+        unit.ExecuteBlock(value[0]);
         yield break;
     }
 }
@@ -81,8 +92,8 @@ public class testPower : SkillScript
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
         unit.UseBuff();
-        //target[0].Damage(value[0]);
-        Debug.Log("아직 버프가 업성요");
+        Buff curBuff = DataManager.Instance.AddBuff(0, value[0]);
+        unit.buffs.Add(curBuff);
         yield break;
     }
 }

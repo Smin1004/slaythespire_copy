@@ -29,12 +29,24 @@ public class Player : Entity
         }
     }
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space)) buffs.Add(DataManager.Instance.loadData.BuffList[0]);
+    }
+
     public override void TurnInit()
     {
         base.TurnInit();
         energy = maxEnergy;
         OnEnergyChanged?.Invoke(energy, maxEnergy);
     }
+
+    public virtual int BuffCheck_CardTrigger(Skill skill, int value)
+    {
+        for(int i = 0; i < buffs.Count; i++) value = buffs[i].effect.OnTrigger(this, skill, value);
+        return value;
+    }
+
 
     public void UseEnergy(int amount)
     {

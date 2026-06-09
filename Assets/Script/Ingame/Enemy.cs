@@ -142,16 +142,11 @@ public class EnemyEntity : Entity
 
     private void ExecuteAttack(Entity playerTarget)
     {
-        Attack();
+        AttackEvent();
 
         int hits = Mathf.Max(1, currentAction.attackCount);
-        for (int i = 0; i < hits; i++)
-            playerTarget.Damage(currentAction.attackDamage);
-    }
-
-    public void TakeDamage(int damageAmount)
-    {
-        Damage(damageAmount);
+        for (int i = 0; i < hits; i++){}
+            playerTarget.ExecuteAttack(playerTarget, currentAction.attackDamage);
     }
 
     private void PlayDamagedFeedback(int appliedDamage)

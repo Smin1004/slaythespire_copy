@@ -44,20 +44,56 @@ public abstract class Entity : MonoBehaviour
     {
         for (int i = buffs.Count - 1; i >= 0; i--)
         {
-            //buffs[i].effect.OnTurnStart(this);
+            buffs[i].effect.OnTurnStart(this);
         }
     }
 
+    //공격시 버프 연산
+    public void ExecuteAttack(Entity target, int value, bool isAttack = true)
+    {
+        value = BuffCheck_Attack(this, value);
+        value = target.BuffCheck_Block(target, value);
+        if(!isAttack) return;
+        Debug.Log($"Attack!!!!! {value}");
+        target.Damage(this, value);
+    }
+
+    //방어시 버프 연산
+    public void ExecuteBlock(int value)
+    {
+        value = BuffCheck_Attack(this, value);
+        AddBlock(value);
+    }
+
+    //피격시 버프 계산
+    public virtual int BuffCheck_Attack(Entity unit, int value)
+    {
+        for(int i = 0; i < buffs.Count; i++) value = buffs[i].effect.OnAttack(this, value);
+        return value;
+    }
+
+    //피격시 버프 계산
+    public virtual int BuffCheck_Block(Entity unit, int value)
+    {
+        for(int i = 0; i < buffs.Count; i++) value = buffs[i].effect.OnBlock(this, value);
+        return value;
+    }
+
+    public virtual void BuffCheck_After(Entity target)
+    {
+        for(int i = 0; i < buffs.Count; i++) buffs[i].effect.OnAfter(this, target);
+    }
+
     //Attack 이벤트 
-    public virtual void Attack()
+    public virtual void AttackEvent()
     {
         OnAttack?.Invoke();
         PlaySfx(GetAttackSound());
     }
 
-    public virtual void Damage(int damageAmount)
+    public virtual void Damage(Entity target, int damageAmount)
     {
-        if (damageAmount <= 0)
+        if (damageAmount < 0)
             return;
 
         if (_isDead)
@@ -75,7 +111,10 @@ public abstract class Entity : MonoBehaviour
                 PlaySfx(GetBlockHitSound());
 
             if (remainingDamage <= 0)
+            {
+                BuffCheck_After(target);
                 return;
+            }
 
             damageAmount = remainingDamage;
         }
@@ -88,6 +127,8 @@ public abstract class Entity : MonoBehaviour
         int appliedDamage = beforeHp - curHp;
         if (appliedDamage > 0)
             OnDamaged?.Invoke(appliedDamage);
+
+        BuffCheck_After(target);
 
       
         if (curHp <= 0 && !_isDead)

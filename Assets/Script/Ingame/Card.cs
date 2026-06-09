@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UIElements.Experimental;
 
 public class Card : PoolableObject
 {
@@ -155,7 +156,9 @@ public class Card : PoolableObject
         player.UseEnergy(skill.cost);
         targetPosition = Vector3.zero;
         targetRotation = Quaternion.identity;
-        yield return StartCoroutine(skill.effect.Trigger(player, targets, skill.skillValue));
+        int[] value = skill.isUpgraded ? skill.upgradeValue : skill.skillValue;
+        value[0] = player.BuffCheck_CardTrigger(skill, value[0]);
+        yield return StartCoroutine(skill.effect.Trigger(player, targets, value));
         DeckManager.Instance.DiscardCard(this);
     }
 

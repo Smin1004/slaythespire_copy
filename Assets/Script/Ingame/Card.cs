@@ -1,7 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UIElements.Experimental;
 
 public class Card : PoolableObject
 {
@@ -76,11 +75,11 @@ public class Card : PoolableObject
 
         if (skill.isTargeting)
         {
-            // 타겟팅 카드면 마우스 위치 아래의 Enemy 태그 오브젝트를 찾습니다.
+            // 타겟팅 카드면 마우스 위치 아래의 EnemyEntity만 찾습니다.
             Entity foundTarget = FindEnemyAtMousePosition();
             Debug.Log(foundTarget == null);
 
-                if (foundTarget != null)
+            if (foundTarget != null)
                 TriggerCard(foundTarget);
             else
                 ReturnToHand();
@@ -106,7 +105,10 @@ public class Card : PoolableObject
             Debug.Log(hit.tag);
             if (hit.CompareTag("Enemy"))
             {
-                return hit.GetComponentInParent<Entity>();
+                // 태그가 잘못 붙은 오브젝트 때문에 플레이어가 타겟으로 들어가지 않도록 EnemyEntity만 허용합니다.
+                EnemyEntity enemy = hit.GetComponentInParent<EnemyEntity>();
+                if (enemy != null)
+                    return enemy;
             }
                 
         }
@@ -130,14 +132,14 @@ public class Card : PoolableObject
 
     public IEnumerator UseCard(Entity target)
     {
-        if (skill == null || player == null)
-            yield return false;
+        if (skill == null || skill.effect == null || player == null)
+            yield break; // 카드/플레이어가 없으면 효과를 계속 진행하면 안 됩니다.
 
         if (battleManager != null && !battleManager.isPlayerTurn)
-            yield return false;
+            yield break; // yield return false는 한 프레임 뒤 계속 실행되므로, 사용 불가 조건은 yield break로 중단합니다.
 
         if (player.energy < skill.cost)
-            yield return false;
+            yield break;
 
         Entity[] targets;
         if (target != null)
@@ -154,6 +156,13 @@ public class Card : PoolableObject
             }
         }
 
+        int[] baseValue = skill.isUpgraded ? skill.upgradeValue : skill.skillValue;
+        if (baseValue == null || baseValue.Length == 0)
+            yield break;
+
+        // 카드 데이터 원본 배열을 그대로 수정하면 턴이 지날수록 공격력/방어도 값이 누적될 수 있어 복사본을 사용합니다.
+        int[] value = (int[])baseValue.Clone();
+
         player.UseEnergy(skill.cost);
         if (useCardSound != null)
             BattleManager.Instance?.PlaySfx(useCardSound);
@@ -161,7 +170,6 @@ public class Card : PoolableObject
             DeckManager.Instance?.PlayUseCardSound();
         targetPosition = Vector3.zero;
         targetRotation = Quaternion.identity;
-        int[] value = skill.isUpgraded ? skill.upgradeValue : skill.skillValue;
         value[0] = player.BuffCheck_CardTrigger(skill, value[0]);
         yield return StartCoroutine(skill.effect.Trigger(player, targets, value));
         DeckManager.Instance.DiscardCard(this);

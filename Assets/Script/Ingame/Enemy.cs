@@ -148,7 +148,9 @@ public class EnemyEntity : Entity
 
         int hits = Mathf.Max(1, currentAction.attackCount);
         for (int i = 0; i < hits; i++)
-            playerTarget.ExecuteAttack(playerTarget, currentAction.attackDamage);
+        {
+            ExecuteAttack(playerTarget, currentAction.attackDamage);
+        }
     }
 
     private void ApplyStatus(Entity target)
@@ -167,17 +169,9 @@ public class EnemyEntity : Entity
         if (template == null)
             return;
 
-        Buff runtimeBuff = new Buff
-        {
-            index = template.index,
-            name = template.name,
-            key = template.key,
-            isDebuff = template.isDebuff,
-            value = currentAction.effectValue,
-            img = template.img,
-            effect = template.effect,
-            desc = template.desc
-        };
+        // EnemyData 행동으로 거는 상태이상도 원본 Buff를 직접 쓰지 않고 전투용 복사본으로 적용합니다.
+        int duration = target == this ? 2 : 1;
+        Buff runtimeBuff = template.CreateRuntimeCopy(currentAction.effectValue, duration);
 
         target.AddBuff(runtimeBuff);
     }

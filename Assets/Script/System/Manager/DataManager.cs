@@ -21,10 +21,17 @@ public class DataManager : MonoBehaviour
 
     public Buff AddBuff(int index, int value)
     {
-        Buff temp = loadData.BuffList[index];
-        temp.effect.buffData = temp;
-        temp.value = value;
-        //DeckManager.Instance.UpdateDesc();
-        return temp;
+        if (loadData == null)
+            return null;
+
+        Buff template = loadData.GetBuffByIndex(index);
+        if (template == null && index >= 0 && index < loadData.BuffList.Count)
+            template = loadData.BuffList[index];
+
+        if (template == null)
+            return null;
+
+        // LoadData의 Buff는 CSV 원본 데이터입니다. 전투 중 value/remainingTurns가 바뀌므로 반드시 복사본을 반환합니다.
+        return template.CreateRuntimeCopy(value, 1);
     }
 }

@@ -1310,7 +1310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curHp: 100
   maxHp: 100
-  curBlock: 10
+  curBlock: 0
   _isDead: 0
   attackSound: {fileID: 8300000, guid: 43c24b0932675be4aba0a8a39d722305, type: 3}
   blockGainSound: {fileID: 8300000, guid: 004c7428af6623f4ab7bc2c303cbd8ab, type: 3}
@@ -3340,7 +3340,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204314756}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4274937883329010835, guid: aa692f3d2d4278b46912ca300481fc85, type: 2}
   m_audioClip: {fileID: 0}
@@ -3472,7 +3472,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204314756}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 6085947407928703135, guid: aa692f3d2d4278b46912ca300481fc85, type: 2}
   m_audioClip: {fileID: 0}
@@ -4669,7 +4669,7 @@ MonoBehaviour:
   - {fileID: 1397124884}
   isBossBattle: 0
   bossEnemyData: {fileID: 11400000, guid: 984a0cd401aea594a9f43c30a1c7d38f, type: 2}
-  damageSpawner: {fileID: 938187996}
+  damageSpawner: {fileID: 938187998}
   cameraShake: {fileID: 1204314764}
   audioManager: {fileID: 1204314763}
   playerTurnStartSound: {fileID: 8300000, guid: cbefe5a054057584c888e95dbbecf7a4, type: 3}

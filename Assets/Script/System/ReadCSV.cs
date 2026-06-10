@@ -95,7 +95,12 @@ public class ReadCSV : MonoBehaviour
             buff.img = Resources.Load<Sprite>($"Img/BuffImg/{buff.key}");
             Type buffType = typeof(BuffScript).Assembly.GetType(buff.key);
             if (buffType != null)
-                buff.effect = Activator.CreateInstance(Type.GetType(cols[3])) as BuffScript;
+            {
+                buff.effect = Activator.CreateInstance(buffType) as BuffScript;
+                // LoadData에 저장되는 원본에도 연결해 두면 설명/디버그 확인 시 null을 피할 수 있습니다.
+                if (buff.effect != null)
+                    buff.effect.buffData = buff;
+            }
             buffLists.Add(buff);
         }
         d.loadData.BuffList = buffLists;

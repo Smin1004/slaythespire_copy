@@ -46,12 +46,20 @@ public abstract class Entity : MonoBehaviour
     {
         for (int i = buffs.Count - 1; i >= 0; i--)
         {
-            buffs[i].effect.OnTurnStart(this);
+            Buff buff = buffs[i];
+            if (buff?.effect == null)
+                continue;
+
+            buff.effect.buffData = buff;
+            buff.effect.OnTurnStart(this);
         }
     }
     //공격시 버프 연산
     public void ExecuteAttack(Entity target, int value, bool isAttack = true)
     {
+        if (target == null || IsDead)
+            return;
+
         value = BuffCheck_Attack(this, value);
         value = target.BuffCheck_Block(target, value);
         if(!isAttack) return;
@@ -69,20 +77,44 @@ public abstract class Entity : MonoBehaviour
     //피격시 버프 계산
     public virtual int BuffCheck_Attack(Entity unit, int value)
     {
-        for(int i = 0; i < buffs.Count; i++) value = buffs[i].effect.OnAttack(this, value);
+        for(int i = 0; i < buffs.Count; i++)
+        {
+            Buff buff = buffs[i];
+            if (buff?.effect == null)
+                continue;
+
+            buff.effect.buffData = buff;
+            value = buff.effect.OnAttack(this, value);
+        }
         return value;
     }
 
     //피격시 버프 계산
     public virtual int BuffCheck_Block(Entity unit, int value)
     {
-        for(int i = 0; i < buffs.Count; i++) value = buffs[i].effect.OnBlock(this, value);
+        for(int i = 0; i < buffs.Count; i++)
+        {
+            Buff buff = buffs[i];
+            if (buff?.effect == null)
+                continue;
+
+            buff.effect.buffData = buff;
+            value = buff.effect.OnBlock(this, value);
+        }
         return value;
     }
 
     public virtual void BuffCheck_After(Entity target)
     {
-        for(int i = 0; i < buffs.Count; i++) buffs[i].effect.OnAfter(this, target);
+        for(int i = 0; i < buffs.Count; i++)
+        {
+            Buff buff = buffs[i];
+            if (buff?.effect == null)
+                continue;
+
+            buff.effect.buffData = buff;
+            buff.effect.OnAfter(this, target);
+        }
     }
 
     public virtual void AddBuff(Buff buff)
@@ -98,12 +130,21 @@ public abstract class Entity : MonoBehaviour
         if (existingBuff != null)
         {
             existingBuff.value += Mathf.Max(1, buff.value);
+            existingBuff.remainingTurns = Mathf.Max(existingBuff.remainingTurns, buff.remainingTurns);
+            if (existingBuff.effect != null)
+                existingBuff.effect.buffData = existingBuff;
             OnBuffsChanged?.Invoke(Buffs);
             return;
         }
 
         if (buff.value <= 0)
             buff.value = 1;
+
+        if (buff.remainingTurns <= 0)
+            buff.remainingTurns = 1;
+
+        if (buff.effect != null)
+            buff.effect.buffData = buff;
 
         buffs.Add(buff);
         OnBuffsChanged?.Invoke(Buffs);
@@ -127,6 +168,39 @@ public abstract class Entity : MonoBehaviour
         buffs.Clear();
         OnBuffsChanged?.Invoke(Buffs);
 
+    }
+
+    public virtual void TickBuffTurns()
+    {
+        bool changed = false;
+
+        for (int i = buffs.Count - 1; i >= 0; i--)
+        {
+            Buff buff = buffs[i];
+            if (buff == null)
+            {
+                buffs.RemoveAt(i);
+                changed = true;
+                continue;
+            }
+
+            if (buff.effect != null)
+            {
+                buff.effect.buffData = buff;
+                buff.effect.OnTurnEnd(this);
+            }
+
+            // 턴 종료 시 지속 턴을 1 줄이고, 0이 되면 UI와 효과 목록에서 제거합니다.
+            buff.remainingTurns--;
+            if (buff.remainingTurns <= 0)
+            {
+                buffs.RemoveAt(i);
+                changed = true;
+            }
+        }
+
+        if (changed)
+            OnBuffsChanged?.Invoke(Buffs);
     }
 
     //Attack 이벤트 

@@ -33,7 +33,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private EnemyData bossEnemyData;
 
     [Header("Battle Feedback")]
-    [SerializeField] private DamageViewSpawner damageSpawner;
+    [SerializeField] private DamageSpawner damageSpawner;
     [SerializeField] private CameraShake cameraShake;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private AudioClip playerTurnStartSound;
@@ -198,8 +198,8 @@ public class BattleManager : MonoBehaviour
 
     public void SpawnDamageText(int damage, Transform target)
     {
-        if (damageSpawner != null)
-            damageSpawner.SpawnDamageView(damage);
+        if (damageSpawner != null && target != null)
+            damageSpawner.SpawnDamage(damage, target);
     }
 
     public void ShakeCamera()
@@ -257,6 +257,10 @@ public class BattleManager : MonoBehaviour
         if (DeckManager.Instance != null)
             DeckManager.Instance.DiscardAllCard();
 
+        // 플레이어가 이번 턴에 얻은 버프/디버프는 턴 종료 시 지속 턴을 줄이고 0이면 제거합니다.
+        if (_player != null)
+            _player.TickBuffTurns();
+
         isPlayerTurn = false;
         ChangeBattleState(BattleState.EnemyTurn);
     }
@@ -268,11 +272,22 @@ public class BattleManager : MonoBehaviour
         EnemyEntity[] enemies = enemyList.ToArray();
         foreach (EnemyEntity enemy in enemies)
         {
-            if (enemy != null)
-                enemy.ExecuteEnemyTurn(_player);
+            if (enemy == null)
+                continue;
+
+            enemy.ExecuteEnemyTurn(_player);
         }
 
         yield return new WaitForSeconds(2f);
+
+        // 적 버프/디버프는 적 턴이 끝날 때만 지속 턴을 줄입니다.
+        foreach (EnemyEntity enemy in enemies)
+        {
+            if (enemy == null)
+                continue;
+
+            enemy.TickBuffTurns();
+        }
 
         if (enemyList.Count == 0)
             ChangeBattleState(BattleState.BattleWon);

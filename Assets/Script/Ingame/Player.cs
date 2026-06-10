@@ -31,7 +31,7 @@ public class Player : Entity
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) buffs.Add(DataManager.Instance.loadData.BuffList[0]);
+        if(Input.GetKeyDown(KeyCode.Space)) AddBuff(DataManager.Instance.AddBuff(0, 1));
     }
 
     public override void TurnInit()
@@ -43,7 +43,15 @@ public class Player : Entity
 
     public virtual int BuffCheck_CardTrigger(Skill skill, int value)
     {
-        for(int i = 0; i < buffs.Count; i++) value = buffs[i].effect.OnTrigger(this, skill, value);
+        for(int i = 0; i < buffs.Count; i++)
+        {
+            Buff buff = buffs[i];
+            if (buff?.effect == null)
+                continue;
+
+            buff.effect.buffData = buff;
+            value = buff.effect.OnTrigger(this, skill, value);
+        }
         return value;
     }
 

@@ -226,14 +226,6 @@ public class BattleManager : MonoBehaviour
 
         if (_player != null)
             _player.TurnInit();
-        EnemyEntity[] enemies = enemyList.ToArray();
-        foreach (EnemyEntity enemy in enemies)
-        {
-            if (enemy == null)
-                continue;
-
-            enemy.TurnInit();
-        }
 
         PlaySfx(playerTurnStartSound);
         ChangeBattleState(BattleState.PlayerDraw);
@@ -276,8 +268,15 @@ public class BattleManager : MonoBehaviour
     private IEnumerator EnemyTurnCoroutine()
     {
         Debug.Log("Enemy turn");
-
         EnemyEntity[] enemies = enemyList.ToArray();
+        foreach (EnemyEntity enemy in enemies)
+        {
+            if (enemy == null)
+                continue;
+
+            enemy.TurnInit();
+        }
+
         foreach (EnemyEntity enemy in enemies)
         {
             if (enemy == null)

@@ -53,6 +53,8 @@ public abstract class Entity : MonoBehaviour
             buff.effect.buffData = buff;
             buff.effect.OnTurnStart(this);
         }
+        curBlock = 0;
+        OnBlockChanged?.Invoke(curBlock);
     }
     //공격시 버프 연산
     public void ExecuteAttack(Entity target, int value, bool isAttack = true)

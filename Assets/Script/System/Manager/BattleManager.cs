@@ -226,6 +226,14 @@ public class BattleManager : MonoBehaviour
 
         if (_player != null)
             _player.TurnInit();
+        EnemyEntity[] enemies = enemyList.ToArray();
+        foreach (EnemyEntity enemy in enemies)
+        {
+            if (enemy == null)
+                continue;
+
+            enemy.TurnInit();
+        }
 
         PlaySfx(playerTurnStartSound);
         ChangeBattleState(BattleState.PlayerDraw);

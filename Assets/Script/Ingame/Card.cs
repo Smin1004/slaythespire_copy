@@ -133,13 +133,25 @@ public class Card : PoolableObject
     public IEnumerator UseCard(Entity target)
     {
         if (skill == null || skill.effect == null || player == null)
+        {
+            Debug.Log("카드 / 플레이어 없음");
             yield break; // 카드/플레이어가 없으면 효과를 계속 진행하면 안 됩니다.
+        }
+            
 
         if (battleManager != null && !battleManager.isPlayerTurn)
-            yield break; // yield return false는 한 프레임 뒤 계속 실행되므로, 사용 불가 조건은 yield break로 중단합니다.
+        {
+            Debug.Log("battleManager 문제");
+            yield break;
+        }
+            
 
         if (player.energy < skill.cost)
+        {
+            Debug.Log("에너지 부족");
             yield break;
+        }
+            
 
         Entity[] targets;
         if (target != null)

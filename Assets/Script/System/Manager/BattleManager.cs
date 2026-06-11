@@ -203,8 +203,8 @@ public class BattleManager : MonoBehaviour
 
     public void ShakeCamera()
     {
-        if (cameraShake != null)
-            cameraShake.PlayCameraShake();
+       // if (cameraShake != null)
+           // cameraShake.PlayCameraShake();
     }
 
 

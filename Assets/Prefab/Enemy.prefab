@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 5600422424942907289}
   - component: {fileID: 6335768809439717913}
   - component: {fileID: 8756055623816133852}
+  - component: {fileID: 4143884038292375563}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -187,6 +188,26 @@ MonoBehaviour:
   _defendIcon: {fileID: 3213072653768587747, guid: 8989fb13d25b2b140b0dc5d2785a7a88, type: 3}
   _buffIcon: {fileID: -5293577459126194811, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
   _debuffIcon: {fileID: 1496592532145121355, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
+--- !u!114 &4143884038292375563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665690861144817970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d30ae4dcbdddf84a834b016e5cb4853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entity: {fileID: 7034221976355804622}
+  hitEffectPrefab: {fileID: 784208035823086175, guid: 503e45a08ed9c42499fd5c6375e78337, type: 3}
+  hitEffectPoint: {fileID: 1811450597242623665}
+  positionOffset: {x: 0, y: 1, z: 0}
+  effectLifeTime: 0.2
+  useCameraShake: 1
+  shakeDuration: 0.5
+  shakeMagnitude: 0.15
 --- !u!1 &1342323876649200379
 GameObject:
   m_ObjectHideFlags: 0

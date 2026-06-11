@@ -58,8 +58,8 @@ public class CombatFeedback : MonoBehaviour
         {
             if (useFullHitEffect)
                 cameraShack.PlayHitEffect();
-            else
-                cameraShack.PlayCameraShake();
+            //else
+               // cameraShack.PlayCameraShake();
         }
 
         PlaySfx();

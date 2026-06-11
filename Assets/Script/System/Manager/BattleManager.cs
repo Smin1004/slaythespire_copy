@@ -28,6 +28,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Transform enemySpawnParent;
     [SerializeField] private Transform[] enemySpawnPoints;
 
+    [Header("적 UI")]
+    [SerializeField] private EnemyUI enemyUIPrefab;      // Canvas에 생성할 적 UI 프리팹입니다.
+    [SerializeField] private Transform enemyUIRoot;      // EnemyUI들이 들어갈 부모입니다. Canvas/BattleRoot/EnemyUIRoot를 연결합니다.
+    
     [Header("Boss Spawn")]
     [SerializeField] private bool isBossBattle;
     [SerializeField] private EnemyData bossEnemyData;
@@ -59,10 +63,41 @@ public class BattleManager : MonoBehaviour
         _instance = this;
     }
 
+    /// <summary>
+    /// TimingController.Start()에서 호출됩니다.
+    /// 
+    /// 이제 게임 시작 시 바로 전투를 시작하지 않습니다.
+    /// 전투 시작은 RunManager가 맵 선택 후 StartNormalBattle() 또는 StartBossBattle()을 호출합니다.
+    /// </summary>
     public void InitStart()
     {
+        // 비워둡니다.
+    }
+
+    /// <summary>
+    /// 일반 전투를 시작합니다.
+    /// 
+    /// 호출 위치:
+    /// - RunManager.StartNormalBattle()
+    /// </summary>
+    public void StartNormalBattle()
+    {
+        isBossBattle = false;
         InitializeBattle();
     }
+
+    /// <summary>
+    /// 보스 전투를 시작합니다.
+    /// 
+    /// 호출 위치:
+    /// - RunManager.StartBossBattle()
+    /// </summary>
+    public void StartBossBattle()
+    {
+        isBossBattle = true;
+        InitializeBattle();
+    }
+
 
     private void ShowGameOver()
     {
@@ -147,6 +182,7 @@ public class BattleManager : MonoBehaviour
 
         enemyList.Clear();
 
+
         if (enemyPrefab == null)
         {
             Debug.LogWarning("Enemy spawn failed: enemyPrefab is null.", this);
@@ -181,7 +217,19 @@ public class BattleManager : MonoBehaviour
             EnemyEntity enemy = Instantiate(enemyPrefab, position, rotation, parent);
             enemy.SetupEnemy(selectedData);
             enemyList.Add(enemy);
+
+            CreateEnemyUI(enemy); // 적 UI 생성 및 연결
         }
+    }
+
+    // 적 UI 생성 및 연결
+    private void CreateEnemyUI(EnemyEntity enemy)
+    {
+        if (enemyUIPrefab == null || enemyUIRoot == null || enemy == null)
+            return;
+
+        EnemyUI enemyUI = Instantiate(enemyUIPrefab, enemyUIRoot);
+        enemyUI.Bind(enemy);
     }
 
     public void RemoveEnemy(EnemyEntity enemy)
@@ -200,14 +248,6 @@ public class BattleManager : MonoBehaviour
         if (damageSpawner != null && target != null)
             damageSpawner.SpawnDamage(damage, target);
     }
-
-    public void ShakeCamera()
-    {
-       // if (cameraShake != null)
-           // cameraShake.PlayCameraShake();
-    }
-
-
 
     private void StartPlayerTurn()
     {
@@ -292,11 +332,35 @@ public class BattleManager : MonoBehaviour
             ChangeBattleState(BattleState.PlayerTurnStart);
     }
 
+    /// <summary>
+    /// 전투 승리 처리.
+    /// 
+    /// 호출 위치:
+    /// - ChangeBattleState(BattleState.BattleWon)
+    /// 
+    /// 처리:
+    /// - 일반 전투면 RewardManager로 보상 생성
+    /// - 보스 전투면 RunManager에게 보스 클리어 알림
+    /// </summary>
     private void ProcessBattleVictory()
     {
         StopAllCoroutines();
+        isPlayerTurn = false;
+
+        if (isBossBattle)
+        {
+            RunManager.Instance?.CompleteBossBattle();
+            return;
+        }
 
         if (RewardManager.Instance != null)
+        {
             RewardManager.Instance.GenerateCombatRewards();
+        }
+        else
+        {
+            // 보상 매니저가 없으면 바로 맵 선택지로 돌아갑니다.
+            RunManager.Instance?.CompleteBattleReward();
+        }
     }
 }

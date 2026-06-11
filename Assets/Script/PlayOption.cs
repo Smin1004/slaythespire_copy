@@ -6,14 +6,14 @@ public class PlayOption : MonoBehaviour
 
     void OnEnable()
     {
-        Button.OnSettingOpen += HideCardsAndEndButton;
-        Button.OnSettingClose += ShowCardsAndEndButton;
+        OptionButton.OnSettingOpen += HideCardsAndEndButton;
+        OptionButton.OnSettingClose += ShowCardsAndEndButton;
     }
 
     void OnDisable()
     {
-        Button.OnSettingOpen -= HideCardsAndEndButton;
-        Button.OnSettingClose -= ShowCardsAndEndButton;
+        OptionButton.OnSettingOpen -= HideCardsAndEndButton;
+        OptionButton.OnSettingClose -= ShowCardsAndEndButton;
     }
 
     void HideCardsAndEndButton()

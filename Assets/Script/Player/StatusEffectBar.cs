@@ -29,6 +29,12 @@ public class StatusEffectBar : MonoBehaviour
         }
     }
 
+    public void SetTooltip(StatusEffectTooltip assignedTooltip)
+    {
+        // EnemyUI처럼 상위 UI에서 찾은 설명창을 이 상태이상 바가 생성하는 아이콘들에게 전달합니다.
+        tooltip = assignedTooltip;
+    }
+
     private void OnEnable()
     {
         if (targetEntity != null)
@@ -49,14 +55,17 @@ public class StatusEffectBar : MonoBehaviour
 
     public void SetTarget(Entity entity)
     {
+        // UI 프리팹을 재사용할 수 있으므로 기존 Entity 이벤트 연결을 먼저 끊습니다.
         if (targetEntity != null)
             targetEntity.OnBuffsChanged -= Refresh;
 
         targetEntity = entity;
 
+        // 새로 연결된 Entity의 버프/디버프가 바뀔 때마다 아이콘을 다시 그립니다.
         if (targetEntity != null)
             targetEntity.OnBuffsChanged += Refresh;
 
+        // 바인딩 직후 현재 상태도 바로 표시합니다.
         Refresh(targetEntity != null ? targetEntity.Buffs : null);
     }
 

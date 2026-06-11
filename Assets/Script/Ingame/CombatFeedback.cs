@@ -14,7 +14,7 @@ public class CombatFeedback : MonoBehaviour
 
     [Header("사운드")]
     // 프로젝트에서 쓰는 공용 사운드 매니저입니다.
-    [SerializeField] private soundManager soundManager;
+    [SerializeField] private AudioManager soundManager;
     // 사운드 매니저를 쓰지 않을 때 직접 재생할 AudioSource입니다.
     [SerializeField] private AudioSource audioSource;
     // 이 대상이 피격될 때 재생할 효과음입니다.
@@ -72,7 +72,7 @@ public class CombatFeedback : MonoBehaviour
 
         if (soundManager != null)
         {
-            soundManager.PlaySFX(hitSfx);
+            soundManager.PlaySfx(hitSfx);
             return;
         }
 

@@ -35,7 +35,6 @@ public class BattleManager : MonoBehaviour
     [Header("Battle Feedback")]
     [SerializeField] private DamageSpawner damageSpawner;
     [SerializeField] private CameraShake cameraShake;
-    [SerializeField] private AudioManager audioManager;
     [SerializeField] private AudioClip playerTurnStartSound;
 
     [SerializeField] private List<EnemyEntity> enemyList = new();
@@ -208,17 +207,7 @@ public class BattleManager : MonoBehaviour
             cameraShake.PlayCameraShake();
     }
 
-    public void PlaySfx(AudioClip clip)
-    {
-        if (clip == null)
-            return;
 
-        if (audioManager == null)
-            audioManager = FindFirstObjectByType<AudioManager>();
-
-        if (audioManager != null)
-            audioManager.PlaySfx(clip);
-    }
 
     private void StartPlayerTurn()
     {
@@ -227,7 +216,7 @@ public class BattleManager : MonoBehaviour
         if (_player != null)
             _player.TurnInit();
 
-        PlaySfx(playerTurnStartSound);
+        AudioManager.Instance?.PlaySfx(playerTurnStartSound);
         ChangeBattleState(BattleState.PlayerDraw);
     }
 

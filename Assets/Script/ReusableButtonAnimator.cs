@@ -16,7 +16,7 @@ public class UIButtonEffect : MonoBehaviour,
     [SerializeField]  float hoverScale = 1.1f;
 
     [Header("Sound")]
-    [SerializeField]  soundManager soundManager;
+    [SerializeField]  AudioManager soundManager;
     [SerializeField]  AudioClip hoverSound;
     [SerializeField]  AudioClip clickSound;
 
@@ -35,7 +35,7 @@ public class UIButtonEffect : MonoBehaviour,
             image.sprite = hoverSprite;
 
         if (hoverSound != null)
-            soundManager.PlaySFX(hoverSound);
+            soundManager.PlaySfx(hoverSound);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -49,6 +49,6 @@ public class UIButtonEffect : MonoBehaviour,
     public void OnPointerClick(PointerEventData eventData)
     {
         if (clickSound != null)
-            soundManager.PlaySFX(clickSound);
+            soundManager.PlaySfx(clickSound);
     }
 }

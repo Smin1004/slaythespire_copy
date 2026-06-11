@@ -336,6 +336,6 @@ public abstract class Entity : MonoBehaviour
     protected void PlaySfx(AudioClip clip)
     {
         if (clip != null)
-            BattleManager.Instance?.PlaySfx(clip);
+            AudioManager.Instance?.PlaySfx(clip);
     }
 }

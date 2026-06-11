@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public abstract class Entity : MonoBehaviour
 {
     [Header("Stats")]
-    [SerializeField] protected int curHp;     // 현재 체력입니다.
-    [SerializeField] protected int maxHp;     // 최대 체력입니다.
-    [SerializeField] protected int curBlock;  // 먼저 데미지를 막아주는 방어도입니다.
+    [SerializeField] public int curHp;     // 현재 체력입니다.
+    [SerializeField] public int maxHp;     // 최대 체력입니다.
+    [SerializeField] public int curBlock;  // 먼저 데미지를 막아주는 방어도입니다.
     [SerializeField] private bool _isDead;    // Entity가 죽었는지 여부입니다. 죽은 Entity는 행동할 수 없습니다.
 
     [Header("SFX")]
@@ -51,7 +51,7 @@ public abstract class Entity : MonoBehaviour
                 continue;
 
             buff.effect.buffData = buff;
-            buff.effect.OnTurnStart(this);
+            buff.effect.OnTurnStart(this, buffs[i].value);
         }
         curBlock = 0;
         OnBlockChanged?.Invoke(curBlock);
@@ -189,7 +189,7 @@ public abstract class Entity : MonoBehaviour
             if (buff.effect != null)
             {
                 buff.effect.buffData = buff;
-                buff.effect.OnTurnEnd(this);
+                buff.effect.OnTurnEnd(this, buff.value);
             }
 
             // 턴 종료 시 지속 턴을 1 줄이고, 0이 되면 UI와 효과 목록에서 제거합니다.
@@ -212,7 +212,7 @@ public abstract class Entity : MonoBehaviour
         PlaySfx(GetAttackSound());
     }
 
-    public virtual void Damage(Entity target, int damageAmount)
+    public virtual void Damage(Entity target, int damageAmount, bool isTrueDamage = false)
     {
         if (damageAmount < 0)
             return;
@@ -221,7 +221,7 @@ public abstract class Entity : MonoBehaviour
             return;
         
         // 방어도가 있으면 방어도를 먼저 깎고, 남은 데미지만 HP에 적용합니다.
-        if (curBlock > 0)
+        if (!isTrueDamage && curBlock > 0)
         {
             int remainingDamage = damageAmount - curBlock;
             int blockedDamage = Mathf.Min(damageAmount, curBlock);
@@ -239,7 +239,7 @@ public abstract class Entity : MonoBehaviour
 
             damageAmount = remainingDamage;
         }
-
+    
         int beforeHp = curHp;
         curHp = Mathf.Max(0, curHp - damageAmount);
         OnHealthChanged?.Invoke(curHp, maxHp);
@@ -249,7 +249,7 @@ public abstract class Entity : MonoBehaviour
         if (appliedDamage > 0)
             OnDamaged?.Invoke(appliedDamage);
 
-        BuffCheck_After(target);
+        if(!isTrueDamage) BuffCheck_After(target);
 
       
         if (curHp <= 0 && !_isDead)

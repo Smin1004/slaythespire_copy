@@ -1,5 +1,36 @@
 ﻿id,name,type,cost,cost+,script,desc,value,value+,targeting
-1,공격,Attack,1,1,testAttack,{0} 만큼 공격,6,9,TRUE
-2,수비,Skill,2,2,testSkill,{0} 만큼 수비,5,8,FALSE
-3,발화,Power,3,2,testPower,{0} 만큼 힘을 얻음,2,3,FALSE
-4,부메랑 칼날,Attack,1,2,testPlusAttack,{0} 만큼 {1}번 공격,3!3,3!4,FALSE
+1,공격,Attack,1,1,Strike,피해를 {0}만큼 줍니다,6,9,TRUE
+2,수비,Skill,1,1,Defend,방어도를 {0}만큼 얻습니다,5,8,FALSE
+3,강타,Attack,2,2,Bash,피해를 {0} 줍니다\n취약을 {1} 부여합니다,8!2,10!3,TRUE
+4,분노,Attack,0,0,Anger,피해를 {0}줍니다\n이 카드의 복사본 1장을 버린 카드 더미에 섞어 넣습니다,6,8,TRUE
+5,몸통박치기,Attack,1,0,BodySlam,방어도만큼의 피해를 줍니다\n({0} 데미지),0,0,TRUE
+6,,,,,,,,,
+7,부메랑 칼날,Attack,1,2,SwordBoomerang,{0} 만큼 {1}번 공격,3!3,3!4,FALSE
+8,사전 타격,Attack,1,1,SetupStrike,피해를 {0}줍니다\n이번 턴 동안 힘을 {1} 얻습니다,7!2,9!3,TRUE
+9,이중 타격,Attack,1,1,TwinStrike,피해를 {0}만큼 2번 줍니다,5,7,TRUE
+10,정면 돌파,Attack,1,1,Breakthrough,체력을 1 잃습니다\n모든 적에게 피해를 {0} 줍니다,9,13,FALSE
+11,천둥,Attack,1,1,ThunderClap,모든 적에게 피해를 {0} 주고 취약을 1 부여합니다,4,7,FALSE
+12,철의 파동,Attack,1,1,IronWave,방어도를 {0} 얻습니다\n피해를 {1} 줍니다,5!5,7!7,TRUE
+13,폼멜 타격,Attack,1,1,PommelStrike,피해를 {0} 줍니다\n카드를 {1}장 뽑습니다,9!1,10!2,TRUE
+14,,,,,,,,,
+15,,,,,,,,,
+16,사혈,Skill,1,1,Bloodletting,체력을 3 잃습니다\n에너지를 {0} 얻습니다.,2,3,FALSE
+17,떨림,Skill,1,1,Tremble,,,,
+18,전투장비,,,,,,,,
+19,진정한 끈기,,,,,,,,
+20,파괴,,,,,,,,
+21,흘려보내기,Skill,1,1,ShrugItOff,방어도를 {0} 얻습니다\n카드를 1장 뽑습니다,8,11,FALSE
+22,피의 벽,Skill,2,2,BloodWall,체력을 2 잃습니다\n방어도를 {0} 얻습니다,16,20,FALSE
+23,,,,,,,,,
+24,,,,,,,,,
+25,,,,,,,,,
+26,발화,Power,3,2,Inflame,{0} 만큼 힘을 얻음,2,3,FALSE
+27,,,,,,,,,
+28,,,,,,,,,
+29,,,,,,,,,
+30,,,,,,,,,
+31,,,,,,,,,
+32,,,,,,,,,
+33,,,,,,,,,
+34,,,,,,,,,
+35,,,,,,,,,

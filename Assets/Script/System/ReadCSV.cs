@@ -47,9 +47,9 @@ public class ReadCSV : MonoBehaviour
         skillLists.Clear();
         for (int i = 1; i < rows.Length; i++)
         {
-            Debug.Log(rows[i]);
             string[] cols = rows[i].Split(',');
-            if (cols.Length < 7) continue;
+            if (cols.Length < 7 || cols[6] == "") continue;
+            Debug.Log(rows[i]);
 
             Skill skill = new();
             skill.index = int.Parse(cols[0]);

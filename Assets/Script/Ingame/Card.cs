@@ -31,6 +31,7 @@ public class Card : PoolableObject
         costText.text = skill.cost.ToString();
         nameText.text = skill.name;
         img.sprite = skill.img;
+        skill.effect.skillData = skill;
     }
     
     public void SetTargetTransform(Vector3 newPosition, Quaternion newRotation)

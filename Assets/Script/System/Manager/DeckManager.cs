@@ -12,14 +12,19 @@ public class DeckManager : MonoBehaviour
     [SerializeField] private List<Card> handPile = new();
     [SerializeField] private List<Skill> discardPile = new();
 
-        [SerializeField] private Card cardObj;
-        [SerializeField] private AudioClip drawCardSound;
-        [SerializeField] private AudioClip useCardSound;
+    [SerializeField] private Card cardObj;
+    [SerializeField] private AudioClip drawCardSound;
+    [SerializeField] private AudioClip useCardSound;
 
     public event Action<int> OnDrawPileChanged;
     public event Action<int> OnDiscardPileChanged;
 
-    [SerializeField] private Transform testPos;
+    [SerializeField] private Transform DeckPos;
+    [SerializeField] private Transform handCenterPoint; // 화면 하단 중앙의 빈 오브젝트 위치
+    
+    [SerializeField] private float defaultCardSpacing = 2f; // 카드 사이의 기본 간격
+    [SerializeField] private float arcCurveMultiplier = 0.2f; // 부채꼴로 휘어지는 정도
+    [SerializeField] private float arcRotationMultiplier = 5f; // 부채꼴로 회전하는 각도
 
     private void Awake()
     {
@@ -97,7 +102,7 @@ public class DeckManager : MonoBehaviour
             }
 
                 // 가장 위(또는 랜덤) 카드 뽑기
-                Card drawnCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, testPos.position, testPos.rotation).GetComponent<Card>();
+                Card drawnCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, DeckPos.position, DeckPos.rotation).GetComponent<Card>();
                 drawnCard.Init(drawPile[0]);
                 drawPile.RemoveAt(0);
                 handPile.Add(drawnCard);
@@ -131,6 +136,29 @@ public class DeckManager : MonoBehaviour
         NotifyPileCounts();
     }
 
+    public void AddCard(Skill skill, int pileType)
+    {
+        Card newCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, DeckPos.position, DeckPos.rotation).GetComponent<Card>();
+        newCard.Init(skill);
+        newCard.targetPosition = Vector3.zero;
+        switch (pileType)
+        {
+            case 0: // Draw Pile
+                drawPile.Add(skill);
+                newCard.SetTargetTransform(newCard.targetPosition + new Vector3(-15, 0), new Quaternion(0, 0, 0, 0));
+                newCard.ReturnToPoolAfterTime(1f);
+                break;
+            case 1: // Hand
+                handPile.Add(newCard);
+                ArrangeHandCards(handPile);
+                break;
+            case 2: // Discard Pile
+                handPile.Add(newCard);
+                DiscardCard(newCard);
+                break;
+        }
+    }
+
     public void DiscardCard(Card card)
     {
         if (handPile.Contains(card))
@@ -146,13 +174,6 @@ public class DeckManager : MonoBehaviour
 
     // 리스트 셔플 (Fisher-Yates 알고리즘 등 사용)
     private void ShuffleDeck(List<Skill> list) { /* ... */ }
-
-
-
-    [SerializeField] private Transform handCenterPoint; // 화면 하단 중앙의 빈 오브젝트 위치
-    [SerializeField] private float defaultCardSpacing = 2f; // 카드 사이의 기본 간격
-    [SerializeField] private float arcCurveMultiplier = 0.2f; // 부채꼴로 휘어지는 정도
-    [SerializeField] private float arcRotationMultiplier = 5f; // 부채꼴로 회전하는 각도
 
     public void ArrangeHandCards(List<Card> cardsInHand)
     {

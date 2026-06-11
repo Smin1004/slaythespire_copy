@@ -4,7 +4,7 @@ using System.Linq;
 
 public abstract class SkillScript
 {
-    public abstract IEnumerator Trigger(Entity unit, Entity[] target, int[] value);
+    public Skill skillData;
 
     public string FormatDesc(Skill skill, int plusValue)
     {
@@ -15,6 +15,8 @@ public abstract class SkillScript
 
         return string.Format(rawFormat, objectValues);
     }
+
+    public abstract IEnumerator Trigger(Entity unit, Entity[] target, int[] value);
 }
 
 [System.Serializable]
@@ -51,40 +53,17 @@ public enum Keyword
     test,
 }
 
-public class testAttack : SkillScript
+public class Strike : SkillScript //타격
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();  //애니메이션
-
-        if (target == null || target.Length == 0 || target[0] == null)
-            yield break; // 공격 대상이 없으면 target[0] 접근으로 오류가 나므로 효과를 중단합니다.
-
+        unit.AttackEvent();
         unit.ExecuteAttack(target[0], value[0]);
         yield break;
     }
 }
 
-public class testPlusAttack : SkillScript
-{
-    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
-    {
-        unit.AttackEvent();  //애니메이션 구현
-
-        for (int i = 0; i < value[1]; i++)
-        {
-            if (target == null || target.Length == 0)
-                yield break; // 랜덤 공격도 대상 배열이 비어 있으면 Random.Range/배열 접근 오류가 납니다.
-
-            Debug.Log("Plus Attack");
-            int random = Random.Range(0, target.Length);
-            yield return new WaitForSeconds(0.2f);
-            unit.ExecuteAttack(target[random], value[0]);
-        }
-    }
-}
-
-public class testSkill : SkillScript
+public class Defend : SkillScript //수비
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
@@ -93,13 +72,182 @@ public class testSkill : SkillScript
     }
 }
 
-public class testPower : SkillScript
+public class Inflame : SkillScript //발화
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
         unit.UseBuff();
-        Buff curBuff = DataManager.Instance.AddBuff(0, value[0]);
+        Buff curBuff = DataManager.Instance.AddBuff(1, value[0]);
         unit.AddBuff(curBuff);
         yield break;
     }
 }
+
+
+public class Bash : SkillScript //강타
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        unit.UseDebuff();
+        unit.ExecuteAttack(target[0], value[0]);
+        Buff curBuff = DataManager.Instance.AddBuff(3, value[0]);
+        target[0].AddBuff(curBuff);
+        yield break;
+    }
+}
+
+public class Anger : SkillScript //분노
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        unit.ExecuteAttack(target[0], value[0]);
+        DeckManager.Instance.AddCard(this.skillData, 2);
+        yield break;
+    }
+}
+
+public class BodySlam : SkillScript //몸통박치기
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        unit.ExecuteAttack(target[0], unit.curBlock);
+        yield break;
+    }
+}
+
+public class SwordBoomerang : SkillScript //부메랑칼날
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        for (int i = 0; i < value[1]; i++)
+        {
+            unit.AttackEvent();
+            int random = Random.Range(0, target.Length);
+            unit.ExecuteAttack(target[random], value[0]);
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+}
+
+public class SetupStrike : SkillScript //사전타격
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        unit.ExecuteAttack(target[0], value[0]);
+        unit.UseBuff();
+        Buff curBuff = DataManager.Instance.AddBuff(1, value[1]);
+        unit.AddBuff(curBuff);
+        curBuff = DataManager.Instance.AddBuff(6, value[1]);
+        unit.AddBuff(curBuff);
+        yield break;
+    }
+}
+
+public class TwinStrike : SkillScript //이중타격
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            unit.AttackEvent();
+            unit.ExecuteAttack(target[0], value[0]);
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield break;
+    }
+}
+
+public class Breakthrough : SkillScript //정면돌파
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        unit.Damage(unit, 1, true);
+        for (int i = 0; i < target.Length; i++)
+        {
+            unit.ExecuteAttack(target[i], value[0]);
+        }
+        yield break;
+    }
+}
+
+public class ThunderClap : SkillScript //천둥
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        Buff curBuff = DataManager.Instance.AddBuff(3, value[0]);
+        
+        for (int i = 0; i < target.Length; i++)
+        {
+            unit.ExecuteAttack(target[i], value[0]);
+            target[i].AddBuff(curBuff);
+        }
+        yield break;
+    }
+}
+
+public class IronWave : SkillScript
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        unit.ExecuteAttack(target[0], value[1]);
+        unit.ExecuteBlock(value[0]);
+        yield break;
+    }
+}
+
+public class PommelStrike : SkillScript
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.AttackEvent();
+        unit.ExecuteAttack(target[0], value[0]);
+        DeckManager.Instance.DrawCards(value[1]);
+        yield break;
+    }
+}
+
+public class Bloodletting : SkillScript
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.Damage(unit, 3, true);
+        unit.GetComponent<Player>().energy += value[0];
+        yield break;
+    }
+}
+
+public class Tremble : SkillScript
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        yield break;
+    }
+}
+
+public class ShrugItOff : SkillScript
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.ExecuteBlock(value[0]);
+        DeckManager.Instance.DrawCards(1);
+        yield break;
+    }
+}
+
+public class BloodWall : SkillScript
+{
+    public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
+    {
+        unit.Damage(unit, 3, true);
+        unit.ExecuteBlock(value[0]);
+        yield break;
+    }
+}
+

@@ -5,12 +5,12 @@ public abstract class BuffScript
 {
     public Buff buffData;
 
-    public virtual void OnTurnStart(Entity unit) { }                                         // 턴 시작 시 실행되는 효과입니다.
+    public virtual void OnTurnStart(Entity unit, int value) { }                              // 턴 시작 시 실행되는 효과입니다.
     public virtual int OnTrigger(Entity unit, Skill playedCard, int value) { return value; } // 카드 사용 시 카드 수치에 적용되는 효과입니다.
     public virtual int OnAttack(Entity unit, int value) { return value; }                    // 실제 공격 계산 시 공격자에게 적용되는 효과입니다.
     public virtual int OnBlock(Entity unit, int value) { return value; }                     // 실제 피격 계산 시 방어자에게 적용되는 효과입니다.
     public virtual void OnAfter(Entity unit, Entity target) { }                              // 피격 계산이 끝난 뒤 실행되는 효과입니다.
-    public virtual void OnTurnEnd(Entity unit) { }                                           // 턴 종료 시 실행되는 효과입니다.
+    public virtual void OnTurnEnd(Entity unit, int value) { }                                // 턴 종료 시 실행되는 효과입니다.
 }
 
 [System.Serializable]
@@ -103,5 +103,13 @@ public class frail : BuffScript // 손상
         if (skill.type != SkillType.Skill) return value;
         value = Mathf.FloorToInt(value * 0.75f);
         return value;
+    }
+}
+
+public class TemporaryStrength : BuffScript // 기간제 힘
+{
+    public override void OnTurnEnd(Entity unit, int value)
+    {
+        unit.buffs.Find(item => item.index == 1).value -= value;
     }
 }

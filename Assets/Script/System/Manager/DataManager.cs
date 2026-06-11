@@ -31,7 +31,6 @@ public class DataManager : MonoBehaviour
         if (template == null)
             return null;
 
-        // LoadData의 Buff는 CSV 원본 데이터입니다. 전투 중 value/remainingTurns가 바뀌므로 반드시 복사본을 반환합니다.
         return template.CreateRuntimeCopy(value, 1);
     }
 }

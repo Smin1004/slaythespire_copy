@@ -1697,7 +1697,7 @@ MonoBehaviour:
   cardObj: {fileID: 1696643776223505839, guid: 32c80c6540f62594184b6cfdcc8ddf95, type: 3}
   drawCardSound: {fileID: 8300000, guid: 40b6d9e0e71a0dc42b5b979eba0a840c, type: 3}
   useCardSound: {fileID: 8300000, guid: 40b6d9e0e71a0dc42b5b979eba0a840c, type: 3}
-  testPos: {fileID: 1375512135}
+  DeckPos: {fileID: 1375512135}
   handCenterPoint: {fileID: 995501412}
   defaultCardSpacing: 2
   arcCurveMultiplier: 0.2

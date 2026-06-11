@@ -1247,7 +1247,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 535344578}
-  - component: {fileID: 535344579}
   - component: {fileID: 535344580}
   - component: {fileID: 535344581}
   - component: {fileID: 535344582}
@@ -1277,25 +1276,6 @@ Transform:
   - {fileID: 532161830}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &535344579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535344577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c8e780fa036b6945ac3a021894bbc39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemy: {fileID: 0}
-  _icon: {fileID: 0}
-  _valueText: {fileID: 0}
-  _attackIcon: {fileID: 0}
-  _defendIcon: {fileID: 0}
-  _buffIcon: {fileID: 0}
-  _debuffIcon: {fileID: 0}
 --- !u!114 &535344580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4660,10 +4640,10 @@ MonoBehaviour:
   enemyPrefab: {fileID: 7034221976355804622, guid: 5adc2e1f5e16a544a9d406b196c00254, type: 3}
   enemyDatas:
   - {fileID: 11400000, guid: d1e2e301fbfe0fb4394c3de54a484bc9, type: 2}
-  - {fileID: 11400000, guid: 91fbbc4a1e8383b4d96fbd73c6f7aa89, type: 2}
-  - {fileID: 11400000, guid: 3c5e9d6102d23ab429ff82befc1a8254, type: 2}
-  - {fileID: 11400000, guid: f26fbd8ae8c82ac42ae12756e90786e5, type: 2}
-  - {fileID: 11400000, guid: c2ab40b306583cd4b9cbb7c5ee1d6877, type: 2}
+  - {fileID: 11400000, guid: d3921dd131fccc44aa3f837940bac69b, type: 2}
+  - {fileID: 11400000, guid: 0a269002fe523f5448d794c7d6c2c095, type: 2}
+  - {fileID: 11400000, guid: c8d4c7f2623618f46bf0835ea25bd434, type: 2}
+  - {fileID: 11400000, guid: 5a1c815119462864d8651e35e25006e6, type: 2}
   enemySpawnParent: {fileID: 1397124884}
   enemySpawnPoints:
   - {fileID: 1397124884}

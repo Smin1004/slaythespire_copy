@@ -70,7 +70,7 @@ public class EnemyEntity : Entity
     public override void TurnInit()
     {
         base.TurnInit();
-        DecideNextIntent();
+        //DecideNextIntent();  호출 딴곳에서 여기서하면 공격 표시가 다음공격을 표시해버리는 오류발생
     }
 
     public void DecideNextIntent()
@@ -129,7 +129,7 @@ public class EnemyEntity : Entity
                 break;
             case IntentType.Buff:
                 UseBuff();
-                ApplyStatus(this);
+                ApplyStatus(IsDebuffStatus(currentAction.buffDebuffType) ? playerTarget : this);
                 Debug.Log($"Buff: {currentAction.buffDebuffType} {currentAction.effectValue}");
                 break;
             case IntentType.Debuff:
@@ -153,6 +153,14 @@ public class EnemyEntity : Entity
         }
     }
 
+    // 버프 안전장치 자신에게 디버프를거는걸 방지
+    private bool IsDebuffStatus(BuffDebuffType type)
+    {
+        return type == BuffDebuffType.Weak ||
+               type == BuffDebuffType.Vulnerable ||
+               type == BuffDebuffType.Frail;
+    }
+
     private void ApplyStatus(Entity target)
     {
         if (target == null || currentAction == null || currentAction.buffDebuffType == BuffDebuffType.None)
@@ -169,9 +177,12 @@ public class EnemyEntity : Entity
         if (template == null)
             return;
 
-        // EnemyData 행동으로 거는 상태이상도 원본 Buff를 직접 쓰지 않고 전투용 복사본으로 적용합니다.
-        int duration = target == this ? 2 : 1;
+        // 플레이어에게 새로 걸린 디버프는 첫 번째 차감 타이밍을 한 번 무시
+        int duration = 1;
         Buff runtimeBuff = template.CreateRuntimeCopy(currentAction.effectValue, duration);
+
+        if (target != this && IsDebuffStatus(currentAction.buffDebuffType))
+            runtimeBuff.skipNextTurnTick = true;
 
         target.AddBuff(runtimeBuff);
     }

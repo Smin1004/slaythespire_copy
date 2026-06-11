@@ -257,10 +257,6 @@ public class BattleManager : MonoBehaviour
         if (DeckManager.Instance != null)
             DeckManager.Instance.DiscardAllCard();
 
-        // 플레이어가 이번 턴에 얻은 버프/디버프는 턴 종료 시 지속 턴을 줄이고 0이면 제거합니다.
-        if (_player != null)
-            _player.TickBuffTurns();
-
         isPlayerTurn = false;
         ChangeBattleState(BattleState.EnemyTurn);
     }
@@ -290,6 +286,11 @@ public class BattleManager : MonoBehaviour
         // 적 버프/디버프는 적 턴이 끝날 때만 지속 턴을 줄입니다.
         foreach (EnemyEntity enemy in enemies)
         {
+            yield return new WaitForSeconds(0.2f);
+
+            if (_player != null)
+                _player.TickBuffTurns();
+
             if (enemy == null)
                 continue;
 

@@ -64,7 +64,7 @@ public abstract class Entity : MonoBehaviour
 
         value = BuffCheck_Attack(this, value);
         value = target.BuffCheck_Block(target, value);
-        if(!isAttack) return;
+        if (!isAttack) return;
         Debug.Log($"Attack!!!!! {value}");
         target.Damage(this, value);
     }
@@ -79,7 +79,7 @@ public abstract class Entity : MonoBehaviour
     //피격시 버프 계산
     public virtual int BuffCheck_Attack(Entity unit, int value)
     {
-        for(int i = 0; i < buffs.Count; i++)
+        for (int i = 0; i < buffs.Count; i++)
         {
             Buff buff = buffs[i];
             if (buff?.effect == null)
@@ -94,7 +94,7 @@ public abstract class Entity : MonoBehaviour
     //피격시 버프 계산
     public virtual int BuffCheck_Block(Entity unit, int value)
     {
-        for(int i = 0; i < buffs.Count; i++)
+        for (int i = 0; i < buffs.Count; i++)
         {
             Buff buff = buffs[i];
             if (buff?.effect == null)
@@ -108,7 +108,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void BuffCheck_After(Entity target)
     {
-        for(int i = 0; i < buffs.Count; i++)
+        for (int i = 0; i < buffs.Count; i++)
         {
             Buff buff = buffs[i];
             if (buff?.effect == null)
@@ -160,7 +160,7 @@ public abstract class Entity : MonoBehaviour
         if (buffs.Remove(buff))
             OnBuffsChanged?.Invoke(Buffs);
     }
-    
+
 
     public virtual void ClearBuffs()
     {
@@ -179,6 +179,7 @@ public abstract class Entity : MonoBehaviour
         for (int i = buffs.Count - 1; i >= 0; i--)
         {
             Buff buff = buffs[i];
+
             if (buff == null)
             {
                 buffs.RemoveAt(i);
@@ -192,8 +193,18 @@ public abstract class Entity : MonoBehaviour
                 buff.effect.OnTurnEnd(this);
             }
 
-            // 턴 종료 시 지속 턴을 1 줄이고, 0이 되면 UI와 효과 목록에서 제거합니다.
+            // 영구 버프는 턴 수 감소 안 함
+            if (buff.key == "strength" || buff.key == "dexterity")
+                continue;
+            // 턴을 스킵하여 적이 행동후 디버프가 사라지게 하는 용도 
+            if (buff.skipNextTurnTick)
+            {
+                buff.skipNextTurnTick = false;
+                continue;
+            }
+
             buff.remainingTurns--;
+
             if (buff.remainingTurns <= 0)
             {
                 buffs.RemoveAt(i);
@@ -219,7 +230,7 @@ public abstract class Entity : MonoBehaviour
 
         if (_isDead)
             return;
-        
+
         // 방어도가 있으면 방어도를 먼저 깎고, 남은 데미지만 HP에 적용합니다.
         if (curBlock > 0)
         {
@@ -251,7 +262,7 @@ public abstract class Entity : MonoBehaviour
 
         BuffCheck_After(target);
 
-      
+
         if (curHp <= 0 && !_isDead)
         {
             _isDead = true;

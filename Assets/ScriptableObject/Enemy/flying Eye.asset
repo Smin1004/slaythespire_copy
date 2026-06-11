@@ -67,26 +67,26 @@ MonoBehaviour:
     attackAnimationTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
-  - actionName: Attack2
-    intentType: 0
-    attackDamage: 10
+  - actionName: buff 2
+    intentType: 3
+    attackDamage: 0
     blockAmount: 0
-    buffDebuffType: 0
+    buffDebuffType: 4
     statusKeyOrName: 
     effectValue: 1
-    attackCount: 2
+    attackCount: 0
     weight: 1
     attackAnimationTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
-  - actionName: buff 2
-    intentType: 2
+  - actionName: Debuff 3
+    intentType: 3
     attackDamage: 0
     blockAmount: 0
-    buffDebuffType: 5
+    buffDebuffType: 2
     statusKeyOrName: 
     effectValue: 1
-    attackCount: 2
+    attackCount: 0
     weight: 1
     attackAnimationTrigger: Attack
     actionSound: {fileID: 0}

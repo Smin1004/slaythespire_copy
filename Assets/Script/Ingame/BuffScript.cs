@@ -8,6 +8,7 @@ public abstract class BuffScript
     public virtual void OnTurnStart(Entity unit) { }                                         // 턴 시작 시 실행되는 효과입니다.
     public virtual int OnTrigger(Entity unit, Skill playedCard, int value) { return value; } // 카드 사용 시 카드 수치에 적용되는 효과입니다.
     public virtual int OnAttack(Entity unit, int value) { return value; }                    // 실제 공격 계산 시 공격자에게 적용되는 효과입니다.
+
     public virtual int OnBlock(Entity unit, int value) { return value; }                     // 실제 피격 계산 시 방어자에게 적용되는 효과입니다.
     public virtual void OnAfter(Entity unit, Entity target) { }                              // 피격 계산이 끝난 뒤 실행되는 효과입니다.
     public virtual void OnTurnEnd(Entity unit) { }                                           // 턴 종료 시 실행되는 효과입니다.
@@ -23,6 +24,8 @@ public class Buff
     public bool isDebuff;
     public int value;          // 효과 수치입니다. 예: 힘 +2, 취약 적용량 등입니다.
     public int remainingTurns; // 지속 턴입니다. value와 분리해서 효과 수치가 턴 처리 때문에 꼬이지 않게 합니다.
+    public bool isPermanent;   // 영구적 버프
+    public bool skipNextTurnTick;   // 적 캐릭터 턴종료시 디버프 없어지게하는 용도
 
     public Sprite img;
     public BuffScript effect;
@@ -36,13 +39,14 @@ public class Buff
             name = name,
             key = key,
             isDebuff = isDebuff,
+            skipNextTurnTick = skipNextTurnTick,
+            isPermanent = isPermanent,
             value = runtimeValue,
-            remainingTurns = Mathf.Max(1, runtimeTurns),
+            remainingTurns = isPermanent ? -1 : Mathf.Max(1, runtimeTurns),
             img = img,
             desc = desc
         };
 
-        // CSV/LoadData에 있는 원본 BuffScript를 공유하면 캐릭터끼리 buffData가 섞이므로 런타임용 효과를 새로 만듭니다.
         if (effect != null)
             copy.effect = Activator.CreateInstance(effect.GetType()) as BuffScript;
 

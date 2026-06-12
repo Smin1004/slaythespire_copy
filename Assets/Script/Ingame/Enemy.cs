@@ -170,21 +170,21 @@ public class EnemyEntity : Entity
         if (loadData == null)
             return;
 
-        Buff template = loadData.GetBuffByKeyOrName(currentAction.statusKeyOrName);
-        if (template == null)
-            template = loadData.GetBuffByKey(currentAction.buffDebuffType.ToString().ToLowerInvariant());
+        // Buff template = loadData.GetBuffByKeyOrName(currentAction.statusKeyOrName);
+        // if (template == null)
+        //     template = loadData.GetBuffByKey(currentAction.buffDebuffType.ToString().ToLowerInvariant());
 
-        if (template == null)
-            return;
+        // if (template == null)
+        //     return;
 
-        // 플레이어에게 새로 걸린 디버프는 첫 번째 차감 타이밍을 한 번 무시
-        int duration = 1;
-        Buff runtimeBuff = template.CreateRuntimeCopy(currentAction.effectValue, duration);
+        // // 플레이어에게 새로 걸린 디버프는 첫 번째 차감 타이밍을 한 번 무시
+        // int duration = 1;
+        // Buff runtimeBuff = template.CreateRuntimeCopy(currentAction.effectValue, duration);
 
-        if (target != this && IsDebuffStatus(currentAction.buffDebuffType))
-            runtimeBuff.skipNextTurnTick = true;
+        // if (target != this && IsDebuffStatus(currentAction.buffDebuffType))
+        //     runtimeBuff.skipNextTurnTick = true;
 
-        target.AddBuff(runtimeBuff);
+        //target.AddBuff(runtimeBuff);
     }
 
     // public void TakeDamage(int damageAmount)

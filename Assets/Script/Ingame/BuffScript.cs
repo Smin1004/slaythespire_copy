@@ -21,40 +21,37 @@ public class Buff
     public string name;
     public string key;
 
+    public int value;
     public bool isDebuff;
-    public int value;          // 효과 수치입니다. 예: 힘 +2, 취약 적용량 등입니다.
-    public int remainingTurns; // 지속 턴입니다. value와 분리해서 효과 수치가 턴 처리 때문에 꼬이지 않게 합니다.
-    public bool isPermanent;   // 영구적 버프
-    public bool skipNextTurnTick;   // 적 캐릭터 턴종료시 디버프 없어지게하는 용도
+    public BuffType type;
 
     public Sprite img;
     public BuffScript effect;
     public string desc;
 
-    public Buff CreateRuntimeCopy(int runtimeValue, int runtimeTurns = 1)
+    public Buff() { }
+    public Buff(Buff source)
     {
-        Buff copy = new Buff
-        {
-            index = index,
-            name = name,
-            key = key,
-            isDebuff = isDebuff,
-            skipNextTurnTick = skipNextTurnTick,
-            isPermanent = isPermanent,
-            value = runtimeValue,
-            remainingTurns = isPermanent ? -1 : Mathf.Max(1, runtimeTurns),
-            img = img,
-            desc = desc
-        };
+        if (source == null) return;
 
-        if (effect != null)
-            copy.effect = Activator.CreateInstance(effect.GetType()) as BuffScript;
-
-        if (copy.effect != null)
-            copy.effect.buffData = copy;
-
-        return copy;
+        this.index = source.index;
+        this.name = source.name;
+        this.key = source.key;
+        this.value = source.value;
+        this.isDebuff = source.isDebuff;
+        
+        this.img = source.img;
+        this.effect = source.effect; 
+        this.effect.buffData = this;
+        this.desc = source.desc;
     }
+}
+
+public enum BuffType
+{
+    Permanent,      //영구      //value값이 수치로 적용됨, 버프가 제거되지 않음
+    Disposable,     //1회용     //value값이 수치로 적용됨, 버프가 턴 종료시 제거됨
+    Temporary,      //기간제    //value값이 턴마다 감소, 0이되면 버프가 제거됨, 수치는 고정값
 }
 
 public class strength : BuffScript // 힘

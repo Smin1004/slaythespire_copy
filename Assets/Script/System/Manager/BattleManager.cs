@@ -86,9 +86,6 @@ public class BattleManager : MonoBehaviour
             _gameOverPanel.SetActive(false);
 
         SetHiddenObjects(true);
-
-        if (Player.Instance != null)
-            Player.Instance.Revive();
     }
 
     private void SetHiddenObjects(bool active)
@@ -286,15 +283,7 @@ public class BattleManager : MonoBehaviour
         // 적 버프/디버프는 적 턴이 끝날 때만 지속 턴을 줄입니다.
         foreach (EnemyEntity enemy in enemies)
         {
-            yield return new WaitForSeconds(0.2f);
 
-            if (_player != null)
-                _player.TickBuffTurns();
-
-            if (enemy == null)
-                continue;
-
-            enemy.TickBuffTurns();
         }
 
         if (enemyList.Count == 0)

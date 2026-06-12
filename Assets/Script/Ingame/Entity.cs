@@ -22,7 +22,6 @@ public abstract class Entity : MonoBehaviour
     public event Action<int> OnDamaged;             // 실제 HP가 깎였을 때만 실행됩니다. 데미지 텍스트, SFX, 카메라 효과가 여기에 붙습니다.
     public event Action OnAttack;              // 공격을 할때 실행함
     public event Action OnDead;                     // Entity가 죽었을 때 실행됩니다.
-    public event Action OnRevived;
     public event Action<IReadOnlyList<Buff>> OnBuffsChanged;
 
     public List<Buff> buffs = new List<Buff>();
@@ -124,32 +123,32 @@ public abstract class Entity : MonoBehaviour
         if (buff == null)
             return;
 
-        Buff existingBuff = buffs.Find(item =>
-            item != null &&
-            ((!string.IsNullOrEmpty(item.key) && item.key == buff.key) ||
-             (item.index != 0 && item.index == buff.index)));
+        // Buff existingBuff = buffs.Find(item =>
+        //     item != null &&
+        //     ((!string.IsNullOrEmpty(item.key) && item.key == buff.key) ||
+        //      (item.index != 0 && item.index == buff.index)));
 
-        if (existingBuff != null)
-        {
-            existingBuff.value += Mathf.Max(1, buff.value);
-            existingBuff.remainingTurns = Mathf.Max(existingBuff.remainingTurns, buff.remainingTurns);
-            if (existingBuff.effect != null)
-                existingBuff.effect.buffData = existingBuff;
-            OnBuffsChanged?.Invoke(Buffs);
-            return;
-        }
+        // if (existingBuff != null)
+        // {
+        //     existingBuff.value += Mathf.Max(1, buff.value);
+        //     existingBuff.remainingTurns = Mathf.Max(existingBuff.remainingTurns, buff.remainingTurns);
+        //     if (existingBuff.effect != null)
+        //         existingBuff.effect.buffData = existingBuff;
+        //     OnBuffsChanged?.Invoke(Buffs);
+        //     return;
+        // }
 
-        if (buff.value <= 0)
-            buff.value = 1;
+        // if (buff.value <= 0)
+        //     buff.value = 1;
 
-        if (buff.remainingTurns <= 0)
-            buff.remainingTurns = 1;
+        // if (buff.remainingTurns <= 0)
+        //     buff.remainingTurns = 1;
 
-        if (buff.effect != null)
-            buff.effect.buffData = buff;
+        // if (buff.effect != null)
+        //     buff.effect.buffData = buff;
 
-        buffs.Add(buff);
-        OnBuffsChanged?.Invoke(Buffs);
+        // buffs.Add(buff);
+        // OnBuffsChanged?.Invoke(Buffs);
     }
 
     public virtual void RemoveBuff(Buff buff)
@@ -170,57 +169,6 @@ public abstract class Entity : MonoBehaviour
         buffs.Clear();
         OnBuffsChanged?.Invoke(Buffs);
 
-    }
-
-    public virtual void TickBuffTurns()
-    {
-        bool changed = false;
-
-        for (int i = buffs.Count - 1; i >= 0; i--)
-        {
-            Buff buff = buffs[i];
-
-            if (buff == null)
-            {
-                buffs.RemoveAt(i);
-                changed = true;
-                continue;
-            }
-
-            if (buff.effect != null)
-            {
-                buff.effect.buffData = buff;
-                buff.effect.OnTurnEnd(this, buff.value);
-            }
-
-            // 영구 버프는 턴 수 감소 안 함
-            if (buff.key == "strength" || buff.key == "dexterity")
-                continue;
-            // 턴을 스킵하여 적이 행동후 디버프가 사라지게 하는 용도 
-            if (buff.skipNextTurnTick)
-            {
-                buff.skipNextTurnTick = false;
-                continue;
-            }
-
-            buff.remainingTurns--;
-
-            if (buff.remainingTurns <= 0)
-            {
-                buffs.RemoveAt(i);
-                changed = true;
-            }
-        }
-
-        if (changed)
-            OnBuffsChanged?.Invoke(Buffs);
-    }
-
-    //Attack 이벤트 
-    public virtual void AttackEvent()
-    {
-        OnAttack?.Invoke();
-        PlaySfx(GetAttackSound());
     }
 
     public virtual void Damage(Entity target, int damageAmount, bool isTrueDamage = false)
@@ -275,19 +223,6 @@ public abstract class Entity : MonoBehaviour
         OnDead?.Invoke();
     }
 
-    // 체력이 0이 된 후에만 부활이 가능합니다. 부활 시 체력은 최대 체력으로 회복됩니다.
-    public virtual void Revive()
-    {
-        _isDead = false;
-
-        curHp = maxHp;
-        curBlock = 0;
-
-        OnHealthChanged?.Invoke(curHp, maxHp);
-        OnBlockChanged?.Invoke(curBlock);
-        OnRevived?.Invoke();
-    }
-
     public virtual void AddBlock(int blockAmount)
     {
         if (blockAmount <= 0)
@@ -296,6 +231,13 @@ public abstract class Entity : MonoBehaviour
         curBlock += blockAmount;
         OnBlockChanged?.Invoke(curBlock);
         PlaySfx(GetBlockGainSound());
+    }
+    
+    //Attack 이벤트 
+    public virtual void AttackEvent()
+    {
+        OnAttack?.Invoke();
+        PlaySfx(GetAttackSound());
     }
 
     public virtual void UseBuff()

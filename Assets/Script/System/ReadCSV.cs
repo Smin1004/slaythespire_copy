@@ -88,10 +88,11 @@ public class ReadCSV : MonoBehaviour
 
             Buff buff = new();
             buff.index = int.Parse(cols[0]);
-            buff.name = cols[1].Trim();
-            buff.key = cols[3].Trim();
-            buff.isDebuff = string.Equals(cols[2].Trim(), "Temporary", StringComparison.OrdinalIgnoreCase);
-            buff.desc = cols[4].Trim();
+            buff.name = cols[1];
+            buff.type = cols[2].EnumParse<BuffType>();
+            buff.key = cols[3];
+            buff.isDebuff = string.Equals(cols[2], "Temporary", StringComparison.OrdinalIgnoreCase);
+            buff.desc = cols[4];
             buff.img = Resources.Load<Sprite>($"Img/BuffImg/{buff.key}");
             Type buffType = typeof(BuffScript).Assembly.GetType(buff.key);
             if (buffType != null)

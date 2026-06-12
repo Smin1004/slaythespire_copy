@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -21,16 +22,12 @@ public class DataManager : MonoBehaviour
 
     public Buff AddBuff(int index, int value)
     {
-        if (loadData == null)
-            return null;
+        if (loadData == null ||index < 0 || index >= loadData.BuffList.Count) return null;
 
-        Buff template = loadData.GetBuffByIndex(index);
-        if (template == null && index >= 0 && index < loadData.BuffList.Count)
-            template = loadData.BuffList[index];
+        Buff temp = loadData.BuffList[index];
+        Buff newBuff = new Buff(temp);
+        newBuff.value = value;
 
-        if (template == null)
-            return null;
-
-        return template.CreateRuntimeCopy(value, 1);
+        return newBuff;
     }
 }

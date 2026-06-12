@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.U2D.Animation;
@@ -94,4 +95,36 @@ public class EnemyAction
     // public GameObject actionEffect;
     // Intent UI가 행동별 아이콘을 직접 표시해야 할 때 사용합니다.
     public Sprite intentIcon;
+}
+
+[System.Serializable] 
+public class EnemyActionn
+{
+    public string actionName;
+    public int selectionWeight;
+
+    [Header("공격")]
+    public bool isAttack;
+    public int baseDamage;
+    public int hitCount;
+
+    [Header("방어")]
+    public bool isBlock;
+    public int blockAmount;
+
+    [Header("상태 이상")]
+    public bool isBuffDebuff;
+    public BuffDebuffAction[] buffDebuffs;
+
+    [Header("행동")]
+    public string animTrigger = "Attack";
+    public AudioClip actionSound;
+}
+
+[System.Serializable]
+public class BuffDebuffAction
+{
+    public string statusId;
+    public int statusAmount;
+    public bool isBuffToSelf;
 }

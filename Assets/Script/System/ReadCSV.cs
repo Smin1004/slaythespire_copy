@@ -91,7 +91,7 @@ public class ReadCSV : MonoBehaviour
             buff.name = cols[1];
             buff.type = cols[2].EnumParse<BuffType>();
             buff.key = cols[3];
-            buff.isDebuff = string.Equals(cols[2], "Temporary", StringComparison.OrdinalIgnoreCase);
+            buff.isDebuff = true; //tnwjd
             buff.desc = cols[4];
             buff.img = Resources.Load<Sprite>($"Img/BuffImg/{buff.key}");
             Type buffType = typeof(BuffScript).Assembly.GetType(buff.key);

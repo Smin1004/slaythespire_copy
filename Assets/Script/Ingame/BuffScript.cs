@@ -6,7 +6,7 @@ public abstract class BuffScript
     public Buff buffData;
 
     public virtual void OnTurnStart(Entity unit, int value) { }                              // 턴 시작 시 실행되는 효과입니다.
-    public virtual int OnTrigger(Entity unit, Skill playedCard, int value) { return value; } // 카드 사용 시 카드 수치에 적용되는 효과입니다.
+    public virtual int OnTrigger(Entity unit, Skill playedCard, int value, bool isCheck = false) { return value; } // 카드 사용 시 카드 수치에 적용되는 효과입니다.
     public virtual int OnAttack(Entity unit, int value) { return value; }                    // 실제 공격 계산 시 공격자에게 적용되는 효과입니다.
 
     public virtual int OnBlock(Entity unit, int value) { return value; }                     // 실제 피격 계산 시 방어자에게 적용되는 효과입니다.
@@ -56,7 +56,7 @@ public enum BuffType
 
 public class strength : BuffScript // 힘
 {
-    public override int OnTrigger(Entity unit, Skill skill, int value)
+    public override int OnTrigger(Entity unit, Skill skill, int value, bool isCheck = false)
     {
         if (skill.type != SkillType.Attack) return value;
         return value + buffData.value;
@@ -72,7 +72,7 @@ public class strength : BuffScript // 힘
 
 public class dexterity : BuffScript // 민첩
 {
-    public override int OnTrigger(Entity unit, Skill skill, int value)
+    public override int OnTrigger(Entity unit, Skill skill, int value, bool isCheck = false)
     {
         if (skill.type != SkillType.Skill) return value;
         return value + buffData.value;
@@ -99,7 +99,7 @@ public class weak : BuffScript // 약화
 
 public class frail : BuffScript // 손상
 {
-    public override int OnTrigger(Entity unit, Skill skill, int value)
+    public override int OnTrigger(Entity unit, Skill skill, int value, bool isCheck = false)
     {
         if (skill.type != SkillType.Skill) return value;
         value = Mathf.FloorToInt(value * 0.75f);

@@ -31,7 +31,7 @@ public class Player : Entity
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) AddBuff(DataManager.Instance.AddBuff(0, 1));
+        if(Input.GetKeyDown(KeyCode.Space)) AddBuff(DataManager.Instance.GetBuff(0, 1));
     }
 
     public override void TurnInit()

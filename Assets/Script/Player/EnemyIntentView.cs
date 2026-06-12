@@ -5,34 +5,34 @@ using UnityEngine.UI;
 public class EnemyIntentView : MonoBehaviour
 {
     [Header("참조")]
-    [SerializeField] private EnemyEntity _enemy;
+    [SerializeField] private EnemyEntity enemy;
 
     [Header("UI")]
-    [SerializeField] private Image _icon;
-    [SerializeField] private TMP_Text _valueText;
+    [SerializeField] private Image icon;
+    [SerializeField] private TMP_Text valueText;
 
     [Header("아이콘")]
-    [SerializeField] private Sprite _attackIcon;
-    [SerializeField] private Sprite _defendIcon;
-    [SerializeField] private Sprite _buffIcon;
-    [SerializeField] private Sprite _debuffIcon;
+    [SerializeField] private Sprite attackIcon;
+    [SerializeField] private Sprite defendIcon;
+    [SerializeField] private Sprite buffIcon;
+    [SerializeField] private Sprite debuffIcon;
 
     private void OnEnable()
     {
-        if (_enemy != null)
-            _enemy.OnIntentChanged += UpdateIntent;
+        if (enemy != null)
+            enemy.OnIntentChanged += UpdateIntent;
     }
 
     private void OnDisable()
     {
-        if (_enemy != null)
-            _enemy.OnIntentChanged -= UpdateIntent;
+        if (enemy != null)
+            enemy.OnIntentChanged -= UpdateIntent;
     }
 
     private void Start()
     {
-        if (_enemy != null)
-            UpdateIntent(_enemy.CurrentAction);
+        if (enemy != null)
+            UpdateIntent(enemy.CurrentAction);
     }
 
     private void UpdateIntent(EnemyAction action)
@@ -41,57 +41,50 @@ public class EnemyIntentView : MonoBehaviour
             return;
 
         if (action.intentIcon != null)
-            _icon.sprite = action.intentIcon;
+            icon.sprite = action.intentIcon;
 
-        switch (action.intentType)
+        if(action.isAttack)
         {
-            case IntentType.Attack:
+            int checkDamage = enemy.ExecuteAttack(Player.Instance, action.damage, true);
+            checkDamage = Player.Instance.ExecuteBlock(checkDamage, true);
 
-                if (action.intentIcon == null)
-                    _icon.sprite = _attackIcon;
-                _valueText.text = action.attackDamage.ToString();
-
-                break;
-
-            case IntentType.Defend:
-
-                if (action.intentIcon == null)
-                    _icon.sprite = _defendIcon;
-                _valueText.text = action.blockAmount.ToString();
-
-                break;
-
-            case IntentType.Buff:
-
-                if (action.intentIcon == null)
-                    _icon.sprite = _buffIcon;
-                _valueText.text = "";
-
-                break;
-
-            case IntentType.Debuff:
-
-                if (action.intentIcon == null)
-                    _icon.sprite = _debuffIcon;
-                _valueText.text = "";
-
-                break;
+            // 연타 여부에 따라 텍스트 포맷 결정
+            if (action.hitCount > 1) valueText.text = $"{checkDamage} x {action.hitCount}";
+            else valueText.text = $"{checkDamage}";
+                
+            icon.sprite = attackIcon;
+        }
+        if (action.isBlock)
+        {
+            int checkBlock = enemy.ExecuteBlock(action.blockAmount, true);
+            valueText.text = $"{checkBlock}";
+                
+            icon.sprite = attackIcon;
+        }
+        if (action.isBuffDebuff)
+        {
+            foreach(var n in action.buffDebuffs)
+            {
+                if (n.isBuffToSelf) icon.sprite = buffIcon;
+                else icon.sprite = debuffIcon;
+            }
+            valueText.text = "";
         }
     }
 
     /// - 적 프리팹이 씬 Canvas UI를 직접 참조하지 않게 하기 위해서입니다.
     /// </summary>
-    public void Bind(EnemyEntity enemy)
+    public void Bind(EnemyEntity _enemy)
     {
-        if (_enemy != null)
-            _enemy.OnIntentChanged -= UpdateIntent;
+        if (enemy != null)
+            enemy.OnIntentChanged -= UpdateIntent;
 
-        _enemy = enemy;
+        enemy = _enemy;
 
-        if (_enemy != null)
+        if (enemy != null)
         {
-            _enemy.OnIntentChanged += UpdateIntent;
-            UpdateIntent(_enemy.CurrentAction);
+            enemy.OnIntentChanged += UpdateIntent;
+            UpdateIntent(enemy.CurrentAction);
         }
     }
 }

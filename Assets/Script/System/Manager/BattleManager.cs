@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
 
     [Header("State")]
     [SerializeField] private BattleState curBattleState;
-    [SerializeField] private Player _player;
+    [SerializeField] private Player player;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject[] _hideWhenOpen;
 
@@ -48,14 +48,14 @@ public class BattleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_player != null)
-            _player.OnDead += ShowGameOver;
+        if (player != null)
+            player.OnDead += ShowGameOver;
     }
 
     private void OnDisable()
     {
-        if (_player != null)
-            _player.OnDead -= ShowGameOver;
+        if (player != null)
+            player.OnDead -= ShowGameOver;
     }
 
     public void InitAwake()
@@ -250,8 +250,8 @@ public class BattleManager : MonoBehaviour
     {
         Debug.Log("Player turn start");
 
-        if (_player != null)
-            _player.TurnInit();
+        if (player != null)
+            player.TurnInit();
 
         AudioManager.Instance?.PlaySfx(playerTurnStartSound);
         ChangeBattleState(BattleState.PlayerDraw);
@@ -304,16 +304,10 @@ public class BattleManager : MonoBehaviour
             if (enemy == null)
                 continue;
 
-            enemy.ExecuteEnemyTurn(_player);
+            enemy.ExecuteEnemyTurn(player);
         }
 
         yield return new WaitForSeconds(2f);
-
-        // 적 버프/디버프는 적 턴이 끝날 때만 지속 턴을 줄입니다.
-        foreach (EnemyEntity enemy in enemies)
-        {
-
-        }
 
         if (enemyList.Count == 0)
             ChangeBattleState(BattleState.BattleWon);

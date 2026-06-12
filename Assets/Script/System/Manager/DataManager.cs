@@ -20,13 +20,12 @@ public class DataManager : MonoBehaviour
         Player.Instance.masterDeck = loadData.SkillList;
     }
 
-    public Buff AddBuff(int index, int value)
+    public Buff GetBuff(int index, int value)
     {
         if (loadData == null ||index < 0 || index >= loadData.BuffList.Count) return null;
 
         Buff temp = loadData.BuffList[index];
-        Buff newBuff = new Buff(temp);
-        newBuff.value = value;
+        Buff newBuff = new(temp) {value = value};
 
         return newBuff;
     }

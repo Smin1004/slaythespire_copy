@@ -57,7 +57,7 @@ public class Strike : SkillScript //타격
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
+        
         unit.ExecuteAttack(target[0], value[0]);
         yield break;
     }
@@ -76,8 +76,8 @@ public class Inflame : SkillScript //발화
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.UseBuff();
-        Buff curBuff = DataManager.Instance.AddBuff(1, value[0]);
+        
+        Buff curBuff = DataManager.Instance.GetBuff(1, value[0]);
         unit.AddBuff(curBuff);
         yield break;
     }
@@ -88,10 +88,9 @@ public class Bash : SkillScript //강타
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
-        unit.UseDebuff();
+        
         unit.ExecuteAttack(target[0], value[0]);
-        Buff curBuff = DataManager.Instance.AddBuff(3, value[0]);
+        Buff curBuff = DataManager.Instance.GetBuff(3, value[0]);
         target[0].AddBuff(curBuff);
         yield break;
     }
@@ -101,7 +100,7 @@ public class Anger : SkillScript //분노
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
+        
         unit.ExecuteAttack(target[0], value[0]);
         DeckManager.Instance.AddCard(this.skillData, 2);
         yield break;
@@ -112,7 +111,7 @@ public class BodySlam : SkillScript //몸통박치기
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
+        
         unit.ExecuteAttack(target[0], unit.curBlock);
         yield break;
     }
@@ -124,7 +123,7 @@ public class SwordBoomerang : SkillScript //부메랑칼날
     {
         for (int i = 0; i < value[1]; i++)
         {
-            unit.AttackEvent();
+            
             int random = Random.Range(0, target.Length);
             unit.ExecuteAttack(target[random], value[0]);
             yield return new WaitForSeconds(0.2f);
@@ -136,12 +135,12 @@ public class SetupStrike : SkillScript //사전타격
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
+        
         unit.ExecuteAttack(target[0], value[0]);
-        unit.UseBuff();
-        Buff curBuff = DataManager.Instance.AddBuff(1, value[1]);
+        
+        Buff curBuff = DataManager.Instance.GetBuff(1, value[1]);
         unit.AddBuff(curBuff);
-        curBuff = DataManager.Instance.AddBuff(6, value[1]);
+        curBuff = DataManager.Instance.GetBuff(6, value[1]);
         unit.AddBuff(curBuff);
         yield break;
     }
@@ -153,7 +152,7 @@ public class TwinStrike : SkillScript //이중타격
     {
         for (int i = 0; i < 2; i++)
         {
-            unit.AttackEvent();
+            
             unit.ExecuteAttack(target[0], value[0]);
             yield return new WaitForSeconds(0.2f);
         }
@@ -165,7 +164,7 @@ public class Breakthrough : SkillScript //정면돌파
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
+        
         unit.Damage(unit, 1, true);
         for (int i = 0; i < target.Length; i++)
         {
@@ -179,8 +178,8 @@ public class ThunderClap : SkillScript //천둥
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
-        Buff curBuff = DataManager.Instance.AddBuff(3, value[0]);
+        
+        Buff curBuff = DataManager.Instance.GetBuff(3, value[0]);
         
         for (int i = 0; i < target.Length; i++)
         {
@@ -195,7 +194,7 @@ public class IronWave : SkillScript
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
+        
         unit.ExecuteAttack(target[0], value[1]);
         unit.ExecuteBlock(value[0]);
         yield break;
@@ -206,7 +205,7 @@ public class PommelStrike : SkillScript
 {
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
-        unit.AttackEvent();
+        
         unit.ExecuteAttack(target[0], value[0]);
         DeckManager.Instance.DrawCards(value[1]);
         yield break;

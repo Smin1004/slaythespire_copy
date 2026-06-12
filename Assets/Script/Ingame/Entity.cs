@@ -33,7 +33,7 @@ public abstract class Entity : MonoBehaviour
     public int CurrentBlock => curBlock;
     public bool IsDead => _isDead;
 
-    public virtual void InitializeEntity(int startingHealth)
+    protected virtual void InitializeEntity(int startingHealth)
     {
         maxHp = startingHealth;
         curHp = startingHealth;
@@ -56,28 +56,54 @@ public abstract class Entity : MonoBehaviour
         curBlock = 0;
         OnBlockChanged?.Invoke(curBlock);
     }
-    //공격시 버프 연산
-    public void ExecuteAttack(Entity target, int value, bool isAttack = true)
-    {
-        if (target == null || IsDead)
-            return;
 
-        value = BuffCheck_Attack(this, value);
-        value = target.BuffCheck_Block(target, value);
-        if (!isAttack) return;
-        Debug.Log($"Attack!!!!! {value}");
+    //공격시 버프 연산
+    public int ExecuteAttack(Entity target, int value, bool isCheck = false)
+    {
+        if (target == null || IsDead) return value;
+
+        value = BuffCheck_Attack(this, value, isCheck);
+        value = target.BuffCheck_Block(target, value, isCheck);
+        if(isCheck) return value;
+
+        AttackEvent();
         target.Damage(this, value);
+        return value;
     }
 
     //방어시 버프 연산
-    public void ExecuteBlock(int value)
+    public int ExecuteBlock(int value, bool isCheck = false)
     {
         value = BuffCheck_Attack(this, value);
+        if(isCheck) return value;
+
+        DefendEvent();
         AddBlock(value);
+        return value;
+    }
+
+    //버프, 디버프 부여
+    public virtual void AddBuff(Buff buff)
+    {
+        if (buff == null) return;
+            
+        Buff existingBuff = buffs.Find(item => item != null && item.index == buff.index);
+        if(buff.isDebuff) UseDebuff();
+        else UseBuff();
+        
+        if (existingBuff != null)
+        {
+            existingBuff.value += buff.value;
+            OnBuffsChanged?.Invoke(Buffs);
+            return;
+        }
+
+        buffs.Add(buff);
+        OnBuffsChanged?.Invoke(Buffs);
     }
 
     //피격시 버프 계산
-    public virtual int BuffCheck_Attack(Entity unit, int value)
+    public virtual int BuffCheck_Attack(Entity unit, int value, bool isCheck = false)
     {
         for (int i = 0; i < buffs.Count; i++)
         {
@@ -86,13 +112,13 @@ public abstract class Entity : MonoBehaviour
                 continue;
 
             buff.effect.buffData = buff;
-            value = buff.effect.OnAttack(this, value);
+            value += buff.effect.OnAttack(this, value);
         }
         return value;
     }
 
     //피격시 버프 계산
-    public virtual int BuffCheck_Block(Entity unit, int value)
+    public virtual int BuffCheck_Block(Entity unit, int value, bool isCheck = false)
     {
         for (int i = 0; i < buffs.Count; i++)
         {
@@ -101,7 +127,7 @@ public abstract class Entity : MonoBehaviour
                 continue;
 
             buff.effect.buffData = buff;
-            value = buff.effect.OnBlock(this, value);
+            value += buff.effect.OnBlock(this, value);
         }
         return value;
     }
@@ -117,59 +143,6 @@ public abstract class Entity : MonoBehaviour
             buff.effect.buffData = buff;
             buff.effect.OnAfter(this, target);
         }
-    }
-
-    public virtual void AddBuff(Buff buff)
-    {
-        if (buff == null)
-            return;
-
-        // Buff existingBuff = buffs.Find(item =>
-        //     item != null &&
-        //     ((!string.IsNullOrEmpty(item.key) && item.key == buff.key) ||
-        //      (item.index != 0 && item.index == buff.index)));
-
-        // if (existingBuff != null)
-        // {
-        //     existingBuff.value += Mathf.Max(1, buff.value);
-        //     existingBuff.remainingTurns = Mathf.Max(existingBuff.remainingTurns, buff.remainingTurns);
-        //     if (existingBuff.effect != null)
-        //         existingBuff.effect.buffData = existingBuff;
-        //     OnBuffsChanged?.Invoke(Buffs);
-        //     return;
-        // }
-
-        // if (buff.value <= 0)
-        //     buff.value = 1;
-
-        // if (buff.remainingTurns <= 0)
-        //     buff.remainingTurns = 1;
-
-        // if (buff.effect != null)
-        //     buff.effect.buffData = buff;
-
-        // buffs.Add(buff);
-        // OnBuffsChanged?.Invoke(Buffs);
-    }
-
-    public virtual void RemoveBuff(Buff buff)
-    {
-        if (buff == null)
-            return;
-
-        if (buffs.Remove(buff))
-            OnBuffsChanged?.Invoke(Buffs);
-    }
-
-
-    public virtual void ClearBuffs()
-    {
-        if (buffs.Count == 0)
-            return;
-
-        buffs.Clear();
-        OnBuffsChanged?.Invoke(Buffs);
-
     }
 
     public virtual void Damage(Entity target, int damageAmount, bool isTrueDamage = false)
@@ -193,7 +166,7 @@ public abstract class Entity : MonoBehaviour
             OnBlockChanged?.Invoke(curBlock);
 
             if (blockedDamage > 0)
-                PlaySfx(GetBlockHitSound());
+                AudioManager.Instance.PlaySfx(blockHitSound);
 
             if (remainingDamage <= 0)
             {
@@ -223,11 +196,6 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
-    protected virtual void Die()
-    {
-        OnDead?.Invoke();
-    }
-
     public virtual void AddBlock(int blockAmount)
     {
         if (blockAmount <= 0)
@@ -235,55 +203,33 @@ public abstract class Entity : MonoBehaviour
 
         curBlock += blockAmount;
         OnBlockChanged?.Invoke(curBlock);
-        PlaySfx(GetBlockGainSound());
+        AudioManager.Instance.PlaySfx(blockGainSound);
     }
+
+    protected virtual void Die()
+    {
+        OnDead?.Invoke();
+    }
+
     //Attack 이벤트 
     public virtual void AttackEvent()
     {
         OnAttack?.Invoke();
-        PlaySfx(GetAttackSound());
+        AudioManager.Instance.PlaySfx(attackSound);
     }
 
-    #region ------ 효과음 부분 -------
+    public virtual void DefendEvent()
+    {
+        //방어도 얻을때 애니메이션 / 소리 있어야하는데 얘 왜 없어요
+    }
+
     public virtual void UseBuff()
     {
-        PlaySfx(GetBuffSound());
+        AudioManager.Instance.PlaySfx(buffSound);
     }
 
     public virtual void UseDebuff()
     {
-        PlaySfx(GetDebuffSound());
+        AudioManager.Instance.PlaySfx(debuffSound);
     }
-
-    protected virtual AudioClip GetAttackSound()
-    {
-        return attackSound;
-    }
-
-    protected virtual AudioClip GetBlockGainSound()
-    {
-        return blockGainSound;
-    }
-
-    protected virtual AudioClip GetBlockHitSound()
-    {
-        return blockHitSound;
-    }
-
-    protected virtual AudioClip GetBuffSound()
-    {
-        return buffSound;
-    }
-
-    protected virtual AudioClip GetDebuffSound()
-    {
-        return debuffSound;
-    }
-
-    protected void PlaySfx(AudioClip clip)
-    {
-        if (clip != null)
-            AudioManager.Instance?.PlaySfx(clip);
-    }
-    #endregion
 }

@@ -25,7 +25,6 @@ public class EntityAnimation : MonoBehaviour
 
         _entity.OnDamaged += PlayHitAnimation;
         _entity.OnDead += PlayDeathAnimation;
-        _entity.OnRevived += PlayRevive;
         _entity.OnAttack += PlayAttack;
     }
 
@@ -36,7 +35,6 @@ public class EntityAnimation : MonoBehaviour
 
         _entity.OnDamaged -= PlayHitAnimation;
         _entity.OnDead -= PlayDeathAnimation;
-        _entity.OnRevived -= PlayRevive;
         _entity.OnAttack -= PlayAttack;
     }
 
@@ -68,9 +66,9 @@ public class EntityAnimation : MonoBehaviour
         // EnemyAction에 행동별 공격 트리거가 있으면 기본 Attack 대신 그 트리거를 사용합니다.
         if (_entity is EnemyEntity enemy &&
             enemy.CurrentAction != null &&
-            !string.IsNullOrEmpty(enemy.CurrentAction.attackAnimationTrigger))
+            !string.IsNullOrEmpty(enemy.CurrentAction.animTrigger))
         {
-            triggerName = enemy.CurrentAction.attackAnimationTrigger;
+            triggerName = enemy.CurrentAction.animTrigger;
         }
 
         _animator.SetTrigger(triggerName);

@@ -1,35 +1,33 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
 public class EnemyEntity : Entity
 {
-    [SerializeField] private EnemyData currentEnemyData;
+    [SerializeField] private EnemyData enemyData;
     [SerializeField] private SpriteLibrary spriteLibrary;
     [SerializeField] private Animator animator;
     [SerializeField] private bool destroyOnDeath = true;
     [SerializeField] private float deathDestroyDelay = 1f;
 
-    private EnemyAction currentAction;
+    private EnemyAction curAction;
     private bool isSetup;
 
-    public EnemyData CurrentEnemyData => currentEnemyData;
-    public EnemyAction CurrentAction => currentAction;
+    public EnemyData CurrentEnemyData => enemyData;
+    public EnemyAction CurrentAction => curAction;
     public event Action<EnemyAction> OnIntentChanged;
 
     private void Awake()
     {
-        if (spriteLibrary == null)
-            spriteLibrary = GetComponentInChildren<SpriteLibrary>();
-
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
+        spriteLibrary = GetComponentInChildren<SpriteLibrary>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
     {
-        if (!isSetup && currentEnemyData != null)
-            SetupEnemy(currentEnemyData);
+        if (!isSetup && enemyData != null)
+            SetupEnemy(enemyData);
     }
 
     private void OnEnable()
@@ -50,12 +48,23 @@ public class EnemyEntity : Entity
             return;
         }
 
-        currentEnemyData = data;
+        enemyData = data;
         isSetup = true;
 
-        InitializeEntity(currentEnemyData.maxHealth);
-        ApplyPresentation(currentEnemyData);
+        InitializeEntity(enemyData.maxHealth);
+        ApplyPresentation(enemyData);
         DecideNextIntent();
+    }
+
+    protected override void InitializeEntity(int startingHealth)
+    {
+        attackSound = enemyData.attackSound;
+        blockGainSound = enemyData.blockGainSound;
+        blockHitSound = enemyData.blockHitSound;
+        buffSound = enemyData.buffSound;
+        debuffSound = enemyData.debuffSound;
+
+        base.InitializeEntity(startingHealth);
     }
 
     private void ApplyPresentation(EnemyData data)
@@ -75,15 +84,15 @@ public class EnemyEntity : Entity
 
     public void DecideNextIntent()
     {
-        if (currentEnemyData == null || currentEnemyData.actions == null || currentEnemyData.actions.Length == 0)
+        if (enemyData == null || enemyData.actions == null || enemyData.actions.Length == 0)
         {
-            currentAction = null;
-            OnIntentChanged?.Invoke(currentAction);
+            curAction = null;
+            OnIntentChanged?.Invoke(curAction);
             return;
         }
 
-        currentAction = PickWeightedAction(currentEnemyData.actions);
-        OnIntentChanged?.Invoke(currentAction);
+        curAction = PickWeightedAction(enemyData.actions);
+        OnIntentChanged?.Invoke(curAction);
     }
 
     private EnemyAction PickWeightedAction(EnemyAction[] actions)
@@ -112,85 +121,25 @@ public class EnemyEntity : Entity
         return actions[0];
     }
 
-    public void ExecuteEnemyTurn(Entity playerTarget)
+    public void ExecuteEnemyTurn(Entity target)
     {
-        if (IsDead || currentAction == null || playerTarget == null)
+        if (IsDead || curAction == null || target == null)
             return;
 
-        Debug.Log($"[{currentEnemyData.enemyName}] Execute action: {currentAction.actionName}");
-
-        switch (currentAction.intentType)
+        Debug.Log($"[{enemyData.enemyName}] Execute action: {curAction.actionName}");
+        if (curAction.isAttack) for (int i = 0; i < curAction.hitCount; i++) ExecuteAttack(target, curAction.damage);
+        if (curAction.isBlock) ExecuteBlock(curAction.blockAmount);
+        if (curAction.isBuffDebuff)
         {
-            case IntentType.Attack:
-                ExecuteAttack(playerTarget);
-                break;
-            case IntentType.Defend:
-                AddBlock(currentAction.blockAmount);
-                break;
-            case IntentType.Buff:
-                UseBuff();
-                ApplyStatus(IsDebuffStatus(currentAction.buffDebuffType) ? playerTarget : this);
-                Debug.Log($"Buff: {currentAction.buffDebuffType} {currentAction.effectValue}");
-                break;
-            case IntentType.Debuff:
-                UseDebuff();
-                ApplyStatus(playerTarget);
-                Debug.Log($"Debuff: {currentAction.buffDebuffType} {currentAction.effectValue}");
-                break;
+            Buff buff;
+            for (int i = 0; i < curAction.buffDebuffs.Length; i++)
+            {
+                buff = DataManager.Instance.GetBuff(curAction.buffDebuffs[i].id, curAction.buffDebuffs[i].value);
+                if (curAction.buffDebuffs[i].isBuffToSelf) AddBuff(buff);
+            }
         }
-
         DecideNextIntent();
     }
-
-    private void ExecuteAttack(Entity playerTarget)
-    {
-        AttackEvent();
-
-        int hits = Mathf.Max(1, currentAction.attackCount);
-        for (int i = 0; i < hits; i++)
-        {
-            ExecuteAttack(playerTarget, currentAction.attackDamage);
-        }
-    }
-
-    // 버프 안전장치 자신에게 디버프를거는걸 방지
-    private bool IsDebuffStatus(BuffDebuffType type)
-    {
-        return type == BuffDebuffType.Weak ||
-               type == BuffDebuffType.Vulnerable ||
-               type == BuffDebuffType.Frail;
-    }
-
-    private void ApplyStatus(Entity target)
-    {
-        if (target == null || currentAction == null || currentAction.buffDebuffType == BuffDebuffType.None)
-            return;
-
-        LoadData loadData = DataManager.Instance != null ? DataManager.Instance.loadData : null;
-        if (loadData == null)
-            return;
-
-        // Buff template = loadData.GetBuffByKeyOrName(currentAction.statusKeyOrName);
-        // if (template == null)
-        //     template = loadData.GetBuffByKey(currentAction.buffDebuffType.ToString().ToLowerInvariant());
-
-        // if (template == null)
-        //     return;
-
-        // // 플레이어에게 새로 걸린 디버프는 첫 번째 차감 타이밍을 한 번 무시
-        // int duration = 1;
-        // Buff runtimeBuff = template.CreateRuntimeCopy(currentAction.effectValue, duration);
-
-        // if (target != this && IsDebuffStatus(currentAction.buffDebuffType))
-        //     runtimeBuff.skipNextTurnTick = true;
-
-        //target.AddBuff(runtimeBuff);
-    }
-
-    // public void TakeDamage(int damageAmount)
-    // {
-    //     Damage(damageAmount);
-    // }
 
     private void PlayDamagedFeedback(int appliedDamage)
     {
@@ -209,54 +158,5 @@ public class EnemyEntity : Entity
 
         if (destroyOnDeath)
             Destroy(gameObject, deathDestroyDelay);
-    }
-
-    protected override AudioClip GetAttackSound()
-    {
-        if (currentAction != null && currentAction.actionSound != null)
-            return currentAction.actionSound;
-
-        if (currentEnemyData != null && currentEnemyData.attackSound != null)
-            return currentEnemyData.attackSound;
-
-        return base.GetAttackSound();
-    }
-
-    protected override AudioClip GetBlockGainSound()
-    {
-        if (currentEnemyData != null && currentEnemyData.blockGainSound != null)
-            return currentEnemyData.blockGainSound;
-
-        return base.GetBlockGainSound();
-    }
-
-    protected override AudioClip GetBlockHitSound()
-    {
-        if (currentEnemyData != null && currentEnemyData.blockHitSound != null)
-            return currentEnemyData.blockHitSound;
-
-        return base.GetBlockHitSound();
-    }
-
-    protected override AudioClip GetBuffSound()
-    {
-        if (currentAction != null && currentAction.actionSound != null)
-            return currentAction.actionSound;
-
-        if (currentEnemyData != null && currentEnemyData.buffSound != null)
-            return currentEnemyData.buffSound;
-
-        return base.GetBuffSound();
-    }
-
-    protected override AudioClip GetDebuffSound()
-    {
-        if (currentAction != null && currentAction.actionSound != null)
-            return currentAction.actionSound;
-
-        if (currentEnemyData != null && currentEnemyData.debuffSound != null)
-            return currentEnemyData.debuffSound;
-
-        return base.GetDebuffSound();
     }
 }

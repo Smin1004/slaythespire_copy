@@ -72,40 +72,15 @@ public enum BuffDebuffType
     Dexterity
 }
 
-[System.Serializable]
+[System.Serializable] 
 public class EnemyAction
 {
     public string actionName;
-    public IntentType intentType;
-    public int attackDamage;
-    public int blockAmount;
-    public BuffDebuffType buffDebuffType;
-    // CSV의 script key 또는 한글 상태이상 이름을 직접 적습니다. 예: weak 또는 약화
-    public string statusKeyOrName;
-    public int effectValue;
-    // 다단히트 공격을 표현할 때 사용합니다. 1보다 작으면 실행 시 1회로 보정됩니다.
-    public int attackCount = 1;
-    // 행동 선택 확률 가중치입니다. 0 이하는 선택 가중치에서 제외됩니다.
-    public int weight = 1;
-    // 기본 Attack 트리거 대신 행동별 공격 트리거를 쓰고 싶을 때 지정합니다.
-    public string attackAnimationTrigger = "Attack";
-    // 행동에 전용 사운드/이펙트가 있으면 EnemyData의 기본 공격 리소스보다 우선합니다.
-    public AudioClip actionSound;
-    // 행동별 이펙트도 아직 확정 전이라 잠시 사용하지 않습니다.
-    // public GameObject actionEffect;
-    // Intent UI가 행동별 아이콘을 직접 표시해야 할 때 사용합니다.
-    public Sprite intentIcon;
-}
-
-[System.Serializable] 
-public class EnemyActionn
-{
-    public string actionName;
-    public int selectionWeight;
+    public int weight;
 
     [Header("공격")]
     public bool isAttack;
-    public int baseDamage;
+    public int damage;
     public int hitCount;
 
     [Header("방어")]
@@ -119,12 +94,14 @@ public class EnemyActionn
     [Header("행동")]
     public string animTrigger = "Attack";
     public AudioClip actionSound;
+    public Sprite intentIcon;
 }
 
 [System.Serializable]
 public class BuffDebuffAction
 {
-    public string statusId;
-    public int statusAmount;
+    public int id;
+    public int value;
+    public bool isDebuff;
     public bool isBuffToSelf;
 }

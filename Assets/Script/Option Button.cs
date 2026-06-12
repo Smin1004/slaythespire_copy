@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Button : MonoBehaviour
+public class OptionButton : MonoBehaviour
 {
     public static event Action OnSettingOpen;
     public static event Action OnSettingClose;

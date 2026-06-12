@@ -10,24 +10,47 @@ public class EntityBlock : MonoBehaviour
 
     private void OnEnable()
     {
-        _entity.OnBlockChanged += UpdateBlock;
+        if (_entity != null)
+            _entity.OnBlockChanged += UpdateBlock;
     }
 
     private void OnDisable()
     {
-        _entity.OnBlockChanged -= UpdateBlock;
+        if (_entity != null)
+            _entity.OnBlockChanged -= UpdateBlock;
     }
 
     private void Start()
     {
-        UpdateBlock(_entity.CurrentBlock);
+        if (_entity != null)
+            UpdateBlock(_entity.CurrentBlock);
+        else
+            UpdateBlock(0);
     }
 
     private void UpdateBlock(int block)
     {
-        _blockRoot.SetActive(block > 0);
+        if (_blockRoot != null)
+            _blockRoot.SetActive(block > 0);
 
-        if (block > 0)
+        if (block > 0 && _blockText != null)
             _blockText.text = block.ToString();
+    }
+
+    /// <summary>
+    /// Entity를 바인딩하는 함수입니다.
+    /// </summary>
+    public void Bind(Entity entity)
+    {
+        if (_entity != null)
+            _entity.OnBlockChanged -= UpdateBlock;
+
+        _entity = entity;
+
+        if (_entity != null)
+        {
+            _entity.OnBlockChanged += UpdateBlock;
+            UpdateBlock(_entity.CurrentBlock);
+        }
     }
 }

@@ -198,7 +198,7 @@ public class EnemyEntity : Entity
             return;
 
         BattleManager.Instance?.SpawnDamageText(appliedDamage, transform);
-        BattleManager.Instance?.ShakeCamera();
+
     }
 
     protected override void Die()

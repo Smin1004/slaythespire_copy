@@ -68,4 +68,17 @@ public class RewardManager : MonoBehaviour
         // 실제로는 CardDatabase에서 등급(희귀도) 확률에 맞춰 중복 없이 뽑아오는 로직이 들어갑니다.
         return options;
     }
+
+    // ----------------------고친부분-------------------
+    public void SelectReward()
+    {
+        // 1. 보상 지급
+        // Player.Instance.masterDeck.Add(selectedCard);
+
+        // 2. 보상 패널 닫기
+        gameObject.SetActive(false);
+
+        // 3. 맵 선택지로 돌아가기
+        RunManager.Instance?.CompleteBattleReward();
+    }      
 }

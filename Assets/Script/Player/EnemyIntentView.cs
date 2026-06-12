@@ -78,4 +78,20 @@ public class EnemyIntentView : MonoBehaviour
                 break;
         }
     }
+
+    /// - 적 프리팹이 씬 Canvas UI를 직접 참조하지 않게 하기 위해서입니다.
+    /// </summary>
+    public void Bind(EnemyEntity enemy)
+    {
+        if (_enemy != null)
+            _enemy.OnIntentChanged -= UpdateIntent;
+
+        _enemy = enemy;
+
+        if (_enemy != null)
+        {
+            _enemy.OnIntentChanged += UpdateIntent;
+            UpdateIntent(_enemy.CurrentAction);
+        }
+    }
 }

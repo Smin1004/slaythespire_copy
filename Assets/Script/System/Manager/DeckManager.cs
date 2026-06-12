@@ -85,10 +85,10 @@ public class DeckManager : MonoBehaviour
             NotifyPileCounts();
         }
 
-        public void PlayUseCardSound()
-        {
-            BattleManager.Instance?.PlaySfx(useCardSound);
-        }
+    public void PlayUseCardSound()
+    {
+        AudioManager.Instance?.PlaySfx(useCardSound);
+    }
 
     //드로우
     public void DrawCards(int amount)
@@ -107,7 +107,7 @@ public class DeckManager : MonoBehaviour
                 drawPile.RemoveAt(0);
                 handPile.Add(drawnCard);
                 ArrangeHandCards(handPile);
-                BattleManager.Instance?.PlaySfx(drawCardSound);
+                AudioManager.Instance?.PlaySfx(drawCardSound);
             }
             NotifyPileCounts();
         }

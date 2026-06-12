@@ -178,7 +178,7 @@ public class Card : PoolableObject
 
         player.UseEnergy(skill.cost);
         if (useCardSound != null)
-            BattleManager.Instance?.PlaySfx(useCardSound);
+            AudioManager.Instance?.PlaySfx(useCardSound);
         else
             DeckManager.Instance?.PlayUseCardSound();
         targetPosition = Vector3.zero;

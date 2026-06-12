@@ -2,24 +2,47 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    // BattleManager가 전달한 EnemyData/EnemyAction 사운드를 실제로 재생하는 SFX 채널입니다.
+    public static AudioManager Instance { get; private set; }
+
+    [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource sfxSource;
 
     private void Awake()
     {
-        if (sfxSource == null)
-            sfxSource = GetComponent<AudioSource>();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         if (sfxSource == null)
-            sfxSource = gameObject.AddComponent<AudioSource>();
+            sfxSource = GetComponent<AudioSource>();
     }
 
     public void PlaySfx(AudioClip clip)
     {
-        // 클립이나 AudioSource가 비어 있어도 전투 흐름은 멈추지 않게 합니다.
         if (clip == null || sfxSource == null)
             return;
 
         sfxSource.PlayOneShot(clip);
+    }
+
+    public void PlayBgm(AudioClip clip)
+    {
+        if (clip == null || bgmSource == null)
+            return;
+
+        bgmSource.clip = clip;
+        bgmSource.loop = true;
+        bgmSource.Play();
+    }
+
+    public void StopBgm()
+    {
+        if (bgmSource != null)
+            bgmSource.Stop();
     }
 }

@@ -20,7 +20,8 @@ public abstract class Entity : MonoBehaviour
     public event Action<int, int> OnHealthChanged;  // HP바처럼 체력 UI를 갱신할 때 사용합니다. (현재 HP, 최대 HP)
     public event Action<int> OnBlockChanged;        // 방어도 UI가 생기면 연결해서 쓸 수 있습니다.
     public event Action<int> OnDamaged;             // 실제 HP가 깎였을 때만 실행됩니다. 데미지 텍스트, SFX, 카메라 효과가 여기에 붙습니다.
-    public event Action OnAttack;              // 공격을 할때 실행함
+    public event Action<int> OnHitReceived;         // 방어도에 막혀도 공격이 닿았을 때 실행
+    public event Action OnAttack;                   // 공격을 할때 실행함
     public event Action OnDead;                     // Entity가 죽었을 때 실행됩니다.
     public event Action<IReadOnlyList<Buff>> OnBuffsChanged;
 
@@ -179,6 +180,10 @@ public abstract class Entity : MonoBehaviour
         if (_isDead)
             return;
 
+        // 방어도에 막히더라도 "공격이 닿은 순간" 실행
+        OnHitReceived?.Invoke(damageAmount);
+
+
         // 방어도가 있으면 방어도를 먼저 깎고, 남은 데미지만 HP에 적용합니다.
         if (!isTrueDamage && curBlock > 0)
         {
@@ -232,7 +237,6 @@ public abstract class Entity : MonoBehaviour
         OnBlockChanged?.Invoke(curBlock);
         PlaySfx(GetBlockGainSound());
     }
-    
     //Attack 이벤트 
     public virtual void AttackEvent()
     {
@@ -240,6 +244,7 @@ public abstract class Entity : MonoBehaviour
         PlaySfx(GetAttackSound());
     }
 
+    #region ------ 효과음 부분 -------
     public virtual void UseBuff()
     {
         PlaySfx(GetBuffSound());
@@ -278,6 +283,7 @@ public abstract class Entity : MonoBehaviour
     protected void PlaySfx(AudioClip clip)
     {
         if (clip != null)
-            BattleManager.Instance?.PlaySfx(clip);
+            AudioManager.Instance?.PlaySfx(clip);
     }
+    #endregion
 }

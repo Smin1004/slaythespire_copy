@@ -75,10 +75,7 @@ public class RewardManager : MonoBehaviour
         // 1. 보상 지급
         // Player.Instance.masterDeck.Add(selectedCard);
 
-        // 2. 보상 패널 닫기
-        gameObject.SetActive(false);
-
-        // 3. 맵 선택지로 돌아가기
+        // Continue 버튼을 누르면 RunManager가 보상 패널을 닫고 맵 선택 화면으로 돌아갑니다.
         RunManager.Instance?.CompleteBattleReward();
     }      
 }

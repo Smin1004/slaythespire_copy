@@ -66,4 +66,14 @@ public class Player : Entity
         OnEnergyChanged?.Invoke(energy, maxEnergy);
     }
 
+    public int Heal(int amount)
+    {
+        if (amount <= 0 || IsDead)
+            return 0;
+
+        int beforeHp = curHp;
+        curHp = Mathf.Min(maxHp, curHp + amount);
+
+        return curHp - beforeHp;
+    }
 }

@@ -35,6 +35,9 @@ public class AudioManager : MonoBehaviour
         if (clip == null || bgmSource == null)
             return;
 
+        if (bgmSource.clip == clip && bgmSource.isPlaying)
+            return;
+
         bgmSource.clip = clip;
         bgmSource.loop = true;
         bgmSource.Play();

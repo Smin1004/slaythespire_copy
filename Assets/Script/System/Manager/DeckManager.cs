@@ -136,6 +136,24 @@ public class DeckManager : MonoBehaviour
         NotifyPileCounts();
     }
 
+    public void ClearBattleCards()
+    {
+        // 전투가 끝나 맵으로 돌아갈 때 남은 손패 오브젝트를 완전히 제거합니다.
+        foreach (Card card in handPile)
+        {
+            if (card == null)
+                continue;
+
+            card.CancelInvoke();
+            Destroy(card.gameObject);
+        }
+
+        handPile.Clear();
+        discardPile.Clear();
+        drawPile.Clear();
+        NotifyPileCounts();
+    }
+
     public void AddCard(Skill skill, int pileType)
     {
         Card newCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, DeckPos.position, DeckPos.rotation).GetComponent<Card>();

@@ -40,6 +40,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private DamageSpawner damageSpawner;
     [SerializeField] private CameraShake cameraShake;
     [SerializeField] private AudioClip playerTurnStartSound;
+    [SerializeField] private AudioClip playerTurnEndSound;
 
     [SerializeField] private List<EnemyEntity> enemyList = new();
     public IReadOnlyList<EnemyEntity> EnemyList => enemyList;
@@ -280,6 +281,9 @@ public class BattleManager : MonoBehaviour
 
         Debug.Log("Player turn end");
 
+        // 턴 종료 버튼을 눌렀을 때 재생할 효과음입니다.
+        AudioManager.Instance?.PlaySfx(playerTurnEndSound);
+
         if (DeckManager.Instance != null)
             DeckManager.Instance.DiscardAllCard();
 
@@ -339,6 +343,7 @@ public class BattleManager : MonoBehaviour
         if (RewardManager.Instance != null)
         {
             RewardManager.Instance.GenerateCombatRewards();
+            RunManager.Instance?.OpenBattleReward();
         }
         else
         {

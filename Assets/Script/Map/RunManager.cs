@@ -59,6 +59,15 @@ public class RunManager : MonoBehaviour
     [SerializeField] private CanvasGroup fadeOverlay; // 맵 이동 때 화면을 검게 덮는 CanvasGroup입니다.
     [SerializeField] private float fadeOutDuration = 0.3f;
     [SerializeField] private float fadeInDuration = 0.4f;
+    [SerializeField] private float rewardOpenDelay = 0.8f; // 전투 승리 후 보상창이 바로 뜨지 않도록 잠깐 기다립니다.
+    [SerializeField] private AudioClip rewardOpenSound; // 보상창이 열릴 때 재생할 효과음입니다.
+
+    [Header("화면별 BGM")]
+    [SerializeField] private AudioClip mapBgm;
+    [SerializeField] private AudioClip battleBgm;
+    [SerializeField] private AudioClip eventBgm;
+    [SerializeField] private AudioClip restBgm;
+    [SerializeField] private AudioClip bossBgm;
 
     private bool isTransitioning;
 
@@ -130,6 +139,8 @@ public class RunManager : MonoBehaviour
     public void ShowNextChoices()
     {
         HideAllPanels();
+        // 맵 선택 화면에 들어올 때 맵 전용 BGM을 재생합니다.
+        AudioManager.Instance?.PlayBgm(mapBgm);
 
         List<MapNodeType> choices = GenerateChoices();
 
@@ -146,6 +157,43 @@ public class RunManager : MonoBehaviour
 
             ApplyBackgroundFrom(mapSelectView.gameObject);
         }
+    }
+
+    /// <summary>
+    /// 전투 승리 후 보상 화면을 엽니다.
+    /// BattleRoot는 유지해서 전투 결과 화면 위에 보상 UI만 띄웁니다.
+    /// </summary>
+    public void OpenBattleReward()
+    {
+        StartCoroutine(OpenBattleRewardRoutine());
+    }
+
+    private IEnumerator OpenBattleRewardRoutine()
+    {
+        if (mapSelectView != null)
+            mapSelectView.Hide();
+
+        if (rewardPanel != null)
+            rewardPanel.SetActive(false);
+
+        if (eventPanel != null)
+            eventPanel.SetActive(false);
+
+        if (restPanel != null)
+            restPanel.SetActive(false);
+
+        if (clearPanel != null)
+            clearPanel.SetActive(false);
+
+        SetBattleRootActive(true);
+
+        // 승리 직후 바로 보상창을 띄우지 않고 약간의 여운을 둡니다.
+        yield return new WaitForSeconds(rewardOpenDelay);
+
+        AudioManager.Instance?.PlaySfx(rewardOpenSound);
+
+        if (rewardPanel != null)
+            rewardPanel.SetActive(true);
     }
 
     private void ApplyBackgroundFrom(GameObject activeRoot)
@@ -400,6 +448,9 @@ public class RunManager : MonoBehaviour
     /// </summary>
     private void StartNormalBattle()
     {
+        // 일반 전투 화면에 들어올 때 전투 BGM을 재생합니다.
+        AudioManager.Instance?.PlayBgm(battleBgm);
+
         SetBattleRootActive(true);
         ApplyBackgroundFrom(GetBattleBackgroundRoot());
 
@@ -427,6 +478,9 @@ public class RunManager : MonoBehaviour
     /// </summary>
     private void StartBossBattle()
     {
+        // 보스 전투는 별도 BGM을 사용할 수 있게 분리합니다.
+        AudioManager.Instance?.PlayBgm(bossBgm);
+
         SetBattleRootActive(true);
         ApplyBackgroundFrom(GetBattleBackgroundRoot());
 
@@ -440,6 +494,9 @@ public class RunManager : MonoBehaviour
     /// </summary>
     private void OpenEvent()
     {
+        // 이벤트 화면에 들어올 때 이벤트 BGM을 재생합니다.
+        AudioManager.Instance?.PlayBgm(eventBgm);
+
         if (eventPanel != null)
         {
             eventPanel.SetActive(true);
@@ -453,6 +510,9 @@ public class RunManager : MonoBehaviour
     /// </summary>
     private void OpenRest()
     {
+        // 휴식 화면에 들어올 때 휴식 BGM을 재생합니다.
+        AudioManager.Instance?.PlayBgm(restBgm);
+
         if (restPanel != null)
         {
             restPanel.SetActive(true);
@@ -469,7 +529,7 @@ public class RunManager : MonoBehaviour
     /// </summary>
     public void CompleteNonBattleNode()
     {
-        ShowNextChoices();
+        StartCoroutine(ReturnToMapRoutine());
     }
 
     /// <summary>
@@ -481,7 +541,27 @@ public class RunManager : MonoBehaviour
     /// </summary>
     public void CompleteBattleReward()
     {
+        StartCoroutine(ReturnToMapRoutine());
+    }
+
+    private IEnumerator ReturnToMapRoutine()
+    {
+        if (isTransitioning)
+            yield break;
+
+        isTransitioning = true;
+
+        // 보상/이벤트/휴식에서 맵 선택 화면으로 돌아갈 때도 같은 fadeOverlay를 사용합니다.
+        yield return FadeTo(1f, fadeOutDuration);
+
+        // 암전 중에 남은 전투 카드 오브젝트를 제거해서 다음 전투는 새 카드로 시작합니다.
+        DeckManager.Instance?.ClearBattleCards();
+
         ShowNextChoices();
+
+        yield return FadeTo(0f, fadeInDuration);
+
+        isTransitioning = false;
     }
 
     /// <summary>

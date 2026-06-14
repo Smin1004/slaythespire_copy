@@ -8,6 +8,7 @@ public class EnemyEntity : Entity
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private SpriteLibrary spriteLibrary;
     [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer[] spriteRenderers;
     [SerializeField] private bool destroyOnDeath = true;
     [SerializeField] private float deathDestroyDelay = 1f;
 
@@ -22,6 +23,7 @@ public class EnemyEntity : Entity
     {
         spriteLibrary = GetComponentInChildren<SpriteLibrary>();
         animator = GetComponentInChildren<Animator>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
     }
 
     private void Start()
@@ -74,6 +76,23 @@ public class EnemyEntity : Entity
 
         if (animator != null && data.animatorController != null)
             animator.runtimeAnimatorController = data.animatorController;
+    }
+
+    public void FaceTarget(Transform target)
+    {
+        if (target == null)
+            return;
+
+        if (spriteRenderers == null || spriteRenderers.Length == 0)
+            spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+
+        // 보스 스프라이트 기준에 맞춰 플레이어 방향으로 좌우 반전합니다.
+        bool shouldFlip = target.position.x > transform.position.x;
+        foreach (SpriteRenderer renderer in spriteRenderers)
+        {
+            if (renderer != null)
+                renderer.flipX = shouldFlip;
+        }
     }
 
     public override void TurnInit()

@@ -1,16 +1,19 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Card : PoolableObject
 {
-    [SerializeField] private float moveSpeed = 10f; // 스르륵 이동하는 속도
+    [SerializeField] private float moveSpeed = 10f; // Card movement speed.
 
     private BattleManager battleManager;
     private Vector3 dragOffset;
     private Player player;
     private bool isCardHeld = false;
-    
+    private bool isRewardPreview = false;
+    private Action<Skill> onRewardSelected;
+
     public TextMeshPro descText;
     public TextMeshPro costText;
     public TextMeshPro nameText;
@@ -20,20 +23,41 @@ public class Card : PoolableObject
 
     public Vector3 targetPosition;
     public Quaternion targetRotation;
-    
+
     public void Init(Skill _skill)
     {
         battleManager = BattleManager.Instance;
         player = Player.Instance;
 
         skill = _skill;
-        descText.text = skill.desc;
-        costText.text = skill.cost.ToString();
-        nameText.text = skill.name;
-        img.sprite = skill.img;
-        skill.effect.skillData = skill;
+        if (skill == null)
+            return;
+
+        if (descText != null)
+            descText.text = skill.desc;
+
+        if (costText != null)
+            costText.text = skill.cost.ToString();
+
+        if (nameText != null)
+            nameText.text = skill.name;
+
+        if (img != null)
+            img.sprite = skill.img;
+
+        if (skill.effect != null)
+            skill.effect.skillData = skill;
     }
-    
+
+    public void SetRewardPreview(Skill previewSkill, Action<Skill> selectCallback)
+    {
+        // Reward preview cards show card data and select on click.
+        isRewardPreview = true;
+        isCardHeld = false;
+        onRewardSelected = selectCallback;
+        Init(previewSkill);
+    }
+
     public void SetTargetTransform(Vector3 newPosition, Quaternion newRotation)
     {
         targetPosition = newPosition;
@@ -42,23 +66,29 @@ public class Card : PoolableObject
 
     private void Update()
     {
-        // 마우스로 잡고 있지 않을 때만 목표를 향해 부드럽게 이동 (Target Chasing)
         if (!isCardHeld)
         {
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
-        }else transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, Time.deltaTime * moveSpeed);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, Time.deltaTime * moveSpeed);
+        }
     }
 
     private void OnMouseDown()
     {
+        if (isRewardPreview)
+            return;
+
         isCardHeld = true;
         dragOffset = transform.position - GetMouseWorldPosition();
     }
 
     private void OnMouseDrag()
     {
-        if (!isCardHeld)
+        if (isRewardPreview || !isCardHeld)
             return;
 
         transform.position = GetMouseWorldPosition() + dragOffset;
@@ -66,6 +96,12 @@ public class Card : PoolableObject
 
     private void OnMouseUp()
     {
+        if (isRewardPreview)
+        {
+            onRewardSelected?.Invoke(skill);
+            return;
+        }
+
         isCardHeld = false;
 
         if (skill == null)
@@ -76,9 +112,8 @@ public class Card : PoolableObject
 
         if (skill.isTargeting)
         {
-            // 타겟팅 카드면 마우스 위치 아래의 EnemyEntity만 찾습니다.
+            // Targeting cards only accept EnemyEntity under the mouse.
             Entity foundTarget = FindEnemyAtMousePosition();
-            Debug.Log(foundTarget == null);
 
             if (foundTarget != null)
                 TriggerCard(foundTarget);
@@ -87,7 +122,7 @@ public class Card : PoolableObject
         }
         else
         {
-            // 타겟이 없는 카드는 화면 중앙 영역에 놓았을 때 사용됩니다.
+            // Non-target cards are used when released above the lower hand area.
             float normalizedY = Input.mousePosition.y / Screen.height;
             if (normalizedY >= 0.33f)
                 TriggerCard(null);
@@ -103,15 +138,13 @@ public class Card : PoolableObject
 
         foreach (var hit in hitCollider)
         {
-            Debug.Log(hit.tag);
             if (hit.CompareTag("Enemy"))
             {
-                // 태그가 잘못 붙은 오브젝트 때문에 플레이어가 타겟으로 들어가지 않도록 EnemyEntity만 허용합니다.
+                // Only EnemyEntity can be selected as a card target.
                 EnemyEntity enemy = hit.GetComponentInParent<EnemyEntity>();
                 if (enemy != null)
                     return enemy;
             }
-                
         }
 
         return null;
@@ -126,37 +159,25 @@ public class Card : PoolableObject
 
     private void TriggerCard(Entity target)
     {
-        // 카드 효과를 적용한 뒤 원래 손패 위치로 되돌립니다.
-        Debug.Log("사용");
         StartCoroutine(UseCard(target));
     }
 
     public IEnumerator UseCard(Entity target)
     {
         if (skill == null || skill.effect == null || player == null)
-        {
-            Debug.Log("카드 / 플레이어 없음");
-            yield break; // 카드/플레이어가 없으면 효과를 계속 진행하면 안 됩니다.
-        }
-            
+            yield break;
 
         if (battleManager != null && !battleManager.isPlayerTurn)
-        {
-            Debug.Log("battleManager 문제");
             yield break;
-        }
-            
 
         if (player.energy < skill.cost)
-        {
-            Debug.Log("에너지 부족");
             yield break;
-        }
-            
 
         Entity[] targets;
         if (target != null)
+        {
             targets = new Entity[] { target };
+        }
         else
         {
             var enemies = BattleManager.Instance != null ? BattleManager.Instance.EnemyList : null;
@@ -173,14 +194,16 @@ public class Card : PoolableObject
         if (baseValue == null || baseValue.Length == 0)
             yield break;
 
-        // 카드 데이터 원본 배열을 그대로 수정하면 턴이 지날수록 공격력/방어도 값이 누적될 수 있어 복사본을 사용합니다.
+        // Use a copied value array so card data is not permanently modified.
         int[] value = (int[])baseValue.Clone();
 
         player.UseEnergy(skill.cost);
+        RunManager.Instance?.RecordCardUse(); // 클리어 통계에 사용할 실제 카드 사용 횟수를 기록합니다.
         if (useCardSound != null)
             AudioManager.Instance?.PlaySfx(useCardSound);
         else
             DeckManager.Instance?.PlayUseCardSound();
+
         targetPosition = Vector3.zero;
         targetRotation = Quaternion.identity;
         value[0] = player.BuffCheck_CardTrigger(skill, value[0]);
@@ -190,7 +213,6 @@ public class Card : PoolableObject
 
     private void ReturnToHand()
     {
-       Debug.Log("복귀");
     }
 
     private void OnDrawGizmos()

@@ -73,6 +73,7 @@ public class Player : Entity
 
         int beforeHp = curHp;
         curHp = Mathf.Min(maxHp, curHp + amount);
+        NotifyHealthChanged(); // 회복으로 바뀐 HP를 체력 UI에 바로 반영합니다.
 
         return curHp - beforeHp;
     }

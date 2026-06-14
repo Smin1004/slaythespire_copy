@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TitleScene : MonoBehaviour
 {
@@ -7,6 +6,8 @@ public class TitleScene : MonoBehaviour
 
     public void TitleScenes()
     {
-        SceneManager.LoadScene("GamePlay");
+        // Start through the fade manager so the title screen fades out first.
+        if (SceneTransitionManager.Instance != null)
+            SceneTransitionManager.Instance.LoadSceneWithFade("GamePlay");
     }
 }

@@ -20,16 +20,20 @@ public class SceneTransitionManager : MonoBehaviour
 
         Instance = this;
 
-        // 씬이 바뀌어도 이 오브젝트는 유지합니다.
+        // Keep only the manager alive so its loading coroutine can finish.
         DontDestroyOnLoad(gameObject);
 
         // 시작할 때는 화면을 투명하게 둡니다.
+        FindFadeCanvasGroup();
         SetFadeAlpha(0f, false);
     }
 
     
     public void LoadSceneWithFade(string sceneName)
     {
+        if (string.IsNullOrEmpty(sceneName))
+            return;
+
         StartCoroutine(LoadSceneRoutine(sceneName));
     }
 
@@ -38,10 +42,19 @@ public class SceneTransitionManager : MonoBehaviour
     {
         yield return Fade(1f);
 
+        // Reset pause state and stop the previous scene BGM before loading.
+        Time.timeScale = 1f;
+        AudioManager.Instance?.StopBgm();
+
         SceneManager.LoadScene(sceneName);
 
         // 새 씬 오브젝트들이 초기화될 시간을 한 프레임 줍니다.
         yield return null;
+
+        // Use the FadeOverlay that belongs to the newly loaded scene.
+        fadeCanvasGroup = null;
+        FindFadeCanvasGroup();
+        SetFadeAlpha(1f, true);
 
         yield return Fade(0f);
     }
@@ -55,6 +68,7 @@ public class SceneTransitionManager : MonoBehaviour
         if (fadeCanvasGroup == null)
             yield break;
 
+        fadeCanvasGroup.gameObject.SetActive(true);
         fadeCanvasGroup.blocksRaycasts = true;
 
         float startAlpha = fadeCanvasGroup.alpha;
@@ -76,10 +90,25 @@ public class SceneTransitionManager : MonoBehaviour
     private void SetFadeAlpha(float alpha, bool blockInput)
     {
         if (fadeCanvasGroup == null)
+            FindFadeCanvasGroup();
+
+        if (fadeCanvasGroup == null)
             return;
 
         fadeCanvasGroup.alpha = alpha;
         fadeCanvasGroup.blocksRaycasts = blockInput;
         fadeCanvasGroup.interactable = blockInput;
+
+        fadeCanvasGroup.gameObject.SetActive(alpha > 0f || blockInput);
+    }
+
+    private void FindFadeCanvasGroup()
+    {
+        if (fadeCanvasGroup != null)
+            return;
+
+        GameObject fadeObject = GameObject.Find("FadeOverlay");
+        if (fadeObject != null)
+            fadeCanvasGroup = fadeObject.GetComponent<CanvasGroup>();
     }
 }

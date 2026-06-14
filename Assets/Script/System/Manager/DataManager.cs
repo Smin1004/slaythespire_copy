@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -17,7 +18,10 @@ public class DataManager : MonoBehaviour
 
     public void InitStart()
     {
-        Player.Instance.masterDeck = loadData.SkillList;
+        // Give the player a separate deck list so rewards do not modify LoadData.
+        Player.Instance.masterDeck = loadData != null
+            ? new List<Skill>(loadData.SkillList)
+            : new List<Skill>();
     }
 
     public Buff GetBuff(int index, int value)

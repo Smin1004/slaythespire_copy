@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using UnityEngine.UIElements;
 
 public class DeckManager : MonoBehaviour
 {
@@ -15,16 +14,17 @@ public class DeckManager : MonoBehaviour
     [SerializeField] private Card cardObj;
     [SerializeField] private AudioClip drawCardSound;
     [SerializeField] private AudioClip useCardSound;
+    public Card CardPrefab => cardObj;
 
     public event Action<int> OnDrawPileChanged;
     public event Action<int> OnDiscardPileChanged;
 
     [SerializeField] private Transform DeckPos;
-    [SerializeField] private Transform handCenterPoint; // 화면 하단 중앙의 빈 오브젝트 위치
-    
-    [SerializeField] private float defaultCardSpacing = 2f; // 카드 사이의 기본 간격
-    [SerializeField] private float arcCurveMultiplier = 0.2f; // 부채꼴로 휘어지는 정도
-    [SerializeField] private float arcRotationMultiplier = 5f; // 부채꼴로 회전하는 각도
+    [SerializeField] private Transform handCenterPoint; // Hand cards are arranged around this point.
+
+    [SerializeField] private float defaultCardSpacing = 2f; // Base spacing between hand cards.
+    [SerializeField] private float arcCurveMultiplier = 0.2f; // Vertical curve amount for hand layout.
+    [SerializeField] private float arcRotationMultiplier = 5f; // Rotation amount for hand layout.
 
     private void Awake()
     {
@@ -36,90 +36,90 @@ public class DeckManager : MonoBehaviour
 
         _instance = this;
     }
+
     public void InitAwake()
     {
         _instance = this;
     }
 
-    Skill tempSkill = new Skill{type = SkillType.Attack};
-    // public void UpdateDesc()
-    // {
-    //     int[] tempArr;
-    //     int temp;
-    //     foreach (var n in handPile)
-    //     {
-    //         tempArr = n.skill.isUpgraded ? n.skill.upgradeValue : n.skill.skillValue;
-    //         temp = Player.Instance.BuffCheck_CardTrigger(n.skill, tempArr[0]);
-    //         temp = Player.Instance.BuffCheck_Attack(Player.Instance, temp);
-    //         temp = Player.Instance.target.BuffCheck_Block(target, temp);
-    //         n.skill.desc = n.skill.effect.FormatDesc(n.skill);
-    //     }
-    // }
-
-    // 1. 전투 시작 시 마스터 덱을 복사하여 뽑을 카드 더미 생성
     public void InitializeBattleDeck()
     {
         drawPile.Clear();
         handPile.Clear();
         discardPile.Clear();
 
-        Debug.Log(Player.Instance.masterDeck.Count);
-        foreach (var data in Player.Instance.masterDeck)
+        if (Player.Instance == null || Player.Instance.masterDeck == null)
         {
-            drawPile.Add(data);
+            NotifyPileCounts();
+            return;
         }
+
+        foreach (Skill data in Player.Instance.masterDeck)
+            drawPile.Add(data);
+
         ShuffleDeck(drawPile);
         NotifyPileCounts();
-
     }
 
     private void NotifyPileCounts()
     {
-        Debug.Log($"[DeckManager] 덱 UI 갱신 요청 / Draw:{drawPile.Count}, Discard:{discardPile.Count}");
         OnDrawPileChanged?.Invoke(drawPile.Count);
         OnDiscardPileChanged?.Invoke(discardPile.Count);
     }
 
-        public void RefreshPileView()
-        {
-            NotifyPileCounts();
-        }
+    public void RefreshPileView()
+    {
+        NotifyPileCounts();
+    }
 
     public void PlayUseCardSound()
     {
         AudioManager.Instance?.PlaySfx(useCardSound);
     }
 
-    //드로우
     public void DrawCards(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
             if (drawPile.Count == 0)
             {
-                if (discardPile.Count == 0) { Debug.Log("카드가 존재하지 않음"); return; }
+                if (discardPile.Count == 0)
+                    return;
+
                 ReshuffleDiscardIntoDraw();
             }
 
-                // 가장 위(또는 랜덤) 카드 뽑기
-                Card drawnCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, DeckPos.position, DeckPos.rotation).GetComponent<Card>();
-                drawnCard.Init(drawPile[0]);
-                drawPile.RemoveAt(0);
-                handPile.Add(drawnCard);
-                ArrangeHandCards(handPile);
-                AudioManager.Instance?.PlaySfx(drawCardSound);
-            }
-            NotifyPileCounts();
+            Card drawnCard = SpawnCard(DeckPos.position, DeckPos.rotation);
+            if (drawnCard == null)
+                return;
+
+            drawnCard.Init(drawPile[0]);
+            drawPile.RemoveAt(0);
+            handPile.Add(drawnCard);
+            ArrangeHandCards(handPile);
+            AudioManager.Instance?.PlaySfx(drawCardSound);
         }
 
-    //패섞기
+        NotifyPileCounts();
+    }
+
+    private Card SpawnCard(Vector3 position, Quaternion rotation)
+    {
+        if (cardObj == null)
+            return null;
+
+        if (ObjectPoolManager.Instance != null)
+            return ObjectPoolManager.Instance.Spawn(cardObj.gameObject, position, rotation).GetComponent<Card>();
+
+        return Instantiate(cardObj, position, rotation);
+    }
+
     private void ReshuffleDiscardIntoDraw()
     {
-        Debug.Log("패섞기");
+        // Move all discarded cards back into the draw pile and shuffle them.
         drawPile.AddRange(discardPile);
         discardPile.Clear();
         ShuffleDeck(drawPile);
-
         NotifyPileCounts();
     }
 
@@ -127,18 +127,21 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = 0; i < handPile.Count; i++)
         {
-            Card temp = handPile[i];
-            temp.SetTargetTransform(temp.targetPosition + new Vector3(15, 0), new Quaternion(0, 0, 0, 0));
-            temp.ReturnToPoolAfterTime(1f);
-            discardPile.Add(temp.skill);
+            Card card = handPile[i];
+            if (card == null)
+                continue;
+
+            card.SetTargetTransform(card.targetPosition + new Vector3(15, 0), Quaternion.identity);
+            card.ReturnToPoolAfterTime(1f);
+            discardPile.Add(card.skill);
         }
+
         handPile.Clear();
         NotifyPileCounts();
     }
 
     public void ClearBattleCards()
     {
-        // 전투가 끝나 맵으로 돌아갈 때 남은 손패 오브젝트를 완전히 제거합니다.
         foreach (Card card in handPile)
         {
             if (card == null)
@@ -156,77 +159,84 @@ public class DeckManager : MonoBehaviour
 
     public void AddCard(Skill skill, int pileType)
     {
-        Card newCard = ObjectPoolManager.Instance.Spawn(cardObj.gameObject, DeckPos.position, DeckPos.rotation).GetComponent<Card>();
+        Card newCard = SpawnCard(DeckPos.position, DeckPos.rotation);
+        if (newCard == null)
+            return;
+
         newCard.Init(skill);
         newCard.targetPosition = Vector3.zero;
+
         switch (pileType)
         {
-            case 0: // Draw Pile
+            case 0:
                 drawPile.Add(skill);
-                newCard.SetTargetTransform(newCard.targetPosition + new Vector3(-15, 0), new Quaternion(0, 0, 0, 0));
+                newCard.SetTargetTransform(newCard.targetPosition + new Vector3(-15, 0), Quaternion.identity);
                 newCard.ReturnToPoolAfterTime(1f);
                 break;
-            case 1: // Hand
+            case 1:
                 handPile.Add(newCard);
                 ArrangeHandCards(handPile);
                 break;
-            case 2: // Discard Pile
+            case 2:
                 handPile.Add(newCard);
                 DiscardCard(newCard);
                 break;
         }
+
+        NotifyPileCounts();
     }
 
     public void DiscardCard(Card card)
     {
-        if (handPile.Contains(card))
+        if (card != null && handPile.Contains(card))
         {
-            card.SetTargetTransform(card.targetPosition + new Vector3(15, 0), new Quaternion(0, 0, 0, 0));
+            card.SetTargetTransform(card.targetPosition + new Vector3(15, 0), Quaternion.identity);
             card.ReturnToPoolAfterTime(1f);
             handPile.Remove(card);
             discardPile.Add(card.skill);
             ArrangeHandCards(handPile);
         }
+
         NotifyPileCounts();
     }
 
-    // 리스트 셔플 (Fisher-Yates 알고리즘 등 사용)
-    private void ShuffleDeck(List<Skill> list) { /* ... */ }
+    private void ShuffleDeck(List<Skill> list)
+    {
+        // Fisher-Yates shuffle keeps each card order equally likely.
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, i + 1);
+            Skill temp = list[i];
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
+    }
 
     public void ArrangeHandCards(List<Card> cardsInHand)
     {
         int cardCount = cardsInHand.Count;
-        if (cardCount == 0) return;
+        if (cardCount == 0 || handCenterPoint == null)
+            return;
 
-        // 1. 전체 너비와 시작점 계산
         float totalWidth = (cardCount - 1) * defaultCardSpacing;
         float startX = handCenterPoint.position.x - (totalWidth / 2f);
 
         for (int i = 0; i < cardCount; i++)
         {
-            // 중심으로부터 얼마나 떨어져 있는지 비율 계산 (-1.0 ~ 1.0)
-            float normalizedPosition = (cardCount > 1) ? (float)i / (cardCount - 1) : 0.5f;
+            float normalizedPosition = cardCount > 1 ? (float)i / (cardCount - 1) : 0.5f;
             float distanceFromCenter = normalizedPosition - 0.5f;
 
-            // 2. X 좌표 배치
             float targetX = startX + (i * defaultCardSpacing);
-
-            // 3. Y 좌표 배치 (중앙은 높고, 양끝은 낮아지는 2차 함수 부채꼴 포물선)
-            // distanceFromCenter의 제곱을 빼주어 아치형을 만듭니다.
             float arcY = -(distanceFromCenter * distanceFromCenter) * arcCurveMultiplier;
             float targetY = handCenterPoint.position.y + arcY;
-
-            // Z 겹침 방지 (오른쪽 카드가 미세하게 더 앞에 오도록)
             float targetZ = handCenterPoint.position.z - (i * 0.2f);
 
             Vector3 calculatedTargetPos = new Vector3(targetX, targetY, targetZ);
-
-            // 4. Z축 회전 배치 (양 끝으로 갈수록 부채꼴처럼 눕혀짐)
             float targetZRotation = -distanceFromCenter * arcRotationMultiplier;
             Quaternion calculatedTargetRot = Quaternion.Euler(0, 0, targetZRotation);
 
-            // 5. 각 카드에게 새로운 목표 하달
-            cardsInHand[i].SetTargetTransform(calculatedTargetPos, calculatedTargetRot);
+            if (cardsInHand[i] != null)
+                cardsInHand[i].SetTargetTransform(calculatedTargetPos, calculatedTargetRot);
         }
     }
 }

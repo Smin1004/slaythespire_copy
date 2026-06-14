@@ -25,16 +25,23 @@ public class UIButtonEffect : MonoBehaviour,
     private void Awake()
     {
         originalScale = transform.localScale;
+
+        // Missing inspector references are filled from local/global components.
+        if (image == null)
+            image = GetComponent<Image>();
+
+        if (soundManager == null)
+            soundManager = AudioManager.Instance;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.localScale = originalScale * hoverScale;
 
-        if (hoverSprite != null)
+        if (image != null && hoverSprite != null)
             image.sprite = hoverSprite;
 
-        if (hoverSound != null)
+        if (soundManager != null && hoverSound != null)
             soundManager.PlaySfx(hoverSound);
     }
 
@@ -42,13 +49,13 @@ public class UIButtonEffect : MonoBehaviour,
     {
         transform.localScale = originalScale;
 
-        if (normalSprite != null)
+        if (image != null && normalSprite != null)
             image.sprite = normalSprite;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (clickSound != null)
+        if (soundManager != null && clickSound != null)
             soundManager.PlaySfx(clickSound);
     }
 }

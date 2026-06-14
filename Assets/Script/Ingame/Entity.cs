@@ -42,6 +42,12 @@ public abstract class Entity : MonoBehaviour
         OnBlockChanged?.Invoke(curBlock);
     }
 
+    protected void NotifyHealthChanged()
+    {
+        // 하위 클래스가 HP를 직접 바꾼 뒤 UI를 갱신할 수 있게 합니다.
+        OnHealthChanged?.Invoke(curHp, maxHp);
+    }
+
     public virtual void TurnInit()
     {
         for (int i = buffs.Count - 1; i >= 0; i--)

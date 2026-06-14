@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum BattleState
 {
@@ -21,6 +22,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject[] _hideWhenOpen;
+    [SerializeField] private GameObject playerRoot;
+    [SerializeField] private GameObject[] hideOnGameOver;
+    [SerializeField] private AudioClip gameOverBgm;
 
     [Header("Enemy Spawn")]
     [SerializeField] private EnemyEntity enemyPrefab;
@@ -62,6 +66,10 @@ public class BattleManager : MonoBehaviour
     public void InitAwake()
     {
         _instance = this;
+        BindGameOverReferences();
+
+        if (_gameOverPanel != null)
+            _gameOverPanel.SetActive(false);
     }
 
     /// <summary>
@@ -102,25 +110,44 @@ public class BattleManager : MonoBehaviour
 
     private void ShowGameOver()
     {
+        BindGameOverReferences();
+        StopAllCoroutines();
+        isPlayerTurn = false;
         StartCoroutine(GameOverRoutine());
     }
 
     private IEnumerator GameOverRoutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
+
+        // Hide gameplay roots and keep only the player/gameover view visible.
+        SetGameOverObjects(false);
+
+        if (playerRoot != null)
+            playerRoot.SetActive(true);
 
         if (_gameOverPanel != null)
+        {
             _gameOverPanel.SetActive(true);
+            RunManager.Instance?.ApplyGameOverBackground(_gameOverPanel);
+        }
 
-        SetHiddenObjects(false);
+        if (gameOverBgm != null)
+            AudioManager.Instance?.PlayBgm(gameOverBgm);
+        else
+            AudioManager.Instance?.StopBgm();
     }
 
     public void RestartGame()
     {
-        if (_gameOverPanel != null)
-            _gameOverPanel.SetActive(false);
+        Time.timeScale = 1f;
 
-        SetHiddenObjects(true);
+        // Reloading the gameplay scene resets player run data and returns to map select.
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (SceneTransitionManager.Instance != null)
+            SceneTransitionManager.Instance.LoadSceneWithFade(currentSceneName);
+        else
+            SceneManager.LoadScene(currentSceneName);
     }
 
     private void SetHiddenObjects(bool active)
@@ -133,6 +160,64 @@ public class BattleManager : MonoBehaviour
             if (obj != null)
                 obj.SetActive(active);
         }
+    }
+
+    private void SetGameOverObjects(bool active)
+    {
+        BindGameOverReferences();
+
+        GameObject[] targets = hideOnGameOver != null && hideOnGameOver.Length > 0
+            ? hideOnGameOver
+            : _hideWhenOpen;
+
+        if (targets == null)
+            return;
+
+        foreach (GameObject obj in targets)
+        {
+            if (obj == null || ShouldKeepVisibleOnGameOver(obj))
+                continue;
+
+            obj.SetActive(active);
+        }
+    }
+
+    private void BindGameOverReferences()
+    {
+        // Recover missing scene references before gameover UI logic runs.
+        if (_gameOverPanel == null)
+            _gameOverPanel = GameObject.Find("GameOver");
+
+        if (playerRoot == null && player != null)
+            playerRoot = player.gameObject;
+    }
+
+    private bool ShouldKeepVisibleOnGameOver(GameObject obj)
+    {
+        if (obj == null)
+            return false;
+
+        if (_gameOverPanel != null && IsAncestorOrSelf(obj.transform, _gameOverPanel.transform))
+            return true;
+
+        if (playerRoot != null && IsAncestorOrSelf(obj.transform, playerRoot.transform))
+            return true;
+
+        return false;
+    }
+
+    private bool IsAncestorOrSelf(Transform possibleAncestor, Transform target)
+    {
+        Transform current = target;
+        while (current != null)
+        {
+            if (current == possibleAncestor)
+                return true;
+
+            current = current.parent;
+        }
+
+        return false;
     }
 
     private void ChangeBattleState(BattleState newState)
@@ -214,6 +299,9 @@ public class BattleManager : MonoBehaviour
 
             EnemyEntity enemy = Instantiate(enemyPrefab, position, rotation, parent);
             enemy.SetupEnemy(selectedData);
+            if (isBossBattle && player != null)
+                enemy.FaceTarget(player.transform); // 보스가 생성될 때 플레이어를 바라보도록 좌우 방향을 맞춥니다.
+
             enemyList.Add(enemy);
 
             CreateEnemyUI(enemy); // 적 UI 생성 및 연결

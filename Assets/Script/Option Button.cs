@@ -13,6 +13,7 @@ public class OptionButton : MonoBehaviour
     [SerializeField] GameObject[] _hideWhenOpen;    // 옵션창 열 때 숨길 다른 객체들
 
     Canvas _canvasComponent;
+    bool HasRequiredObjects => _canvas != null && _setting != null && _exitbutton != null;
 
     void Awake()
     {
@@ -22,6 +23,9 @@ public class OptionButton : MonoBehaviour
 
     void Start()
     {
+        if (!HasRequiredObjects)
+            return;
+
         _canvas.SetActive(false);
         _setting.SetActive(true);
         _exitbutton.SetActive(false);
@@ -30,6 +34,14 @@ public class OptionButton : MonoBehaviour
 
     void Update()
     {
+        if (!HasRequiredObjects)
+        {
+            // If the option UI was destroyed during scene loading, only reset pause state.
+            Time.timeScale = 1f;
+            IsOpen = false;
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (_canvas.activeSelf)
@@ -48,6 +60,9 @@ public class OptionButton : MonoBehaviour
 
     public void Setting()
     {
+        if (!HasRequiredObjects)
+            return;
+
         if (_canvasComponent != null)
         {
             _canvasComponent.overrideSorting = true;
@@ -64,6 +79,9 @@ public class OptionButton : MonoBehaviour
 
     public void ExitSetting()
     {
+        if (!HasRequiredObjects)
+            return;
+
         _canvas.SetActive(false);
         _setting.SetActive(true);
         _exitbutton.SetActive(false);
@@ -84,6 +102,9 @@ public class OptionButton : MonoBehaviour
 
     public void Option()
     {
+        if (!HasRequiredObjects)
+            return;
+
         if (_canvas.activeSelf)
             ExitSetting();
         else

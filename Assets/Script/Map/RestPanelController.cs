@@ -15,6 +15,7 @@ public class RestPanelController : MonoBehaviour
 
     [Header("Rest")]
     [SerializeField] private float healRatio = 0.3f;
+    [SerializeField] private AudioClip healSound;
 
     private const string RestDescription = "현재 체력의 30%를 회복합니다.";
     private const string UpgradeDescription = "카드 한 장을 강화합니다.";
@@ -48,6 +49,8 @@ public class RestPanelController : MonoBehaviour
 
         int healAmount = Mathf.CeilToInt(player.curHp * healRatio);
         int healed = player.Heal(healAmount);
+        if (healed > 0)
+            AudioManager.Instance?.PlaySfx(healSound); // 실제로 회복됐을 때만 회복 효과음을 재생합니다.
 
         HideDescription();
         HideOptions();

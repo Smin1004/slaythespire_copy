@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 한 판의 진행 흐름을 관리하는 스크립트입니다.
@@ -49,6 +51,11 @@ public class RunManager : MonoBehaviour
     [SerializeField] private GameObject restPanel;   // 휴식 패널
     [SerializeField] private GameObject clearPanel;  // 클리어 패널
 
+    [Header("Clear Result")]
+    [SerializeField] private TMP_Text clearUsedCardText;
+    [SerializeField] private TMP_Text clearTimeText;
+    [SerializeField] private Button clearTitleButton;
+
     [Header("배경")]
     [SerializeField] private Image mainBackgroundImage;          // 현재 화면의 배경을 보여줄 UI Image입니다.
     [SerializeField] private Canvas backgroundCanvas;            // 배경 전용 Canvas입니다. HUD Canvas와 분리해서 플레이어를 덮지 않게 합니다.
@@ -68,8 +75,11 @@ public class RunManager : MonoBehaviour
     [SerializeField] private AudioClip eventBgm;
     [SerializeField] private AudioClip restBgm;
     [SerializeField] private AudioClip bossBgm;
+    [SerializeField] private AudioClip clearBgm;
 
     private bool isTransitioning;
+    private int usedCardCount;
+    private float runStartTime;
 
     public int CurrentDepth => currentDepth;
     public int BossDepth => bossDepth;
@@ -94,10 +104,18 @@ public class RunManager : MonoBehaviour
     public void InitStart()
     {
         currentDepth = 0;
+        usedCardCount = 0;
+        runStartTime = Time.realtimeSinceStartup;
 
         HideAllPanels();
         SetFadeAlpha(0f);
         ShowNextChoices();
+    }
+
+    public void RecordCardUse()
+    {
+        // 클리어 화면에 표시할 실제 카드 사용 횟수를 누적합니다.
+        usedCardCount++;
     }
 
     /// <summary>
@@ -217,6 +235,12 @@ public class RunManager : MonoBehaviour
         mainBackgroundImage.enabled = true;
         mainBackgroundImage.preserveAspect = false;
         ApplyBackgroundSize();
+    }
+
+    public void ApplyGameOverBackground(GameObject gameOverRoot)
+    {
+        // Game over uses its own BackgroundProvider sprite for the shared background.
+        ApplyBackgroundFrom(gameOverRoot);
     }
 
     private void EnsureBackgroundImage()
@@ -574,12 +598,161 @@ public class RunManager : MonoBehaviour
     public void CompleteBossBattle()
     {
         HideAllPanels();
+        DeckManager.Instance?.ClearBattleCards(); // 클리어 화면으로 넘어갈 때 남아있는 손패 카드를 정리합니다.
+        SetBattleRootActive(false);
+        UpdateClearResultText();
+        BindClearTitleButton();
+
+        if (clearBgm != null)
+            AudioManager.Instance?.PlayBgm(clearBgm);
+        else
+            AudioManager.Instance?.StopBgm();
 
         if (clearPanel != null)
         {
             clearPanel.SetActive(true);
             ApplyBackgroundFrom(clearPanel);
         }
+    }
+
+    public void ReturnToTitle()
+    {
+        Time.timeScale = 1f;
+        AudioManager.Instance?.StopBgm(); // 타이틀로 돌아가기 전에 클리어 BGM을 정리합니다.
+
+        // 클리어 화면 버튼에서 타이틀 씬으로 돌아갑니다.
+        if (SceneTransitionManager.Instance != null)
+            SceneTransitionManager.Instance.LoadSceneWithFade("Title");
+        else
+            SceneManager.LoadScene("Title");
+    }
+
+    private void UpdateClearResultText()
+    {
+        BindClearResultTexts();
+
+        if (clearUsedCardText != null)
+            clearUsedCardText.text = $"사용한 카드 수: {usedCardCount}";
+
+        if (clearTimeText != null)
+            clearTimeText.text = $"클리어 시간: {FormatRunTime(Time.realtimeSinceStartup - runStartTime)}";
+    }
+
+    private void BindClearResultTexts()
+    {
+        if (clearPanel == null || (clearUsedCardText != null && clearTimeText != null))
+            return;
+
+        TMP_Text[] texts = clearPanel.GetComponentsInChildren<TMP_Text>(true);
+        foreach (TMP_Text text in texts)
+        {
+            if (text == null)
+                continue;
+
+            string lowerName = text.gameObject.name.ToLowerInvariant();
+            if (clearUsedCardText == null && (lowerName.Contains("card") || lowerName.Contains("use")))
+                clearUsedCardText = text;
+            else if (clearTimeText == null && lowerName.Contains("time"))
+                clearTimeText = text;
+        }
+
+        if (clearUsedCardText == null)
+            clearUsedCardText = CreateClearResultText("UsedCardText", new Vector2(0f, 40f));
+
+        if (clearTimeText == null)
+            clearTimeText = CreateClearResultText("ClearTimeText", new Vector2(0f, -20f));
+    }
+
+    private string FormatRunTime(float seconds)
+    {
+        // 초 단위 진행 시간을 분:초 형태로 보여줍니다.
+        int totalSeconds = Mathf.Max(0, Mathf.FloorToInt(seconds));
+        int minutes = totalSeconds / 60;
+        int remainSeconds = totalSeconds % 60;
+        return $"{minutes:00}:{remainSeconds:00}";
+    }
+
+    private TMP_Text CreateClearResultText(string objectName, Vector2 anchoredPosition)
+    {
+        if (clearPanel == null)
+            return null;
+
+        GameObject textObject = new GameObject(objectName, typeof(RectTransform), typeof(TextMeshProUGUI));
+        textObject.transform.SetParent(clearPanel.transform, false);
+
+        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform.sizeDelta = new Vector2(500f, 60f);
+        rectTransform.anchoredPosition = anchoredPosition;
+
+        TMP_Text text = textObject.GetComponent<TMP_Text>();
+        text.alignment = TextAlignmentOptions.Center;
+        text.fontSize = 32f;
+        text.color = Color.white;
+
+        return text;
+    }
+
+    private void BindClearTitleButton()
+    {
+        if (clearPanel == null)
+            return;
+
+        if (clearTitleButton == null)
+            clearTitleButton = clearPanel.GetComponentInChildren<Button>(true);
+
+        if (clearTitleButton == null)
+            clearTitleButton = CreateClearTitleButton();
+
+        SetClearTitleButtonLabel(clearTitleButton);
+        clearTitleButton.onClick.RemoveListener(ReturnToTitle);
+        clearTitleButton.onClick.AddListener(ReturnToTitle);
+    }
+
+    private void SetClearTitleButtonLabel(Button button)
+    {
+        if (button == null)
+            return;
+
+        TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
+        if (label != null)
+            label.text = "타이틀로"; // 기존 클리어 버튼을 재사용해도 역할이 보이도록 문구를 맞춥니다.
+    }
+
+    private Button CreateClearTitleButton()
+    {
+        if (clearPanel == null)
+            return null;
+
+        GameObject buttonObject = new GameObject("TitleButton", typeof(RectTransform), typeof(Image), typeof(Button));
+        buttonObject.transform.SetParent(clearPanel.transform, false);
+
+        RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform.sizeDelta = new Vector2(260f, 70f);
+        rectTransform.anchoredPosition = new Vector2(0f, -120f);
+
+        Image image = buttonObject.GetComponent<Image>();
+        image.color = new Color(0.12f, 0.12f, 0.12f, 0.9f);
+
+        GameObject labelObject = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+        labelObject.transform.SetParent(buttonObject.transform, false);
+
+        RectTransform labelRect = labelObject.GetComponent<RectTransform>();
+        labelRect.anchorMin = Vector2.zero;
+        labelRect.anchorMax = Vector2.one;
+        labelRect.offsetMin = Vector2.zero;
+        labelRect.offsetMax = Vector2.zero;
+
+        TMP_Text label = labelObject.GetComponent<TMP_Text>();
+        label.text = "타이틀로";
+        label.alignment = TextAlignmentOptions.Center;
+        label.fontSize = 30f;
+        label.color = Color.white;
+
+        return buttonObject.GetComponent<Button>();
     }
 
     private void SetBattleRootActive(bool active)

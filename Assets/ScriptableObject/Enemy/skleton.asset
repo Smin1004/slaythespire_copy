@@ -13,82 +13,106 @@ MonoBehaviour:
   m_Name: skleton
   m_EditorClassIdentifier: 
   enemyName: skleton
-  maxHealth: 130
+  maxHealth: 160
   reward:
     minGold: 10
     maxGold: 20
     cardRewardPool: []
   actions:
   - actionName: Attack
-    intentType: 0
-    attackDamage: 10
-    blockAmount: 0
-    buffDebuffType: 0
-    statusKeyOrName: 
-    effectValue: 1
-    attackCount: 1
     weight: 1
-    attackAnimationTrigger: Attack
+    isAttack: 1
+    damage: 10
+    hitCount: 1
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 0
+    buffDebuffs: []
+    animTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
   - actionName: Gard
-    intentType: 1
-    attackDamage: 0
-    blockAmount: 10
-    buffDebuffType: 0
-    statusKeyOrName: 
-    effectValue: 1
-    attackCount: 1
     weight: 1
-    attackAnimationTrigger: Attack
+    isAttack: 0
+    damage: 0
+    hitCount: 0
+    isBlock: 1
+    blockAmount: 10
+    isBuffDebuff: 0
+    buffDebuffs: []
+    animTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
   - actionName: Buff
-    intentType: 2
-    attackDamage: 0
-    blockAmount: 0
-    buffDebuffType: 1
-    statusKeyOrName: 
-    effectValue: 2
-    attackCount: 1
     weight: 1
-    attackAnimationTrigger: Attack
+    isAttack: 0
+    damage: 0
+    hitCount: 0
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 1
+    buffDebuffs:
+    - id: 2
+      value: 2
+      isDebuff: 0
+      isBuffToSelf: 1
+    animTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
   - actionName: DeBuff
-    intentType: 3
-    attackDamage: 0
-    blockAmount: 0
-    buffDebuffType: 3
-    statusKeyOrName: 
-    effectValue: 1
-    attackCount: 1
     weight: 1
-    attackAnimationTrigger: Attack
+    isAttack: 0
+    damage: 0
+    hitCount: 0
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 1
+    buffDebuffs:
+    - id: 4
+      value: 1
+      isDebuff: 1
+      isBuffToSelf: 0
+    animTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
   - actionName: buff 2
-    intentType: 3
-    attackDamage: 0
-    blockAmount: 0
-    buffDebuffType: 4
-    statusKeyOrName: 
-    effectValue: 1
-    attackCount: 0
     weight: 1
-    attackAnimationTrigger: Attack
+    isAttack: 0
+    damage: 0
+    hitCount: 0
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 1
+    buffDebuffs:
+    - id: 1
+      value: 1
+      isDebuff: 0
+      isBuffToSelf: 1
+    animTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
-  - actionName: Debuff 3
-    intentType: 3
-    attackDamage: 0
-    blockAmount: 0
-    buffDebuffType: 2
-    statusKeyOrName: 
-    effectValue: 1
-    attackCount: 0
+  - actionName: Attack2
     weight: 1
-    attackAnimationTrigger: Attack
+    isAttack: 1
+    damage: 20
+    hitCount: 1
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 0
+    buffDebuffs: []
+    animTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  - actionName: Attack3
+    weight: 1
+    isAttack: 1
+    damage: 10
+    hitCount: 2
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 0
+    buffDebuffs: []
+    animTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}
   spriteLibraryAsset: {fileID: 7108339969198208228, guid: 36dea67178a9ddf4d82557496b7a8283, type: 3}

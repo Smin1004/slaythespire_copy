@@ -3124,7 +3124,7 @@ MonoBehaviour:
   clearPanel: {fileID: 900341501}
   clearUsedCardText: {fileID: 1409214842}
   clearTimeText: {fileID: 1680379888}
-  clearTitleButton: {fileID: 0}
+  clearTitleButton: {fileID: 1305887524}
   mainBackgroundImage: {fileID: 0}
   backgroundCanvas: {fileID: 0}
   backgroundSortingOrder: -100
@@ -7658,7 +7658,7 @@ MonoBehaviour:
   enemyDatas:
   - {fileID: 11400000, guid: d1e2e301fbfe0fb4394c3de54a484bc9, type: 2}
   - {fileID: 11400000, guid: d3921dd131fccc44aa3f837940bac69b, type: 2}
-  - {fileID: 11400000, guid: 0a269002fe523f5448d794c7d6c2c095, type: 2}
+  - {fileID: 11400000, guid: 938e85d7baf1c014b9390550db6c3094, type: 2}
   - {fileID: 11400000, guid: c8d4c7f2623618f46bf0835ea25bd434, type: 2}
   - {fileID: 11400000, guid: 5a1c815119462864d8651e35e25006e6, type: 2}
   enemySpawnParent: {fileID: 1397124884}

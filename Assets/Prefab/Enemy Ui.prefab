@@ -1007,13 +1007,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8e780fa036b6945ac3a021894bbc39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 0}
-  _icon: {fileID: 907926491492698793}
-  _valueText: {fileID: 6332550440402277015}
-  _attackIcon: {fileID: -1702212321621656370, guid: 1cf9f8c421dda3845b8936a786f11ab8, type: 3}
-  _defendIcon: {fileID: 3213072653768587747, guid: 8989fb13d25b2b140b0dc5d2785a7a88, type: 3}
-  _buffIcon: {fileID: -5293577459126194811, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
-  _debuffIcon: {fileID: 1496592532145121355, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
+  enemy: {fileID: 0}
+  icon: {fileID: 907926491492698793}
+  valueText: {fileID: 6332550440402277015}
+  attackIcon: {fileID: -1702212321621656370, guid: 1cf9f8c421dda3845b8936a786f11ab8, type: 3}
+  defendIcon: {fileID: 3213072653768587747, guid: 8989fb13d25b2b140b0dc5d2785a7a88, type: 3}
+  buffIcon: {fileID: -5293577459126194811, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
+  debuffIcon: {fileID: 1496592532145121355, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
 --- !u!114 &3583434368550993311
 MonoBehaviour:
   m_ObjectHideFlags: 0

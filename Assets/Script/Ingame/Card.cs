@@ -23,6 +23,7 @@ public class Card : PoolableObject
 
     public Vector3 targetPosition;
     public Quaternion targetRotation;
+    bool useCard;
 
     public void Init(Skill _skill)
     {
@@ -30,23 +31,11 @@ public class Card : PoolableObject
         player = Player.Instance;
 
         skill = _skill;
-        if (skill == null)
-            return;
-
-        if (descText != null)
-            descText.text = skill.desc;
-
-        if (costText != null)
-            costText.text = skill.cost.ToString();
-
-        if (nameText != null)
-            nameText.text = skill.name;
-
-        if (img != null)
-            img.sprite = skill.img;
-
-        if (skill.effect != null)
-            skill.effect.skillData = skill;
+        descText.text = skill.effect.FormatDesc(skill, 0);
+        costText.text = skill.cost.ToString();
+        nameText.text = skill.name;
+        img.sprite = skill.img;
+        skill.effect.skillData = skill;
     }
 
     public void SetRewardPreview(Skill previewSkill, Action<Skill> selectCallback)
@@ -164,15 +153,12 @@ public class Card : PoolableObject
 
     public IEnumerator UseCard(Entity target)
     {
-        if (skill == null || skill.effect == null || player == null)
-            yield break;
+        if (skill == null || skill.effect == null || player == null) yield break;
+        if (battleManager != null && !battleManager.isPlayerTurn) yield break;
+        if (player.energy < skill.cost) yield break;
+        if(useCard) yield break;
 
-        if (battleManager != null && !battleManager.isPlayerTurn)
-            yield break;
-
-        if (player.energy < skill.cost)
-            yield break;
-
+        useCard = true;
         Entity[] targets;
         if (target != null)
         {
@@ -209,6 +195,7 @@ public class Card : PoolableObject
         value[0] = player.BuffCheck_CardTrigger(skill, value[0]);
         yield return StartCoroutine(skill.effect.Trigger(player, targets, value));
         DeckManager.Instance.DiscardCard(this);
+        useCard = false;
     }
 
     private void ReturnToHand()

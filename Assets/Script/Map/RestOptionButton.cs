@@ -4,12 +4,13 @@ using UnityEngine.EventSystems;
 public enum RestOptionType
 {
     Rest,
+    SelectUpgrade,
     Upgrade
 }
 
 public class RestOptionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    [SerializeField] private RestPanelController restPanelController;
+    [SerializeField] public RestPanelController restPanelController;
     [SerializeField] private RestOptionType optionType;
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -32,6 +33,12 @@ public class RestOptionButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         // 현재는 휴식만 선택 가능하고 강화는 설명만 보여줍니다.
         if (optionType == RestOptionType.Rest)
-            restPanelController?.SelectRest();
+            restPanelController.SelectRest();
+        
+        if(optionType == RestOptionType.SelectUpgrade)
+            restPanelController.SelectUpgrade();
+        
+        if(optionType == RestOptionType.Upgrade)
+            restPanelController.Upgrade(GetComponent<ViewCard>());
     }
 }

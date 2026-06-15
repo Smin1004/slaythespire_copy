@@ -49,7 +49,7 @@ public class ReadCSV : MonoBehaviour
         {
             string[] cols = rows[i].Split(',');
             if (cols.Length < 7 || cols[6] == "") continue;
-            Debug.Log(rows[i]);
+            //Debug.Log(rows[i]);
 
             Skill skill = new();
             skill.index = int.Parse(cols[0]);
@@ -69,7 +69,6 @@ public class ReadCSV : MonoBehaviour
             skillLists.Add(skill);
         }
         d.loadData.SkillList = skillLists;
-        Debug.Log($"[ParseSkillData] data = {data}");
     }
 
     public void ParseBuffData(string data)
@@ -82,7 +81,7 @@ public class ReadCSV : MonoBehaviour
         buffLists.Clear();
         for (int i = 1; i < rows.Length; i++)
         {
-            Debug.Log(rows[i]);
+            //Debug.Log(rows[i]);
             string[] cols = rows[i].Split(',');
             if (cols.Length < 5) continue;
 

@@ -28,7 +28,7 @@ public class DataManager : MonoBehaviour
     {
         if (loadData == null ||index < 0 || index >= loadData.BuffList.Count) return null;
 
-        Buff temp = loadData.BuffList[index];
+        Buff temp = loadData.BuffList[--index];
         Buff newBuff = new(temp) {value = value};
 
         return newBuff;

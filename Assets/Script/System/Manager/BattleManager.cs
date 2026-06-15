@@ -401,6 +401,15 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        foreach (EnemyEntity enemy in enemies)
+        {
+            if (enemy == null)
+                continue;
+
+            enemy.ProcessTurnEnd();
+        }
+        player.ProcessTurnEnd();
+
         if (enemyList.Count == 0)
             ChangeBattleState(BattleState.BattleWon);
         else

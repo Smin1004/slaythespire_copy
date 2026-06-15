@@ -54,8 +54,9 @@ public class DeckManager : MonoBehaviour
             return;
         }
 
+        //임시 삽입
         foreach (Skill data in Player.Instance.masterDeck)
-            drawPile.Add(data);
+            drawPile.Add(new Skill(data));
 
         ShuffleDeck(drawPile);
         NotifyPileCounts();

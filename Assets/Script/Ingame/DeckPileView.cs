@@ -9,8 +9,8 @@ public class DeckPileView : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log($"[DeckPileView] drawPileText ÇÒ´çµÊ? {drawPileText != null}");
-        Debug.Log($"[DeckPileView] discardPileText ÇÒ´çµÊ? {discardPileText != null}");
+        //Debug.Log($"[DeckPileView] drawPileText ï¿½Ò´ï¿½ï¿½? {drawPileText != null}");
+        //Debug.Log($"[DeckPileView] discardPileText ï¿½Ò´ï¿½ï¿½? {discardPileText != null}");
     }
 
     private void Start()
@@ -38,13 +38,13 @@ public class DeckPileView : MonoBehaviour
 
     private void UpdateDrawPile(int count)
     {
-        Debug.Log($"[DeckPileView] Draw UI º¯°æ: {count}");
+        //Debug.Log($"[DeckPileView] Draw UI ï¿½ï¿½ï¿½ï¿½: {count}");
         drawPileText.text = count.ToString();
     }
 
     private void UpdateDiscardPile(int count)
     {
-        Debug.Log($"[DeckPileView] Discard UI º¯°æ: {count}");
+        //Debug.Log($"[DeckPileView] Discard UI ï¿½ï¿½ï¿½ï¿½: {count}");
         discardPileText.text = count.ToString();
     }
 }

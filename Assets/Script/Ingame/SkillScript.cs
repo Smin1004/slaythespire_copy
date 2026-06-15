@@ -37,6 +37,26 @@ public class Skill
     public SkillScript effect;
     public string desc;
     public bool isUpgraded;
+
+    public Skill(){}
+    public Skill(Skill _skill)
+    {
+        if(_skill == null) return;
+
+        index = _skill.index;
+        name = _skill.name;
+        type = _skill.type;
+        isTargeting = _skill.isTargeting;
+        cost = _skill.cost;
+        upgradeCost = _skill.upgradeCost;
+        skillValue = _skill.skillValue;
+        upgradeValue = _skill.upgradeValue;
+        img = _skill.img;
+        effect = _skill.effect;
+        effect.skillData = this;
+        desc = _skill.desc;
+        isUpgraded = _skill.isUpgraded;
+    }
 }
 
 public enum SkillType
@@ -179,7 +199,7 @@ public class ThunderClap : SkillScript //천둥
     public override IEnumerator Trigger(Entity unit, Entity[] target, int[] value)
     {
         
-        Buff curBuff = DataManager.Instance.GetBuff(3, value[0]);
+        Buff curBuff = DataManager.Instance.GetBuff(3, 1);
         
         for (int i = 0; i < target.Length; i++)
         {

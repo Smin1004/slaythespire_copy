@@ -99,18 +99,73 @@ public abstract class Entity : MonoBehaviour
         
         if (existingBuff != null)
         {
+            Debug.Log($"plus {buff.name}, {existingBuff.value} + {buff.value}");
             existingBuff.value += buff.value;
             OnBuffsChanged?.Invoke(Buffs);
             return;
         }
 
+        Debug.Log($"Add {buff.name}, {buff.value}");
         buffs.Add(buff);
         OnBuffsChanged?.Invoke(Buffs);
     }
 
+   // 턴이 끝날 때 BattleManager에서 호출해야 하는 함수
+    public virtual void ProcessTurnEnd()
+    {
+        Debug.Log($"[{name}] 턴 종료 연산 및 버프 정리 시작");
+
+        // 버프가 삭제될 수 있으므로 반드시 '역순'으로 순회합니다.
+        for (int i = buffs.Count - 1; i >= 0; i--)
+        {
+            Buff buff = buffs[i];
+            if (buff?.effect == null)
+                continue;
+
+            // 1. 턴 종료 효과 우선 발동 (예: 기간제 힘 감소, 독 데미지 등)
+            buff.effect.buffData = buff;
+            buff.effect.OnTurnEnd(this, buff.value);
+
+            // 2. 가비지 컬렉팅 (수명이 다한 버프 제거)
+            bool shouldRemove = false;
+
+            if (buff.type == BuffType.Disposable)
+            {
+                // 1회용 버프는 턴 종료 시 무조건 삭제
+                shouldRemove = true;
+            }
+            else if (buff.type == BuffType.Temporary && buff.value <= 0)
+            {
+                // 기간제 버프 중 수치(스택/턴)가 0 이하가 되면 삭제
+                shouldRemove = true;
+            }
+            else if (buff.value <= 0)
+            {
+                // 영구 버프라 할지라도 수치가 0 이하가 되면 UI와 로직에서 지우는 것이 기본 규칙
+                shouldRemove = true;
+            }
+
+            // 3. 삭제 판정이 났다면 리스트에서 안전하게 제거
+            if (shouldRemove)
+            {
+                RemoveTargetBuff(i);
+            }
+        }
+    }
+
+    // 내부 삭제용 헬퍼 함수
+    public virtual void RemoveTargetBuff(int targetIndex)
+    {
+        Debug.Log($"Remove Buff: {buffs[targetIndex].name}");
+        buffs.RemoveAt(targetIndex);
+        
+        // UI 갱신 이벤트 호출
+        OnBuffsChanged?.Invoke(Buffs);
+    }
     //피격시 버프 계산
     public virtual int BuffCheck_Attack(Entity unit, int value, bool isCheck = false)
     {
+        Debug.Log($"In {value} / Attack\n{this}");
         for (int i = 0; i < buffs.Count; i++)
         {
             Buff buff = buffs[i];
@@ -118,7 +173,7 @@ public abstract class Entity : MonoBehaviour
                 continue;
 
             buff.effect.buffData = buff;
-            value += buff.effect.OnAttack(this, value);
+            value = buff.effect.OnAttack(this, value);
         }
         return value;
     }
@@ -126,6 +181,7 @@ public abstract class Entity : MonoBehaviour
     //피격시 버프 계산
     public virtual int BuffCheck_Block(Entity unit, int value, bool isCheck = false)
     {
+        Debug.Log($"In {value} / Block\n{this}");
         for (int i = 0; i < buffs.Count; i++)
         {
             Buff buff = buffs[i];
@@ -133,7 +189,7 @@ public abstract class Entity : MonoBehaviour
                 continue;
 
             buff.effect.buffData = buff;
-            value += buff.effect.OnBlock(this, value);
+            value = buff.effect.OnBlock(this, value);
         }
         return value;
     }

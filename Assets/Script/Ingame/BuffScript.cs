@@ -39,6 +39,7 @@ public class Buff
         this.key = source.key;
         this.value = source.value;
         this.isDebuff = source.isDebuff;
+        this.type = source.type;
         
         this.img = source.img;
         this.effect = source.effect; 

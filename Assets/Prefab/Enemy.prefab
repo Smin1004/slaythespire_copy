@@ -136,9 +136,10 @@ MonoBehaviour:
   buffSound: {fileID: 0}
   debuffSound: {fileID: 0}
   buffs: []
-  currentEnemyData: {fileID: 0}
+  enemyData: {fileID: 0}
   spriteLibrary: {fileID: 0}
   animator: {fileID: 0}
+  spriteRenderers: []
   destroyOnDeath: 1
   deathDestroyDelay: 1
 --- !u!114 &5600422424942907289
@@ -181,13 +182,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8e780fa036b6945ac3a021894bbc39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 7034221976355804622}
-  _icon: {fileID: 237021826555006652}
-  _valueText: {fileID: 1844840067146528981}
-  _attackIcon: {fileID: -1702212321621656370, guid: 1cf9f8c421dda3845b8936a786f11ab8, type: 3}
-  _defendIcon: {fileID: 3213072653768587747, guid: 8989fb13d25b2b140b0dc5d2785a7a88, type: 3}
-  _buffIcon: {fileID: -5293577459126194811, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
-  _debuffIcon: {fileID: 1496592532145121355, guid: 030fe3f9b578ce34c98e20205923eedc, type: 3}
+  enemy: {fileID: 0}
+  icon: {fileID: 0}
+  valueText: {fileID: 0}
+  attackIcon: {fileID: 0}
+  defendIcon: {fileID: 0}
+  buffIcon: {fileID: 0}
+  debuffIcon: {fileID: 0}
 --- !u!114 &4143884038292375563
 MonoBehaviour:
   m_ObjectHideFlags: 0

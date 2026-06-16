@@ -8,37 +8,47 @@ public class EventRoomManager : MonoBehaviour
     [Header("UI 연결")]
     [SerializeField] private Image eventImage;
     [SerializeField] private TextMeshProUGUI eventDescText;
-    [SerializeField] private Transform buttonGroupRoot;
-    [SerializeField] private GameObject choiceButtonPrefab;
+    [SerializeField] private List<EventChoiceButtonUI> buttonGroupRoot;
 
-    private EventPageData currentPageData;
+    [SerializeField] private List<EventPageData> allPageData;
+    [SerializeField] private EventPageData curPageData;
+
+    public void Init()
+    {
+        int ranNum = Random.Range(0, allPageData.Count);
+        LoadEventPage(allPageData[ranNum]);
+        allPageData.Remove(allPageData[ranNum]);
+    }
 
     // 이벤트를 처음 띄울 때 호출되는 함수
     public void LoadEventPage(EventPageData targetPage)
     {
-        currentPageData = targetPage;
+        curPageData = targetPage;
 
         // 1. 이미지 및 텍스트 갱신
-        if (currentPageData.eventImage != null)
+        if (curPageData.eventImage != null)
         {
-            eventImage.sprite = currentPageData.eventImage;
+            eventImage.sprite = curPageData.eventImage;
         }
-        eventDescText.text = currentPageData.dialogueText;
+        eventDescText.text = curPageData.dialogueText;
 
         // 2. 기존에 생성된 버튼들 청소
-        ClearOldButtons();
+        //ClearOldButtons();
 
         // 3. 선택지 배열을 돌며 버튼 생성
-        for (int i = 0; i < currentPageData.choiceList.Count; i++)
+        for (int i = 0; i < buttonGroupRoot.Count; i++)
         {
-            CreateChoiceButton(currentPageData.choiceList[i]);
+            if(i < curPageData.choiceList.Count) {
+                buttonGroupRoot[i].gameObject.SetActive(true);
+                CreateChoiceButton(curPageData.choiceList[i], i);
+            }
+            else buttonGroupRoot[i].gameObject.SetActive(false);
         }
     }
 
-    private void CreateChoiceButton(EventChoiceData choiceData)
+    private void CreateChoiceButton(EventChoiceData choiceData, int value)
     {
-        GameObject newButtonObj = Instantiate(choiceButtonPrefab, buttonGroupRoot);
-        EventChoiceButtonUI buttonUI = newButtonObj.GetComponent<EventChoiceButtonUI>();
+        EventChoiceButtonUI buttonUI = buttonGroupRoot[value];
         
         // 버튼 내부 텍스트 수정 및 클릭 이벤트 리스너 연결 (람다식 활용)
         buttonUI.SetupButton(choiceData.buttonText, () => OnChoiceSelected(choiceData));
@@ -75,7 +85,7 @@ public class EventRoomManager : MonoBehaviour
         {
             // 찾은 클래스의 인스턴스를 생성하고 ExecuteAction을 트리거합니다.
             EventScript actionScript = System.Activator.CreateInstance(actionType) as EventScript;
-            actionScript?.ExecuteAction();
+            actionScript?.ExecuteAction(0);
         }
         else
         {
@@ -85,12 +95,11 @@ public class EventRoomManager : MonoBehaviour
 
     private void ClearOldButtons() 
     { 
-        foreach (Transform child in buttonGroupRoot) { Destroy(child.gameObject); }
+        //foreach (Transform child in buttonGroupRoot) { Destroy(child.gameObject); }
     }
 
     private void CloseEventRoom() 
     { 
-        Debug.Log("이벤트 종료, 맵 화면으로 돌아갑니다.");
-        // RunManager.Instance.ReturnToMap(); 등 호출
+        RunManager.Instance?.CompleteBattleReward();
     }
 }

@@ -28,4 +28,5 @@ public class EventChoiceData
     [Header("발동할 스크립트 ID")]
     [Tooltip("체력을 깎거나 카드를 주는 등의 실제 데이터를 변경할 식별자입니다.")]
     public string actionRewardId; // 예: "Action_ClericHeal"
+    public int value;
 }

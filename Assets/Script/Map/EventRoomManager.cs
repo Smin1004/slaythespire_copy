@@ -60,7 +60,7 @@ public class EventRoomManager : MonoBehaviour
         Debug.Log($"이벤트 선택됨: {selectedChoice.buttonText}");
 
         // 1. 보상/페널티 로직 실행
-        ExecuteEventAction(selectedChoice.actionRewardId);
+        ExecuteEventAction(selectedChoice);
 
         // 2. 다음 페이지가 있다면 로드, 없다면 이벤트 종료 후 맵으로 복귀
         if (selectedChoice.targetPageData != null)
@@ -74,8 +74,9 @@ public class EventRoomManager : MonoBehaviour
     }
 
     // ID값을 읽어 실제 게임 데이터를 조작하는 관문
-    private void ExecuteEventAction(string actionId)
+    private void ExecuteEventAction(EventChoiceData data)
     {
+        string actionId = data.actionRewardId;
         if (string.IsNullOrEmpty(actionId) || actionId == "Action_None") return;
 
         // 문자열 ID를 바탕으로 해당 이름의 C# 클래스 타입을 찾습니다.
@@ -85,7 +86,7 @@ public class EventRoomManager : MonoBehaviour
         {
             // 찾은 클래스의 인스턴스를 생성하고 ExecuteAction을 트리거합니다.
             EventScript actionScript = System.Activator.CreateInstance(actionType) as EventScript;
-            actionScript?.ExecuteAction(0);
+            actionScript?.ExecuteAction(data.value);
         }
         else
         {

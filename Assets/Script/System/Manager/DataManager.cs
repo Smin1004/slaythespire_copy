@@ -19,9 +19,16 @@ public class DataManager : MonoBehaviour
     public void InitStart()
     {
         // Give the player a separate deck list so rewards do not modify LoadData.
-        Player.Instance.masterDeck = loadData != null
-            ? new List<Skill>(loadData.SkillList)
-            : new List<Skill>();
+        // Player.Instance.masterDeck = loadData != null
+        //     ? new List<Skill>(loadData.SkillList)
+        //     : new List<Skill>();
+        List<Skill> temp = new()
+        {
+            new Skill(loadData.SkillList[0]),new Skill(loadData.SkillList[0]),new Skill(loadData.SkillList[0]),new Skill(loadData.SkillList[0]),new Skill(loadData.SkillList[0])
+           ,new Skill(loadData.SkillList[1]),new Skill(loadData.SkillList[1]),new Skill(loadData.SkillList[1]),new Skill(loadData.SkillList[1]),new Skill(loadData.SkillList[1])
+           ,new Skill(loadData.SkillList[2])
+        };
+        Player.Instance.masterDeck = temp;
     }
 
     public Buff GetBuff(int index, int value)

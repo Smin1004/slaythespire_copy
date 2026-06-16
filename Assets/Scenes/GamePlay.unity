@@ -821,9 +821,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventImage: {fileID: 549156255}
-  eventDescText: {fileID: 0}
-  buttonGroupRoot: {fileID: 0}
-  choiceButtonPrefab: {fileID: 0}
+  eventDescText: {fileID: 366053710}
+  buttonGroupRoot:
+  - {fileID: 1015001642}
+  - {fileID: 1463289098}
+  allPageData:
+  - {fileID: 11400000, guid: 91c7e7d5f843e3b489c82c3b46b01954, type: 2}
+  curPageData: {fileID: 0}
 --- !u!1 &239334421
 GameObject:
   m_ObjectHideFlags: 0
@@ -3514,8 +3518,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3538,7 +3542,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3782,7 +3786,7 @@ MonoBehaviour:
   battleWorldRoot: {fileID: 773528843}
   battleUIRoot: {fileID: 1230279291}
   rewardPanel: {fileID: 1461001242}
-  eventPanel: {fileID: 0}
+  eventPanel: {fileID: 189512730}
   restPanel: {fileID: 1603144464}
   clearPanel: {fileID: 900341501}
   clearUsedCardText: {fileID: 1409214842}
@@ -4467,6 +4471,8 @@ GameObject:
   - component: {fileID: 1015001641}
   - component: {fileID: 1015001640}
   - component: {fileID: 1015001639}
+  - component: {fileID: 1015001643}
+  - component: {fileID: 1015001642}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -4558,8 +4564,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -8804472098547547922, guid: a5ff6873e3f85cc4cbfc834412e87719, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4576,6 +4582,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015001637}
   m_CullTransparentMesh: 1
+--- !u!114 &1015001642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015001637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aabfd9214b2fe24e954525c2ccfa6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  choiceText: {fileID: 769953282}
+  targetButton: {fileID: 1015001639}
+--- !u!114 &1015001643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015001637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab28fde99cebbea4495e0c5a1669c799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1015001640}
+  normalSprite: {fileID: -8804472098547547922, guid: a5ff6873e3f85cc4cbfc834412e87719, type: 3}
+  hoverSprite: {fileID: -6392741523103265769, guid: a5ff6873e3f85cc4cbfc834412e87719, type: 3}
+  hoverScale: 1.1
+  soundManager: {fileID: 0}
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 0}
 --- !u!1 &1039529798
 GameObject:
   m_ObjectHideFlags: 0
@@ -7658,6 +7697,8 @@ GameObject:
   - component: {fileID: 1463289097}
   - component: {fileID: 1463289096}
   - component: {fileID: 1463289095}
+  - component: {fileID: 1463289099}
+  - component: {fileID: 1463289098}
   m_Layer: 0
   m_Name: Button (1)
   m_TagString: Untagged
@@ -7749,8 +7790,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -8804472098547547922, guid: a5ff6873e3f85cc4cbfc834412e87719, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -7767,6 +7808,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463289093}
   m_CullTransparentMesh: 1
+--- !u!114 &1463289098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463289093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aabfd9214b2fe24e954525c2ccfa6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  choiceText: {fileID: 1662600143}
+  targetButton: {fileID: 1463289095}
+--- !u!114 &1463289099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463289093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab28fde99cebbea4495e0c5a1669c799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1463289096}
+  normalSprite: {fileID: -8804472098547547922, guid: a5ff6873e3f85cc4cbfc834412e87719, type: 3}
+  hoverSprite: {fileID: -6392741523103265769, guid: a5ff6873e3f85cc4cbfc834412e87719, type: 3}
+  hoverScale: 1.1
+  soundManager: {fileID: 0}
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 0}
 --- !u!1 &1499742949
 GameObject:
   m_ObjectHideFlags: 0
@@ -8750,8 +8824,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8774,7 +8848,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

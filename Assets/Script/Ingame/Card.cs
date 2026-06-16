@@ -31,11 +31,11 @@ public class Card : PoolableObject
         player = Player.Instance;
 
         skill = _skill;
+        skill.effect.skillData = skill;
         descText.text = skill.effect.FormatDesc(skill, 0);
         costText.text = skill.cost.ToString();
         nameText.text = skill.name;
         img.sprite = skill.img;
-        skill.effect.skillData = skill;
     }
 
     public void SetRewardPreview(Skill previewSkill, Action<Skill> selectCallback)

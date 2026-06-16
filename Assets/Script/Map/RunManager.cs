@@ -524,6 +524,7 @@ public class RunManager : MonoBehaviour
         if (eventPanel != null)
         {
             eventPanel.SetActive(true);
+            eventPanel.GetComponent<EventRoomManager>().Init();
             ApplyBackgroundFrom(eventPanel);
         }
     }

@@ -10,7 +10,7 @@ public abstract class SkillScript
     {
         string rawFormat = skill.desc;
         int[] currentValues = skill.isUpgraded ? skill.upgradeValue : skill.skillValue;
-
+        
         object[] objectValues = currentValues.Select(val => val + plusValue).Cast<object>().ToArray();
 
         return string.Format(rawFormat, objectValues);
@@ -110,7 +110,7 @@ public class Bash : SkillScript //강타
     {
         
         unit.ExecuteAttack(target[0], value[0]);
-        Buff curBuff = DataManager.Instance.GetBuff(3, value[0]);
+        Buff curBuff = DataManager.Instance.GetBuff(3, value[1]);
         target[0].AddBuff(curBuff);
         yield break;
     }

@@ -155,6 +155,7 @@ public class EnemyEntity : Entity
             {
                 buff = DataManager.Instance.GetBuff(curAction.buffDebuffs[i].id, curAction.buffDebuffs[i].value);
                 if (curAction.buffDebuffs[i].isBuffToSelf) AddBuff(buff);
+                else target.AddBuff(buff);
             }
         }
         DecideNextIntent();

@@ -59,7 +59,7 @@ public class EnemyIntentView : MonoBehaviour
             int checkBlock = enemy.ExecuteBlock(action.blockAmount, true);
             valueText.text = $"{checkBlock}";
                 
-            icon.sprite = attackIcon;
+            icon.sprite = defendIcon;
         }
         if (action.isBuffDebuff)
         {

@@ -4370,7 +4370,7 @@ Transform:
   m_GameObject: {fileID: 995501411}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.5, z: 0}
+  m_LocalPosition: {x: 0, y: -4.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8335,6 +8335,7 @@ MonoBehaviour:
   messageText: {fileID: 2063335321}
   healRatio: 0.3
   healSound: {fileID: 8300000, guid: d67d5f355010b56408ede93d980c58cd, type: 3}
+  upgradeSound: {fileID: 8300000, guid: 0b56c5b62a3f4484f9f6196398c87dce, type: 3}
   viewCard: {fileID: 2211197683441485199, guid: 7eb35fd63d2b1db49bd3cfec1e06efaf, type: 3}
   cards: []
   showCard: {fileID: 0}
@@ -8538,7 +8539,7 @@ MonoBehaviour:
   enemyDatas:
   - {fileID: 11400000, guid: d1e2e301fbfe0fb4394c3de54a484bc9, type: 2}
   - {fileID: 11400000, guid: d3921dd131fccc44aa3f837940bac69b, type: 2}
-  - {fileID: 11400000, guid: 0a269002fe523f5448d794c7d6c2c095, type: 2}
+  - {fileID: 11400000, guid: 938e85d7baf1c014b9390550db6c3094, type: 2}
   - {fileID: 11400000, guid: c8d4c7f2623618f46bf0835ea25bd434, type: 2}
   - {fileID: 11400000, guid: 5a1c815119462864d8651e35e25006e6, type: 2}
   enemySpawnParent: {fileID: 1397124884}

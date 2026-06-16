@@ -21,9 +21,33 @@ MonoBehaviour:
   actions:
   - actionName: Attack
     weight: 1
-    isAttack: 0
+    isAttack: 1
     damage: 10
     hitCount: 1
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 0
+    buffDebuffs: []
+    animTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  - actionName: Attack2
+    weight: 1
+    isAttack: 1
+    damage: 20
+    hitCount: 1
+    isBlock: 0
+    blockAmount: 0
+    isBuffDebuff: 0
+    buffDebuffs: []
+    animTrigger: Attack
+    actionSound: {fileID: 0}
+    intentIcon: {fileID: 0}
+  - actionName: Attack3
+    weight: 1
+    isAttack: 1
+    damage: 10
+    hitCount: 2
     isBlock: 0
     blockAmount: 0
     isBuffDebuff: 0
@@ -94,7 +118,7 @@ MonoBehaviour:
   - actionName: Debuff 3
     weight: 1
     isAttack: 0
-    damage: 0
+    damage: -190
     hitCount: 0
     isBlock: 0
     blockAmount: 0
@@ -104,30 +128,6 @@ MonoBehaviour:
       value: 1
       isDebuff: 1
       isBuffToSelf: 0
-    animTrigger: Attack
-    actionSound: {fileID: 0}
-    intentIcon: {fileID: 0}
-  - actionName: Attack2
-    weight: 1
-    isAttack: 0
-    damage: 20
-    hitCount: 1
-    isBlock: 0
-    blockAmount: 0
-    isBuffDebuff: 0
-    buffDebuffs: []
-    animTrigger: Attack
-    actionSound: {fileID: 0}
-    intentIcon: {fileID: 0}
-  - actionName: Attack3
-    weight: 1
-    isAttack: 0
-    damage: 10
-    hitCount: 2
-    isBlock: 0
-    blockAmount: 0
-    isBuffDebuff: 0
-    buffDebuffs: []
     animTrigger: Attack
     actionSound: {fileID: 0}
     intentIcon: {fileID: 0}

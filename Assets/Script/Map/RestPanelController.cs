@@ -19,6 +19,7 @@ public class RestPanelController : MonoBehaviour
     [SerializeField] private AudioClip healSound;
 
     [Header("Upgrade")]
+    [SerializeField] private AudioClip upgradeSound;
     [SerializeField] ViewCard viewCard;
     [SerializeField] List<ViewCard> cards = new();
     [SerializeField] GameObject showCard;
@@ -90,6 +91,7 @@ public class RestPanelController : MonoBehaviour
         Skill skill = card.skill;
         skill.isUpgraded = true;
         skill.desc = skill.effect.FormatDesc(skill, 0);
+        AudioManager.Instance?.PlaySfx(upgradeSound);
 
         HideDescription();
         HideOptions();
